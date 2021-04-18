@@ -1,0 +1,23 @@
+variables:
+  MAVEN_OPTS: "-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN
+               -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true
+               -Dorg.slf4j.simpleLogger.defaultLogLevel=WARN
+               -Dmaven.repo.local=/cache/maven.repository"
+
+image: maven:3.6.3-openjdk-15-slim
+
+stages:
+    - Unit Tests
+
+maven-test:
+    stage: Unit Tests
+    script: "mvn $MAVEN_OPTS test"
+    artifacts:
+        paths:
+            - target/surefire-reports/TEST-*.xml
+        reports:
+            junit:
+                - target/surefire-reports/TEST-*.xml
+
+
+
