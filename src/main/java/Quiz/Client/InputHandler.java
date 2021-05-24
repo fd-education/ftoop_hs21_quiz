@@ -3,6 +3,9 @@ package Quiz.Client;
 import java.io.*;
 import java.util.*;
 
+/**
+ * Class to get and validate user input.
+ */
 public class InputHandler {
     private static BufferedReader reader;
     private final static ArrayList<String> VALID_ANSWERS = new ArrayList<>(List.of("A", "B", "C"));
