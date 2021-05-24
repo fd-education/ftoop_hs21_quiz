@@ -20,9 +20,10 @@ public class ClientHandler implements Callable<String> {
         ) {
             String greeting;
             while ((greeting = in.readLine()) != null) {
+                System.out.println(greeting);
                 if (greeting.startsWith("hello there")) {
                     out.println("general kenobi");
-                    return "Nice "+greeting;
+                    return "Nice " + greeting;
                 } else {
                     out.println(greeting);
                 }

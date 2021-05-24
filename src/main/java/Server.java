@@ -20,6 +20,7 @@ public class Server {
     public void start(int port) throws IOException, ExecutionException, InterruptedException {
         final long startTime = System.currentTimeMillis();
         serverSocket = new ServerSocket(port);
+        // Accepts new connections until time is up or max count of connections is reached
         try {
             while (connectedSockets.size() < maxConnections) {
                 final long passedTime = System.currentTimeMillis() - startTime;
@@ -35,6 +36,7 @@ public class Server {
         for (Socket clientSocket : connectedSockets) {
             callables.add(new ClientHandler(clientSocket));
         }
+        // Gets the string of the Clienthandler that first finished
         String result = executorService.invokeAny(callables);
         System.out.println(result);
         stop();

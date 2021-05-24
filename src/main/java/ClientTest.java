@@ -52,4 +52,9 @@ class ClientTest {
             assertEquals("!", resp3);
         }
     }
+
+    @AfterEach
+    void teardown() throws IOException {
+        server.stop();
+    }
 }
