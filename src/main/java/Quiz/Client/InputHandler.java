@@ -59,7 +59,7 @@ public class InputHandler {
         return !name.isBlank() && name.length() > 2;
     }
 
-    // Validate user's answer (must be A, B or C)
+    // Validate user's answer (must be A/a, B/b or C/c)
     private boolean validateAnswer(final String answer){
         return VALID_ANSWERS.contains(answer.toUpperCase());
     }
