@@ -12,7 +12,6 @@ public class Server {
      * @param port The server will run on this port. Must not be in use.
      *
      * @throws IOException if an I/O Error has occurred during the creation. See {@link ServerSocket} for more details.
-     * @throws IllegalArgumentException if the given port is already in use.
      */
     public Server(int port) throws IOException {
         serverSocket = new ServerSocket(port);

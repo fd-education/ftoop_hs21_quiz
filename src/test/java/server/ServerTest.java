@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
 import java.io.IOException;
+import java.net.BindException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
@@ -30,6 +31,16 @@ class ServerTest {
     void tearDown() throws IOException {
         if (!server.isStopped())
             server.stop();
+    }
+
+    @Test
+    void ctor_doublePortBindFails() {
+        assertThrows(BindException.class, () -> new Server(6666));
+    }
+
+    @Test
+    void ctor_invalidPortFails() {
+        assertThrows(IllegalArgumentException.class, () -> new Server(-1));
     }
 
     @Test
