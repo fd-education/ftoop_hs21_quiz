@@ -47,7 +47,7 @@ public class InputHandler {
     }
 
     // Get and return a user input.
-    private String getInputLine(){
+    public String getInputLine(){
         try{
             reader = new BufferedReader(new InputStreamReader(System.in));
             return reader.readLine();
