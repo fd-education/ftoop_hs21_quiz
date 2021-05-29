@@ -40,7 +40,7 @@ public class InputHandler {
 
             String name = getInputLine();
 
-            if(validateName(name)) return name;
+            if(validateName(name))  return name;
 
             System.out.println("Your name must contain at least three characters.");
         }

@@ -15,10 +15,10 @@ public class InputHandlerTest {
     }
 
     @Test
-    void validateNameTestNegative(){
+    void validateNameTestNegative() throws Exception{
         String EXPECTED_TEXT = "Your name must contain at least three characters.";
         try {
-            // Input too short
+            // Input too short, NullPointerException ignored
             String input1 = "ab";
             withTextFromSystemIn(input1)
                     .execute(() -> {
@@ -26,20 +26,18 @@ public class InputHandlerTest {
                             assertEquals(EXPECTED_TEXT, text);
                     });
 
-            // No input
+            // No input, NullPointerException ignored
             String input2 = "";
             withTextFromSystemIn(input2)
                     .execute(() -> {
                         String text = tapSystemOut(() -> inputHandler.getUsersName());
                         assertEquals(EXPECTED_TEXT, text);
                     });
-        } catch(Exception ex){
-            ex.printStackTrace();
-        }
+        } catch(NullPointerException ignored){}
     }
 
     @Test
-    void validateNameTestPositive(){
+    void validateNameTestPositive() throws Exception{
         try {
             String input1 = "1-a";
             withTextFromSystemIn(input1)
@@ -47,13 +45,11 @@ public class InputHandlerTest {
                         String text = inputHandler.getUsersName();
                         assertEquals(input1, text);
                     });
-        } catch(Exception ex){
-            ex.printStackTrace();
-        }
+        } catch(NullPointerException ignored){}
     }
 
     @Test
-    void validateAnswerTestNegative(){
+    void validateAnswerTestNegative() throws Exception{
         try {
             // Input invalid
             String input1 = "ab";
@@ -74,22 +70,16 @@ public class InputHandlerTest {
                         String text = tapSystemOut(() -> inputHandler.getUsersAnswer());
                         assertEquals(EXPECTED_TEXT2, text);
                     });
-        } catch(Exception ex){
-            ex.printStackTrace();
-        }
+        } catch(NullPointerException ignored){}
     }
 
     @Test
-    void validateAnswerTestPositive(){
-        try {
-            String input1 = "A";
-            withTextFromSystemIn(input1)
-                    .execute(() -> {
-                        String text = inputHandler.getUsersAnswer();
-                        assertEquals(input1, text);
-                    });
-        } catch(Exception ex){
-            ex.printStackTrace();
-        }
+    void validateAnswerTestPositive() throws Exception{
+        String input1 = "A";
+        withTextFromSystemIn(input1)
+                .execute(() -> {
+                    String text = inputHandler.getUsersAnswer();
+                    assertEquals(input1, text);
+                });
     }
 }
