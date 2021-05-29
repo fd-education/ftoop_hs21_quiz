@@ -1,80 +1,68 @@
 package Quiz.Server;
 
+import Quiz.Client.Logger.Logger;
+import Quiz.Message;
+import Quiz.MessageTypes.AnswerMessage;
+import Quiz.MessageTypes.NameMessage;
+
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
 
 public class MockServer {
-    private static ArrayList<Socket> clients = new ArrayList<>();
+    private static Socket client;
+    private static ObjectOutputStream out;
+    private static ObjectInputStream in;
 
-    private static BufferedReader in;
-    private static PrintWriter out;
-
-    private static void handleConnection(Socket client) throws IOException {
-        clients.add(client);
-        System.out.printf("%s connected to the server... %s connection(s running\n", client.toString(), clients.size());
-        sendMessage(client, String.format("%s", (clients.size() -1)));
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        start();
     }
 
-    public static void main(String[] args) throws IOException {
-        ServerSocket server = new ServerSocket(3141);
+    public static void start() throws IOException, ClassNotFoundException{
+        try(ServerSocket server = new ServerSocket(3141)) {
+            Logger.log("Server started ...");
 
-        while(true){
-            try{
-                System.out.println("Hello");
-                Socket client = server.accept();
-                if(!clients.contains(client)) {
-                    handleConnection(client);
+            client = server.accept();
+            Logger.log("Client " + client + " connected to the server");
+
+            out = new ObjectOutputStream(client.getOutputStream());
+            in = new ObjectInputStream(client.getInputStream());
+            Logger.log("Set up in- and output streams for client" + client);
+
+
+            while(true) {
+                Logger.log("Waiting for client messages . . .");
+
+                Message input = (Message) in.readObject();
+
+                Logger.log("Client sent " + input.getClass() + ": \"" + input.getText() + "\"");
+
+                if (".".equals(input.getText())) {
+                    out.writeObject("Server closing. Bye...");
+                    Logger.log("Stopping server...");
+                    break;
                 }
-                listen();
-            } catch(IOException ioEx){
-                ioEx.printStackTrace();
+
+                if(input instanceof NameMessage) {
+                    out.writeObject("Hello " + input + " . . .");
+                    out.writeObject("Here's your Question: ");
+                    out.writeObject("""
+                            \n
+                            Ungefähr 500 Millionen ...?
+                            A* Zugvögel ziehen jedes Jahr durch Deutschland
+                            B Euro geben Deutschlandreisende jährlich für Übernachtungen aus
+                            C Menschen werden für eine erdumspannende Kette benötigt
+                            """);
+
+                    Logger.log("Sent response. . . ");
+
+                    continue;
+                }
+
+                if(input instanceof AnswerMessage){
+                    out.writeObject("Your responded correctly");
+                }
+                Logger.log("Clients message could not be processed.");
             }
-        }
-    }
-
-    public static void listen() throws IOException{
-        System.out.println("Listening ...");
-        for(Socket client: clients){
-            if(client.isClosed()){
-                clients.remove(client);
-                continue;
-            }
-
-            in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-
-            String inputLine;
-            while(!(inputLine = in.readLine()).isBlank()){
-                handleConversation(inputLine);
-                sendMessage(client, "Got your Message");
-            }
-        }
-    }
-
-    public static void handleConversation(String input){
-        System.out.println(input);
-    }
-
-    public static void sendMessage(Socket client, String message) throws IOException{
-        out = new PrintWriter(client.getOutputStream(), true);
-        out.println(message);
-    }
-
-    public enum Reactions{
-        FRIENDLY("Hello there"),
-        UNFRIENDLY("GET AWAY"),
-        BYE("Good Bye"),
-        SEEYA("CU later"),
-        SILENCE("Sshhhht...");
-
-        private final String reaction;
-
-        Reactions(String myReaction){
-            this.reaction = myReaction;
-        }
-
-        public String getReaction(){
-            return reaction;
         }
     }
 }

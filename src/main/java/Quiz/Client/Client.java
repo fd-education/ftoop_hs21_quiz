@@ -1,37 +1,40 @@
 package Quiz.Client;
 
+import Quiz.Message;
+
 import java.net.*;
 import java.io.*;
 
 public class Client {
     private Socket client;
-    private PrintWriter out;
-    private BufferedReader in;
-    private String id;
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
 
-    public void connectToGame(String host, int port, String identification) throws IOException{
+    public void connectToGameServer(String host, int port, Message nameMessage) throws IOException, ClassNotFoundException{
         client = new Socket(host, port);
 
-        in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-        out = new PrintWriter(client.getOutputStream(), true);
+        in = new ObjectInputStream(client.getInputStream());
+        out = new ObjectOutputStream(client.getOutputStream());
 
-        out.println(identification);
-
-        this.id = identification;
+        sendMessage(nameMessage);
+        System.out.println("Connected");
     }
 
-    public String sendMessage(String response) throws IOException {
-            out.println(response);
-            return in.readLine();
+    public void sendMessage(Message message) throws IOException, ClassNotFoundException {
+
+        out.writeObject(message);
+
+        Object input;
+        while((input = in.readObject()) != null){
+            System.out.println(input);
+        }
+
+        System.out.println("After sent message");
     }
 
     public void closeConnection() throws IOException{
         if(!client.isClosed()) client.close();
         in.close();
         out.close();
-    }
-
-    public String getId(){
-        return this.id;
     }
 }
