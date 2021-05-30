@@ -11,7 +11,6 @@ public class FeedbackMessage extends Message {
 
         this.correct = correctAnswer;
 
-        this.clazz = this.getClass();
     }
 
     public boolean wasCorrect(){return this.correct;}

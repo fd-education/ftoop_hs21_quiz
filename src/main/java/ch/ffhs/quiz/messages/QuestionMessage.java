@@ -14,11 +14,9 @@ public class QuestionMessage extends Message {
         this.text = question;
         this.answers = answers;
         this.correctAnswer = correctAnswer;
-
-        this.clazz = this.getClass();
     }
 
-    public int getCorrectAnswer(){return this.correctAnswer;}
+    public int getCorrectAnswer(){return correctAnswer;}
 
-    public List<String> getAnswers(){return this.answers;}
+    public List<String> getAnswers(){return answers;}
 }
