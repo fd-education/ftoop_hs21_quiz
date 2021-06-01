@@ -1,8 +1,15 @@
 package ch.ffhs.quiz.messages;
 
-public class MessageUtils {
+import com.google.gson.Gson;
 
-    public static <T extends Message> T cast(Object obj, Class<T> messageType){
-        return messageType.cast(obj);
+public class MessageUtils {
+    private static final Gson gson = new Gson();
+
+    public static <T extends Message> T parse(String text, Class<T> messageType){
+        return gson.fromJson(text, messageType);
+    }
+
+    public static String serialize(Message message){
+        return gson.toJson(message);
     }
 }
