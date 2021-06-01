@@ -1,4 +1,4 @@
-package Quiz.Client;
+package ch.ffhs.quiz.client;
 
 import org.junit.jupiter.api.*;
 
@@ -22,7 +22,7 @@ public class InputHandlerTest {
             String input1 = "ab";
             withTextFromSystemIn(input1)
                     .execute(() -> {
-                            String text = tapSystemOut(() -> inputHandler.getUsersName());
+                            String text = tapSystemOut(() -> inputHandler.getUserName());
                             assertEquals(EXPECTED_TEXT, text);
                     });
 
@@ -30,7 +30,7 @@ public class InputHandlerTest {
             String input2 = "";
             withTextFromSystemIn(input2)
                     .execute(() -> {
-                        String text = tapSystemOut(() -> inputHandler.getUsersName());
+                        String text = tapSystemOut(() -> inputHandler.getUserName());
                         assertEquals(EXPECTED_TEXT, text);
                     });
         } catch(NullPointerException ignored){}
@@ -42,7 +42,7 @@ public class InputHandlerTest {
             String input1 = "1-a";
             withTextFromSystemIn(input1)
                     .execute(() -> {
-                        String text = inputHandler.getUsersName();
+                        String text = inputHandler.getUserName();
                         assertEquals(input1, text);
                     });
         } catch(NullPointerException ignored){}
@@ -57,7 +57,7 @@ public class InputHandlerTest {
 
             withTextFromSystemIn(input1)
                     .execute(() -> {
-                        String text = tapSystemOut(() -> inputHandler.getUsersAnswer());
+                        String text = tapSystemOut(() -> inputHandler.getUserAnswer());
                         assertEquals(EXPECTED_TEXT1, text);
                     });
 
@@ -67,7 +67,7 @@ public class InputHandlerTest {
 
             withTextFromSystemIn(input2)
                     .execute(() -> {
-                        String text = tapSystemOut(() -> inputHandler.getUsersAnswer());
+                        String text = tapSystemOut(() -> inputHandler.getUserAnswer());
                         assertEquals(EXPECTED_TEXT2, text);
                     });
         } catch(NullPointerException ignored){}
@@ -78,7 +78,7 @@ public class InputHandlerTest {
         String input1 = "A";
         withTextFromSystemIn(input1)
                 .execute(() -> {
-                    String text = inputHandler.getUsersAnswer();
+                    String text = inputHandler.getUserAnswer();
                     assertEquals(input1, text);
                 });
     }

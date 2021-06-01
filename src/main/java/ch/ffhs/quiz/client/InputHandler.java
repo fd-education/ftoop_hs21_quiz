@@ -16,7 +16,7 @@ public class InputHandler {
      * Repeat until answer is valid (valid = A, B or C)
      * @return user's answer
      */
-    public String getUsersAnswer(){
+    public String getUserAnswer(){
         while(true){
             System.out.println("Enter your answer: ");
 
@@ -33,7 +33,7 @@ public class InputHandler {
      * Anything longer than 2 characters is allowed.
      * @return user's name
      */
-    public String getUsersName(){
+    public String getUserName(){
         while(true){
             System.out.println("Enter your name: ");
 
