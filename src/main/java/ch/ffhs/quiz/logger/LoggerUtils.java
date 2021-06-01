@@ -14,6 +14,7 @@ public class LoggerUtils {
         final ConsoleHandler handler = new ConsoleHandler();
         handler.setFormatter(new SimpleFormatter());
         logger.addHandler(handler);
+        logger.setUseParentHandlers(false);
         return logger;
     }
 }
