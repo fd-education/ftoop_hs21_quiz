@@ -22,9 +22,7 @@ public class PlayerFactory {
         for (int i = 0; i < playerCount; i++) {
             try {
                 Socket clientSocket = server.acceptConnection();
-                PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                Connection connection = new ConnectionImpl(writer, reader);
+                Connection connection = new ConnectionImpl(clientSocket.getOutputStream(), clientSocket.getInputStream());
                 PlayerData playerData = new PlayerDataImpl(i);
                 players.add(new PlayerImpl(playerData, connection));
             } catch (IOException e) {

@@ -7,4 +7,6 @@ public interface Connection {
     String receive() throws IOException;
 
     void stop() throws IOException;
+
+    boolean isClosed();
 }
