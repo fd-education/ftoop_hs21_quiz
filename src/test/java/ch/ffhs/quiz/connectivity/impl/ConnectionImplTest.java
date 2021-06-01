@@ -1,7 +1,6 @@
-package ch.ffhs.quiz.server.player.impl;
+package ch.ffhs.quiz.connectivity.impl;
 
 import ch.ffhs.quiz.connectivity.Connection;
-import ch.ffhs.quiz.connectivity.impl.ConnectionImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
