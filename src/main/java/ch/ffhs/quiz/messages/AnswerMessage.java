@@ -4,10 +4,15 @@ import java.util.Objects;
 
 public class AnswerMessage extends Message {
 
-    public AnswerMessage(String text){
-        Objects.requireNonNull(text);
-        this.text = text;
+    private final int chosenAnswer;
 
-        this.clazz = this.getClass();
+    public AnswerMessage(int chosenAnswer){
+        this.chosenAnswer = chosenAnswer;
+        Objects.requireNonNull(text);
+        this.text = "";
+    }
+
+    public int getChosenAnswer() {
+        return chosenAnswer;
     }
 }
