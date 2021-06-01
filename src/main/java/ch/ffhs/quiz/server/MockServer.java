@@ -1,9 +1,10 @@
 package ch.ffhs.quiz.server;
 
-import ch.ffhs.quiz.logger.Logger;
+import ch.ffhs.quiz.logger.LoggerUtils;
 import ch.ffhs.quiz.messages.Message;
 import ch.ffhs.quiz.messages.*;
 
+import java.util.logging.Logger;
 import java.io.*;
 import java.net.*;
 
@@ -17,27 +18,28 @@ public class MockServer {
     }
 
     public static void start() throws IOException, ClassNotFoundException{
+        Logger logger = LoggerUtils.getLogger();
         try(ServerSocket server = new ServerSocket(3141)) {
-            Logger.log("Server started ...");
+            logger.info("Server started ...");
 
             client = server.accept();
-            Logger.log("Client " + client + " connected to the server");
+            logger.info("Client " + client + " connected to the server");
 
             out = new ObjectOutputStream(client.getOutputStream());
             in = new ObjectInputStream(client.getInputStream());
-            Logger.log("Set up in- and output streams for client" + client);
+            logger.info("Set up in- and output streams for client" + client);
 
 
             while(true) {
-                Logger.log("Waiting for client messages . . .");
+                logger.info("Waiting for client messages . . .");
 
                 Message input = (Message) in.readObject();
 
-                Logger.log("Client sent " + input.getClass() + ": \"" + input.getText() + "\"");
+                logger.info("Client sent " + input.getClass() + ": \"" + input.getText() + "\"");
 
                 if (".".equals(input.getText())) {
                     out.writeObject("Server closing. Bye...");
-                    Logger.log("Stopping server...");
+                    logger.info("Stopping server...");
                     break;
                 }
 
@@ -52,7 +54,7 @@ public class MockServer {
                             C Menschen werden für eine erdumspannende Kette benötigt
                             """);
 
-                    Logger.log("Sent response. . . ");
+                    logger.info("Sent response. . . ");
 
                     continue;
                 }
@@ -60,7 +62,7 @@ public class MockServer {
                 if(input instanceof AnswerMessage){
                     out.writeObject("Your responded correctly");
                 }
-                Logger.log("Clients message could not be processed.");
+                logger.info("Clients message could not be processed.");
             }
         }
     }
