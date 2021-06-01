@@ -50,6 +50,11 @@ public class AnsiBuilder {
         return sb.toString();
     }
 
+    public void print(){
+        String text = create();
+        System.out.println(text);
+    }
+
     public enum Decoration {
         BOLD("1"),
         UNDERLINE("4");
