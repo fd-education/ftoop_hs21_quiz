@@ -12,4 +12,6 @@ public abstract class Message implements Serializable {
     }
 
     public String getText(){return text;}
+
+
 }

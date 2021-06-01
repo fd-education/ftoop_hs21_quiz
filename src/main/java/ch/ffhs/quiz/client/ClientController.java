@@ -36,14 +36,11 @@ public class ClientController {
             client.connectToGameServer("localhost", 3141, new NameMessage(userName));
 
             System.out.println("Sent name");
-//            String input = inputHandler.getInputLine();
-//            Message message = (Message) client.sendMessage(new AnswerMessage(input));
-//            handleResponse(message);
 
             String answer = inputHandler.getUserAnswer();
             List<Message> response = client.sendMessage(new AnswerMessage(answer));
 
-            response.forEach(System.out::println);
+            response.forEach(ClientController::handleResponse);
 
         } catch(IOException | ClassNotFoundException ioEx){
             ioEx.printStackTrace();
