@@ -35,6 +35,7 @@ public class Game {
         GameContext gameContext = new GameContext(players, questions);
         List<Class<? extends GameStep>> gameStepClasses = List.of(
                 SendQuestionStep.class,
+                ReceiveResponsesStep.class,
                 EvaluateResponsesStep.class,
                 FeedbackStep.class,
                 ScoreboardStep.class

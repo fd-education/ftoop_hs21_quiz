@@ -1,32 +1,30 @@
 package ch.ffhs.quiz.server.gamesteps;
 
 import ch.ffhs.quiz.messages.AnswerMessage;
-import ch.ffhs.quiz.messages.MessageUtils;
-import ch.ffhs.quiz.server.gamesteps.EvaluateResponsesStep;
+import ch.ffhs.quiz.questions.Question;
+import ch.ffhs.quiz.server.GameContext;
+import ch.ffhs.quiz.server.RoundContext;
+import ch.ffhs.quiz.server.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
-import ch.ffhs.quiz.questions.Question;
-import ch.ffhs.quiz.server.GameContext;
-import ch.ffhs.quiz.server.player.Player;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemErr;
-import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOut;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class EvaluateResponsesStepTest {
 
+    Question question;
     private Player player1;
     private Player player2;
     private GameContext gameContext;
     private EvaluateResponsesStep evaluateResponsesStep;
-    Question question;
+    private RoundContext roundContext;
 
     @BeforeEach
     void setUp() {
@@ -38,63 +36,45 @@ class EvaluateResponsesStepTest {
         when(player1.getId()).thenReturn(0);
         when(player2.getId()).thenReturn(1);
         gameContext = new GameContext(List.of(player1, player2), questions);
+        roundContext = gameContext.getRoundContext();
         evaluateResponsesStep = new EvaluateResponsesStep(gameContext);
         gameContext.nextRound();
         when(question.checkAnswer(0)).thenReturn(true);
         when(question.checkAnswer(1)).thenReturn(false);
     }
 
-    @RepeatedTest(10)
-    void process_positive_simple() throws IOException, InterruptedException {
-        when(player1.receive()).thenReturn(createAnswer(0));
-        //needed otherwise timestamps are too close together
-        TimeUnit.NANOSECONDS.sleep(1);
-        when(player2.receive()).thenReturn(createAnswer(0));
+    @Test
+    void process_positive_simple() {
+        roundContext.setPlayerAnswer(player1, new AnswerMessage(0));
+        roundContext.setPlayerAnswer(player2, new AnswerMessage(1));
 
         evaluateResponsesStep.process();
 
         assertEquals(player1, gameContext.getRoundContext().getWinningPlayer());
-        assertTrue(gameContext.getRoundContext().wasPlayerCorrect(player2));
+        assertTrue(gameContext.getRoundContext().wasPlayerCorrect(player1));
+        assertFalse(gameContext.getRoundContext().wasPlayerCorrect(player2));
     }
 
-    private String createAnswer(int answer) {
-        return MessageUtils.serialize(new AnswerMessage(answer));
+    @RepeatedTest(10)
+    void process_positive_raceCondition() throws InterruptedException {
+        roundContext.setPlayerAnswer(player1, new AnswerMessage(0));
+        //needed otherwise timestamps are too close together
+        TimeUnit.NANOSECONDS.sleep(1);
+        roundContext.setPlayerAnswer(player2, new AnswerMessage(0));
+
+        evaluateResponsesStep.process();
+
+        assertEquals(player1, gameContext.getRoundContext().getWinningPlayer(), "Answer of Player 1 was earlier but did not win");
+        assertTrue(gameContext.getRoundContext().wasPlayerCorrect(player2), "Answer of Player 2 was later but won");
     }
 
     @Test
-    void process_positive_noWinner() throws IOException {
-        when(player1.receive()).thenReturn(createAnswer(1));
-        when(player2.receive()).thenReturn(createAnswer(2) );
+    void process_positive_noWinner() {
+        roundContext.setPlayerAnswer(player1, new AnswerMessage(1));
+        roundContext.setPlayerAnswer(player2, new AnswerMessage(2));
 
         evaluateResponsesStep.process();
 
         assertNull(gameContext.getRoundContext().getWinningPlayer());
-    }
-
-    @Test
-    void process_negative_invalidAnswer() throws Exception {
-        when(player1.receive()).thenReturn(createAnswer(200));
-        when(player2.receive()).thenReturn(createAnswer(0));
-
-        evaluateResponsesStep.process();
-
-
-        assertEquals(player2, gameContext.getRoundContext().getWinningPlayer());
-        assertFalse(gameContext.getRoundContext().wasPlayerCorrect(player1));
-    }
-
-    @Test
-    void process_negative_invalidTimestamp() throws Exception {
-        when(player1.receive()).thenReturn("""
-                {"type":"d"}
-                """);
-        when(player2.receive()).thenReturn(createAnswer(0));
-
-        String errOutput = tapSystemErr(() -> evaluateResponsesStep.process());
-
-        assertTrue(errOutput.contains("player 0"));
-        assertFalse(errOutput.contains("player 1"));
-        assertEquals(player2, gameContext.getRoundContext().getWinningPlayer());
-        assertFalse(gameContext.getRoundContext().wasPlayerCorrect(player1));
     }
 }

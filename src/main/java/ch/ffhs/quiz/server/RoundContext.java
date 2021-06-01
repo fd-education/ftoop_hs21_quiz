@@ -1,15 +1,15 @@
 package ch.ffhs.quiz.server;
 
+import ch.ffhs.quiz.messages.AnswerMessage;
 import ch.ffhs.quiz.questions.Question;
 import ch.ffhs.quiz.server.player.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class RoundContext {
     private Player winningPlayer;
     private final List<Player> correctPlayers = new ArrayList<>();
+    private final Map<Player, AnswerMessage> playerAnswersMap = new HashMap<>();
     private int roundNumber = 0;
     private Question currentQuestion;
 
@@ -22,6 +22,16 @@ public class RoundContext {
         this.currentQuestion = currentQuestion;
         roundNumber += 1;
         winningPlayer = null;
+    }
+
+    public void setPlayerAnswer(Player player, AnswerMessage answerMessage) {
+        Objects.requireNonNull(player);
+        Objects.requireNonNull(answerMessage);
+        playerAnswersMap.put(player, answerMessage);
+    }
+
+    public AnswerMessage getPlayerAnswer(Player player) {
+        return playerAnswersMap.get(player);
     }
 
     public Player getWinningPlayer() {

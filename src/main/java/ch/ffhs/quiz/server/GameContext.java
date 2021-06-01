@@ -30,7 +30,7 @@ public class GameContext {
     }
 
     public void nextRound() {
-        if (isFinished()) throw new IllegalStateException("Game is over, no new ch.ffhs.Quiz.questions available.");
+        if (isFinished()) throw new IllegalStateException("Game is over, no new questions available.");
         roundContext.nextRound(questions.next());
     }
 
