@@ -1,7 +1,7 @@
 package ch.ffhs.quiz.server;
 
 import ch.ffhs.quiz.questions.Question;
-import ch.ffhs.quiz.server.gamesteps.*;
+import ch.ffhs.quiz.server.gamesteps.GameStep;
 import ch.ffhs.quiz.server.player.Player;
 
 import java.io.IOException;
@@ -12,15 +12,22 @@ import java.util.stream.Collectors;
 public class Game {
     private final List<Player> players;
     private final List<Question> questions;
+    private final List<Class<? extends GameStep>> gameStepClasses;
 
-    public Game(List<Question> questions, List<Player> players) {
+    public Game(List<Question> questions, List<Player> players, List<Class<? extends GameStep>> gameStepClasses) {
         Objects.requireNonNull(questions);
         Objects.requireNonNull(players);
+        Objects.requireNonNull(gameStepClasses);
 
         players = filterNullValues(players);
         if (players.size() < 1)
             throw new IllegalArgumentException("Cannot create a game with less than one player");
 
+        gameStepClasses = filterNullValues(gameStepClasses);
+        if (gameStepClasses.size() < 1)
+            throw new IllegalArgumentException("Cannot create a game with less than one game stage");
+
+        this.gameStepClasses = gameStepClasses;
         this.players = players;
         this.questions = filterNullValues(questions);
     }
@@ -33,13 +40,6 @@ public class Game {
 
     public void start() {
         GameContext gameContext = new GameContext(players, questions);
-        List<Class<? extends GameStep>> gameStepClasses = List.of(
-                SendQuestionStep.class,
-                ReceiveResponsesStep.class,
-                EvaluateResponsesStep.class,
-                FeedbackStep.class,
-                ScoreboardStep.class
-        );
         while (!gameContext.isFinished()) {
             gameContext.nextRound();
             for (Class<? extends GameStep> gameStepClass : gameStepClasses) {
