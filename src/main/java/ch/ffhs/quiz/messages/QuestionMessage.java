@@ -15,7 +15,6 @@ public class QuestionMessage extends Message {
         this.answers = answers;
         this.correctAnswer = correctAnswer;
 
-        this.clazz = this.getClass();
     }
 
     public int getCorrectAnswer(){return this.correctAnswer;}
