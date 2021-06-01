@@ -42,14 +42,14 @@ public class Game {
         while (!gameContext.isFinished()) {
             gameContext.nextRound();
             for (Class<? extends GameStep> gameStepClass : gameStepClasses) {
-                newGameStepInstance(gameStepClass).process(gameContext);
+                newGameStepInstance(gameStepClass, gameContext).process();
             }
         }
     }
 
-    private GameStep newGameStepInstance(Class<? extends GameStep> gameStepClass) {
+    private GameStep newGameStepInstance(Class<? extends GameStep> gameStepClass, GameContext gameContext) {
         try {
-            return gameStepClass.getDeclaredConstructor().newInstance();
+            return gameStepClass.getDeclaredConstructor(GameContext.class).newInstance(gameContext);
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException(String.format("Calling constructor of game step %s failed with exception %s", gameStepClass.getName(), e.getCause()));
         }

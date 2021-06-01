@@ -10,8 +10,12 @@ import java.util.List;
 public class ScoreboardStep extends GameStep {
     private String scoreboard;
 
+    public ScoreboardStep(GameContext gameContext) {
+        super(gameContext);
+    }
+
     @Override
-    protected void prepare(GameContext gameContext) {
+    protected void prepareStep() {
         List<Player> players = new ArrayList<>(gameContext.getPlayers());
         final Comparator<Player> maxScoreComparator = Comparator.comparing(Player::getScore).reversed();
         players.sort(maxScoreComparator);
@@ -25,7 +29,7 @@ public class ScoreboardStep extends GameStep {
     }
 
     @Override
-    protected void handlePlayer(GameContext gameContext, Player player) {
+    protected void handlePlayer(Player player) {
         if (scoreboard == null) throw new IllegalStateException("Scoreboard has not been created.");
         player.send(scoreboard);
     }

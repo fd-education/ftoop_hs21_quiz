@@ -6,8 +6,12 @@ import ch.ffhs.quiz.server.player.Player;
 
 public class FeedbackStep extends GameStep {
 
+    public FeedbackStep(GameContext gameContext) {
+        super(gameContext);
+    }
+
     @Override
-    protected void handlePlayer(GameContext gameContext, Player player) {
+    protected void handlePlayer(Player player) {
         final RoundContext roundContext = gameContext.getRoundContext();
         final String feedback;
         final Player winningPlayer = roundContext.getWinningPlayer();

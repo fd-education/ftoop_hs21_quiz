@@ -27,7 +27,7 @@ class ScoreboardStepTest {
         when(player1.getId()).thenReturn(0);
         when(player2.getId()).thenReturn(1);
         gameContext = new GameContext(List.of(player1, player2), questions);
-        scoreboardStep = new ScoreboardStep();
+        scoreboardStep = new ScoreboardStep(gameContext);
     }
 
     @Test
@@ -35,7 +35,7 @@ class ScoreboardStepTest {
         when(player1.getScore()).thenReturn(0);
         when(player2.getScore()).thenReturn(1);
 
-        scoreboardStep.process(gameContext);
+        scoreboardStep.process();
 
         final String expectedScoreboard = """
                 Scoreboard for round 0:
@@ -48,7 +48,7 @@ class ScoreboardStepTest {
 
     @Test
     void process_positive_noPoints() {
-        scoreboardStep.process(gameContext);
+        scoreboardStep.process();
 
         final String expectedScoreboard = """
                 Scoreboard for round 0:

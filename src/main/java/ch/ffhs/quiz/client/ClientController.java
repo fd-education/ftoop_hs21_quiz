@@ -7,6 +7,8 @@ import ch.ffhs.quiz.server.MockServer;
 
 import java.io.IOException;
 
+import static java.lang.Integer.parseInt;
+
 public class ClientController {
     private static final InputHandler inputHandler = new InputHandler();
     private static final Client client = new Client();
@@ -40,7 +42,7 @@ public class ClientController {
 //            handleResponse(message);
 
             String answer = inputHandler.getUsersAnswer();
-            client.sendMessage(new AnswerMessage(answer));
+            client.sendMessage(new AnswerMessage(parseInt(answer)));
             // System.out.println(message.getText());
 
         } catch(IOException | ClassNotFoundException ioEx){
