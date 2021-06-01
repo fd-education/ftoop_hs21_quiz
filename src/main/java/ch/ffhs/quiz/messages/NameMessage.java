@@ -7,7 +7,5 @@ public class NameMessage extends Message {
     public NameMessage(String text) {
         Objects.requireNonNull(text);
         this.text = text;
-
-        this.clazz = this.getClass();
     }
 }
