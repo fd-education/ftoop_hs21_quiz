@@ -20,10 +20,4 @@ public abstract class Message implements Serializable {
     public String getText(){return text;}
 
 
-    public static void main(String[] args) {
-        Message message = new FeedbackMessage("Hey", false);
-
-        System.out.println(MessageUtils.cast(message, FeedbackMessage.class).wasCorrect());
-
-    }
 }
