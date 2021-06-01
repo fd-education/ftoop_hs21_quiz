@@ -6,6 +6,7 @@ import ch.ffhs.quiz.messages.*;
 import ch.ffhs.quiz.server.MockServer;
 
 import java.io.IOException;
+import java.util.*;
 
 public class ClientController {
     private static final InputHandler inputHandler = new InputHandler();
@@ -30,7 +31,7 @@ public class ClientController {
 
             System.out.println(TextInterface.EXPLANATION.getComponent());
 
-            String userName = inputHandler.getUsersName();
+            String userName = inputHandler.getUserName();
 
             client.connectToGameServer("localhost", 3141, new NameMessage(userName));
 
@@ -39,9 +40,10 @@ public class ClientController {
 //            Message message = (Message) client.sendMessage(new AnswerMessage(input));
 //            handleResponse(message);
 
-            String answer = inputHandler.getUsersAnswer();
-            client.sendMessage(new AnswerMessage(answer));
-            // System.out.println(message.getText());
+            String answer = inputHandler.getUserAnswer();
+            List<Message> response = client.sendMessage(new AnswerMessage(answer));
+
+            response.forEach(System.out::println);
 
         } catch(IOException | ClassNotFoundException ioEx){
             ioEx.printStackTrace();

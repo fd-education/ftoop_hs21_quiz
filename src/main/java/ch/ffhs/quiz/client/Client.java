@@ -4,6 +4,7 @@ import ch.ffhs.quiz.messages.Message;
 
 import java.net.*;
 import java.io.*;
+import java.util.*;
 
 public class Client {
     private Socket client;
@@ -20,16 +21,21 @@ public class Client {
         System.out.println("Connected");
     }
 
-    public void sendMessage(Message message) throws IOException, ClassNotFoundException {
+    public List<Message> sendMessage(Message message) throws IOException, ClassNotFoundException {
 
         out.writeObject(message);
 
+        System.out.println("After sent message");
+
+        List<Message> response = new ArrayList<>();
         Object input;
-        while((input = in.readObject()) != null){
-            System.out.println(input);
+        while(in.available() > 0){
+            input = in.readObject();
+            response.add((Message) input);
         }
 
-        System.out.println("After sent message");
+        return response;
+
     }
 
     public void closeConnection() throws IOException{
