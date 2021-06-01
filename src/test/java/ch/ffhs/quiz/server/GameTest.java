@@ -1,25 +1,33 @@
 package ch.ffhs.quiz.server;
 
-import ch.ffhs.quiz.server.gamesteps.*;
+import ch.ffhs.quiz.questions.Question;
+import ch.ffhs.quiz.server.gamesteps.GameStep;
+import ch.ffhs.quiz.server.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ch.ffhs.quiz.questions.Question;
-import ch.ffhs.quiz.server.player.Player;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+@ExtendWith(MockitoExtension.class)
 class GameTest {
     List<Question> questions;
+    @Mock
     Server server;
     List<Player> players;
     List<Class<? extends GameStep>> mockStep;
+    @Mock
     Player player1;
+    @Mock
     Player player2;
+    @Mock
     Question question;
 
     @BeforeEach
@@ -28,11 +36,7 @@ class GameTest {
                 MockStep.class
         );
         questions = new ArrayList<>();
-        question = mock(Question.class);
         questions.add(question);
-        server = mock(Server.class);
-        player1 = mock(Player.class);
-        player2 = mock(Player.class);
         players = List.of(player1, player2);
     }
 
@@ -73,7 +77,17 @@ class GameTest {
         verify(player1).getScore();
     }
 
-    private static class MockStep extends GameStep{
+    @Test
+    void stop_positive_simple() throws IOException {
+        final Game game = new Game(questions, players, mockStep);
+
+        game.stop();
+
+        verify(player1).stop();
+        verify(player2).stop();
+    }
+
+    private static class MockStep extends GameStep {
         public MockStep(GameContext gameContext) {
             super(gameContext);
         }
