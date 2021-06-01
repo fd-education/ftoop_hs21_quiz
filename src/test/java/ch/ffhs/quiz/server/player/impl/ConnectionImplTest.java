@@ -1,9 +1,9 @@
 package ch.ffhs.quiz.server.player.impl;
 
+import ch.ffhs.quiz.connectivity.impl.ConnectionImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ch.ffhs.quiz.server.player.PlayerConnection;
-import ch.ffhs.quiz.server.player.impl.PlayerConnectionImpl;
+import ch.ffhs.quiz.connectivity.Connection;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,16 +13,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-class PlayerConnectionImplTest {
+class ConnectionImplTest {
     PrintWriter writer;
     BufferedReader reader;
-    PlayerConnection connection;
+    Connection connection;
 
     @BeforeEach
     void setUp() {
         writer = mock(PrintWriter.class);
         reader = mock(BufferedReader.class);
-        connection = new PlayerConnectionImpl(writer, reader);
+        connection = new ConnectionImpl(writer, reader);
     }
 
     @Test
@@ -41,7 +41,7 @@ class PlayerConnectionImplTest {
 
     @Test
     void ctor_negative_nullArg() {
-        assertThrows(NullPointerException.class, () -> new PlayerConnectionImpl(null, null));
+        assertThrows(NullPointerException.class, () -> new ConnectionImpl(null, null));
     }
 
     @Test

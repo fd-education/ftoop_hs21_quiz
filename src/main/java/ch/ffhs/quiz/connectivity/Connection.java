@@ -1,8 +1,8 @@
-package ch.ffhs.quiz.server.player;
+package ch.ffhs.quiz.connectivity;
 
 import java.io.IOException;
 
-public interface PlayerConnection {
+public interface Connection {
     void send(Object data);
     String receive() throws IOException;
 

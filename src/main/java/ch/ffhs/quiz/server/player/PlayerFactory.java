@@ -1,5 +1,7 @@
 package ch.ffhs.quiz.server.player;
 
+import ch.ffhs.quiz.connectivity.Connection;
+import ch.ffhs.quiz.connectivity.impl.ConnectionImpl;
 import ch.ffhs.quiz.server.Server;
 import ch.ffhs.quiz.server.player.impl.*;
 
@@ -22,9 +24,9 @@ public class PlayerFactory {
                 Socket clientSocket = server.acceptConnection();
                 PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                PlayerConnection playerConnection = new PlayerConnectionImpl(writer, reader);
+                Connection connection = new ConnectionImpl(writer, reader);
                 PlayerData playerData = new PlayerDataImpl(i);
-                players.add(new PlayerImpl(playerData, playerConnection));
+                players.add(new PlayerImpl(playerData, connection));
             } catch (IOException e) {
                 System.err.printf("Player could not connect with error %s. Trying again...", e.getCause());
                 i--;

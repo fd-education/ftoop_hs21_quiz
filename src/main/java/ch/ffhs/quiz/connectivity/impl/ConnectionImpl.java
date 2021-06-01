@@ -1,17 +1,17 @@
-package ch.ffhs.quiz.server.player.impl;
+package ch.ffhs.quiz.connectivity.impl;
 
-import ch.ffhs.quiz.server.player.PlayerConnection;
+import ch.ffhs.quiz.connectivity.Connection;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Objects;
 
-public class PlayerConnectionImpl implements PlayerConnection {
+public class ConnectionImpl implements Connection {
     private final PrintWriter writer;
     private final BufferedReader reader;
 
-    public PlayerConnectionImpl(PrintWriter writer, BufferedReader reader) {
+    public ConnectionImpl(PrintWriter writer, BufferedReader reader) {
         Objects.requireNonNull(writer);
         Objects.requireNonNull(reader);
 

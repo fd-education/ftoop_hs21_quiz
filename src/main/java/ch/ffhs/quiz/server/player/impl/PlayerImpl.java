@@ -1,15 +1,16 @@
 package ch.ffhs.quiz.server.player.impl;
 
+import ch.ffhs.quiz.connectivity.Connection;
 import ch.ffhs.quiz.server.player.*;
 
 import java.io.IOException;
 import java.util.Objects;
 
 public class PlayerImpl implements Player {
-    private final PlayerConnection connection;
+    private final Connection connection;
     private final PlayerData data;
 
-    public PlayerImpl(PlayerData data, PlayerConnection connection) {
+    public PlayerImpl(PlayerData data, Connection connection) {
         Objects.requireNonNull(data);
         Objects.requireNonNull(connection);
 
