@@ -7,9 +7,20 @@ public abstract class Message implements Serializable {
     protected String text;
     protected Instant timeStamp;
 
-    public Message(){
+    public Message() {
         this.timeStamp = Instant.now();
     }
 
-    public String getText(){return text;}
+    public Instant getTimeStamp() {
+        return timeStamp;
+    }
+
+    @Override
+    public String toString() {
+        return text;
+    }
+
+    public String getText() {
+        return text;
+    }
 }

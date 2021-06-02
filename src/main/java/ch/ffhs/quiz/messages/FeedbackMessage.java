@@ -3,15 +3,14 @@ package ch.ffhs.quiz.messages;
 import java.util.Objects;
 
 public class FeedbackMessage extends Message {
-    private final boolean correct;
+    private final boolean wasCorrect;
 
-    public FeedbackMessage(String text, boolean correctAnswer){
+    public FeedbackMessage(String text, boolean wasCorrect){
         Objects.requireNonNull(text);
         this.text = text;
 
-        this.correct = correctAnswer;
-
+        this.wasCorrect = wasCorrect;
     }
 
-    public boolean wasCorrect(){return this.correct;}
+    public boolean wasCorrect(){return wasCorrect;}
 }

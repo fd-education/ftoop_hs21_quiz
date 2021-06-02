@@ -1,11 +1,15 @@
 package ch.ffhs.quiz.messages;
 
-import java.util.Objects;
-
 public class AnswerMessage extends Message {
 
-    public AnswerMessage(String text){
-        Objects.requireNonNull(text);
-        this.text = text;
+    private final int chosenAnswer;
+
+    public AnswerMessage(int chosenAnswer){
+        this.chosenAnswer = chosenAnswer;
+        this.text = "";
+    }
+
+    public int getChosenAnswer() {
+        return chosenAnswer;
     }
 }
