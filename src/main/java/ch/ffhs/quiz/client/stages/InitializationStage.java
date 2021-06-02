@@ -5,6 +5,7 @@ import ch.ffhs.quiz.client.textinterface.TextInterface;
 import ch.ffhs.quiz.client.ui.AnsiBuilder;
 import ch.ffhs.quiz.client.ui.AnsiBuilder.*;
 import ch.ffhs.quiz.connectivity.impl.ConnectionImpl;
+import ch.ffhs.quiz.messages.MessageUtils;
 import ch.ffhs.quiz.messages.NameMessage;
 
 import java.io.IOException;
@@ -31,8 +32,22 @@ public class InitializationStage extends Stage{
 
     @Override
     protected void handleConversation() {
-        input = inputHandler.getUserName();
-        serverConnection.send(new NameMessage(input));
+
+        try{
+            NameMessage name;
+
+            do{
+                //TODO: create handling for repeated name requests
+                input = inputHandler.getUserName();
+                serverConnection.send(new NameMessage(input));
+
+                name = MessageUtils.parse(serverConnection.receive(), NameMessage.class);
+
+            } while(!name.isConfirmed());
+
+        } catch(IOException ioEx){
+            throw new RuntimeException("This exception must not occur, because inputs get checked.", ioEx);
+        }
     }
 
     @Override
