@@ -1,5 +1,7 @@
 package ch.ffhs.quiz.server.gamesteps;
 
+import ch.ffhs.quiz.messages.FeedbackMessage;
+import ch.ffhs.quiz.messages.MessageUtils;
 import ch.ffhs.quiz.server.GameContext;
 import ch.ffhs.quiz.server.RoundContext;
 import ch.ffhs.quiz.server.player.Player;
@@ -15,7 +17,8 @@ public class FeedbackStep extends GameStep {
         final RoundContext roundContext = gameContext.getRoundContext();
         final String feedback;
         final Player winningPlayer = roundContext.getWinningPlayer();
-        if (roundContext.wasPlayerCorrect(player)) {
+        final boolean wasCorrect = roundContext.wasPlayerCorrect(player);
+        if (wasCorrect) {
             if (winningPlayer.equals(player)) {
                 player.reward();
                 feedback = "You have won this round!";
@@ -28,6 +31,7 @@ public class FeedbackStep extends GameStep {
             else
                 feedback = "Nobody's answer was correct.";
         }
-        player.send(feedback);
+        final String feedbackJson = MessageUtils.serialize(new FeedbackMessage(feedback, wasCorrect));
+        player.send(feedbackJson);
     }
 }
