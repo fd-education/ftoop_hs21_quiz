@@ -1,5 +1,7 @@
 package ch.ffhs.quiz.server.gamesteps;
 
+import ch.ffhs.quiz.messages.MessageUtils;
+import ch.ffhs.quiz.messages.ScoreboardMessage;
 import ch.ffhs.quiz.server.GameContext;
 import ch.ffhs.quiz.server.player.Player;
 
@@ -31,6 +33,7 @@ public class ScoreboardStep extends GameStep {
     @Override
     protected void handlePlayer(Player player) {
         if (scoreboard == null) throw new IllegalStateException("Scoreboard has not been created.");
-        player.send(scoreboard);
+        final String scoreboardJson = MessageUtils.serialize(new ScoreboardMessage(scoreboard));
+        player.send(scoreboardJson);
     }
 }

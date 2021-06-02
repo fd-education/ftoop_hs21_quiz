@@ -1,17 +1,21 @@
 package ch.ffhs.quiz.server.gamesteps;
 
+import ch.ffhs.quiz.messages.MessageUtils;
+import ch.ffhs.quiz.messages.ScoreboardMessage;
 import ch.ffhs.quiz.questions.Question;
 import ch.ffhs.quiz.server.GameContext;
 import ch.ffhs.quiz.server.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -41,13 +45,17 @@ class ScoreboardStepTest {
 
         scoreboardStep.process();
 
-        final String expectedScoreboard = """
-                Scoreboard for round 0:
-                1. Place: Player 1 with 1 Points
-                2. Place: Player 0 with 0 Points
-                """;
-        verify(player1).send(expectedScoreboard);
-        verify(player2).send(expectedScoreboard);
+        final String expectedScoreboard = "Scoreboard for round 0:\n1. Place: Player 1 with 1 Points\n2. Place: Player 0 with 0 Points\n";
+        verify(player1).send(argThat(isScoreboard(expectedScoreboard)));
+        verify(player2).send(argThat(isScoreboard(expectedScoreboard)));
+    }
+
+    private ArgumentMatcher<Object> isScoreboard(String expectedScoreboard) {
+        return messageString -> {
+            final ScoreboardMessage message = MessageUtils.parse(messageString.toString(), ScoreboardMessage.class);
+
+            return message.getText().equals(expectedScoreboard);
+        };
     }
 
     @Test
@@ -59,7 +67,7 @@ class ScoreboardStepTest {
                 1. Place: Player 0 with 0 Points
                 2. Place: Player 1 with 0 Points
                 """;
-        verify(player1).send(expectedScoreboard);
-        verify(player2).send(expectedScoreboard);
+        verify(player1).send(argThat(isScoreboard(expectedScoreboard)));
+        verify(player2).send(argThat(isScoreboard(expectedScoreboard)));
     }
 }
