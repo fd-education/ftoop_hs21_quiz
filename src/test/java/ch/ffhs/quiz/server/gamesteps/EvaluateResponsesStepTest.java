@@ -8,39 +8,43 @@ import ch.ffhs.quiz.server.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class EvaluateResponsesStepTest {
 
+    @Mock
     Question question;
-    private Player player1;
-    private Player player2;
-    private GameContext gameContext;
-    private EvaluateResponsesStep evaluateResponsesStep;
-    private RoundContext roundContext;
+    @Mock
+    Player player1;
+    @Mock
+    Player player2;
+    GameContext gameContext;
+    EvaluateResponsesStep evaluateResponsesStep;
+    RoundContext roundContext;
 
     @BeforeEach
     void setUp() {
         List<Question> questions = new ArrayList<>();
-        question = mock(Question.class);
         questions.add(question);
-        player1 = mock(Player.class);
-        player2 = mock(Player.class);
         when(player1.getId()).thenReturn(0);
         when(player2.getId()).thenReturn(1);
         gameContext = new GameContext(List.of(player1, player2), questions);
         roundContext = gameContext.getRoundContext();
         evaluateResponsesStep = new EvaluateResponsesStep(gameContext);
         gameContext.nextRound();
-        when(question.checkAnswer(0)).thenReturn(true);
-        when(question.checkAnswer(1)).thenReturn(false);
+        lenient().when(question.checkAnswer(eq(0))).thenReturn(true);
     }
 
     @Test

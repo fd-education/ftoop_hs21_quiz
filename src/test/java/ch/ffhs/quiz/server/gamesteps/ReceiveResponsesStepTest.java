@@ -8,18 +8,24 @@ import ch.ffhs.quiz.server.RoundContext;
 import ch.ffhs.quiz.server.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class ReceiveResponsesStepTest {
+    @Mock
     private Player player1;
+    @Mock
     private Player player2;
     private GameContext gameContext;
     private RoundContext roundContext;
@@ -30,10 +36,6 @@ class ReceiveResponsesStepTest {
         List<Question> questions = new ArrayList<>();
         Question question = mock(Question.class);
         questions.add(question);
-        player1 = mock(Player.class);
-        player2 = mock(Player.class);
-        when(player1.getId()).thenReturn(0);
-        when(player2.getId()).thenReturn(1);
         gameContext = new GameContext(List.of(player1, player2), questions);
         roundContext = gameContext.getRoundContext();
         receiveResponsesStep = new ReceiveResponsesStep(gameContext);

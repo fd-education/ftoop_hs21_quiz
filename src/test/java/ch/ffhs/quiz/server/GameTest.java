@@ -19,8 +19,6 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class GameTest {
     List<Question> questions;
-    @Mock
-    Server server;
     List<Player> players;
     List<Class<? extends GameStep>> mockStep;
     @Mock
