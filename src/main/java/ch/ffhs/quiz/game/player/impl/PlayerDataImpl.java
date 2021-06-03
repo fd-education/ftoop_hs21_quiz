@@ -1,6 +1,6 @@
-package ch.ffhs.quiz.server.player.impl;
+package ch.ffhs.quiz.game.player.impl;
 
-import ch.ffhs.quiz.server.player.PlayerData;
+import ch.ffhs.quiz.game.player.PlayerData;
 
 public class PlayerDataImpl implements PlayerData {
     private final int id;

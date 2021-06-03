@@ -1,10 +1,9 @@
-package ch.ffhs.quiz.server.gamesteps;
+package ch.ffhs.quiz.game.gamesteps;
 
 import ch.ffhs.quiz.messages.FeedbackMessage;
-import ch.ffhs.quiz.messages.MessageUtils;
-import ch.ffhs.quiz.server.GameContext;
-import ch.ffhs.quiz.server.RoundContext;
-import ch.ffhs.quiz.server.player.Player;
+import ch.ffhs.quiz.game.GameContext;
+import ch.ffhs.quiz.game.RoundContext;
+import ch.ffhs.quiz.game.player.Player;
 
 public class FeedbackStep extends GameStep {
 

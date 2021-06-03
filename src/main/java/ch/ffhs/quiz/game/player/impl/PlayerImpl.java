@@ -1,8 +1,8 @@
-package ch.ffhs.quiz.server.player.impl;
+package ch.ffhs.quiz.game.player.impl;
 
 import ch.ffhs.quiz.connectivity.Connection;
 import ch.ffhs.quiz.messages.Message;
-import ch.ffhs.quiz.server.player.*;
+import ch.ffhs.quiz.game.player.*;
 
 import java.io.IOException;
 import java.util.Objects;
