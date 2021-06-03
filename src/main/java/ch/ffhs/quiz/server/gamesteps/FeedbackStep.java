@@ -31,7 +31,6 @@ public class FeedbackStep extends GameStep {
             else
                 feedback = "Nobody's answer was correct.";
         }
-        final String feedbackJson = MessageUtils.serialize(new FeedbackMessage(feedback, wasCorrect));
-        player.send(feedbackJson);
+        player.send(new FeedbackMessage(feedback, wasCorrect));
     }
 }

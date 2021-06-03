@@ -5,7 +5,9 @@ import ch.ffhs.quiz.server.GameContext;
 import ch.ffhs.quiz.server.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class FeedbackStepTest {
     GameContext gameContext;
     @Mock
@@ -26,8 +29,6 @@ class FeedbackStepTest {
     @BeforeEach
     void setUp() {
         questions = new ArrayList<>();
-        when(player1.getId()).thenReturn(0);
-        when(player2.getId()).thenReturn(1);
         gameContext = new GameContext(List.of(player1, player2), questions);
         feedbackStep = new FeedbackStep(gameContext);
     }

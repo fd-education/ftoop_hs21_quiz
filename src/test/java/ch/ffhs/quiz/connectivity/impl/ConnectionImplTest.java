@@ -1,14 +1,17 @@
 package ch.ffhs.quiz.connectivity.impl;
 
 import ch.ffhs.quiz.connectivity.Connection;
+import ch.ffhs.quiz.messages.AnswerMessage;
+import ch.ffhs.quiz.messages.FeedbackMessage;
+import ch.ffhs.quiz.messages.MessageUtils;
+import ch.ffhs.quiz.messages.ScoreboardMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ConnectionImplTest {
     Connection connection;
@@ -24,17 +27,17 @@ class ConnectionImplTest {
 
     @Test
     void receive_positive_simple() throws IOException {
-        inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
+        inputStream = new ByteArrayInputStream(MessageUtils.serialize(new ScoreboardMessage("test")).getBytes(StandardCharsets.UTF_8));
         connection = new ConnectionImpl(outputStream, inputStream);
 
-        assertEquals("test", connection.receive());
+        assertEquals("test", connection.receive(ScoreboardMessage.class).getText());
     }
 
     @Test
     void send_positive_simple()  {
-        connection.send("Test");
+        connection.send(new ScoreboardMessage("Test"));
 
-        assertEquals("Test", outputStream.toString().strip());
+        assertTrue(outputStream.toString().contains("Test"));
     }
 
     @Test
@@ -51,6 +54,6 @@ class ConnectionImplTest {
     void stop_positive_simple() throws IOException {
         connection.stop();
 
-        assertThrows(IllegalStateException.class, () -> connection.send("Test"));
+        assertThrows(IllegalStateException.class, () -> connection.send(new ScoreboardMessage("Test")));
     }
 }

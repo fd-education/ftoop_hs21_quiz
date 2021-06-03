@@ -1,5 +1,7 @@
 package ch.ffhs.quiz.server.gamesteps;
 
+import ch.ffhs.quiz.messages.AnswerMessage;
+import ch.ffhs.quiz.messages.Message;
 import ch.ffhs.quiz.messages.MessageUtils;
 import ch.ffhs.quiz.messages.ScoreboardMessage;
 import ch.ffhs.quiz.questions.Question;
@@ -50,12 +52,8 @@ class ScoreboardStepTest {
         verify(player2).send(argThat(isScoreboard(expectedScoreboard)));
     }
 
-    private ArgumentMatcher<Object> isScoreboard(String expectedScoreboard) {
-        return messageString -> {
-            final ScoreboardMessage message = MessageUtils.parse(messageString.toString(), ScoreboardMessage.class);
-
-            return message.getText().equals(expectedScoreboard);
-        };
+    private ArgumentMatcher<Message> isScoreboard(String expectedScoreboard) {
+        return message -> message.getText().equals(expectedScoreboard);
     }
 
     @Test

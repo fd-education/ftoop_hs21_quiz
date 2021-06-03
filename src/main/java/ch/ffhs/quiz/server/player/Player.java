@@ -1,11 +1,14 @@
 package ch.ffhs.quiz.server.player;
 
+import ch.ffhs.quiz.messages.Message;
+
 import java.io.IOException;
 
 public interface Player {
-    String receive() throws IOException;
 
-    void send(Object data);
+    <T extends Message> T receive(Class<T> clazz) throws IOException;
+
+    void send(Message message);
 
     int getId();
 

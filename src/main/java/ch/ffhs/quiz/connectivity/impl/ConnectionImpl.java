@@ -1,6 +1,8 @@
 package ch.ffhs.quiz.connectivity.impl;
 
 import ch.ffhs.quiz.connectivity.Connection;
+import ch.ffhs.quiz.messages.Message;
+import ch.ffhs.quiz.messages.MessageUtils;
 
 import java.io.*;
 import java.util.Objects;
@@ -23,11 +25,11 @@ public class ConnectionImpl implements Connection {
 
 
     @Override
-    public void send(Object data) {
-        Objects.requireNonNull(data);
+    public void send(Message message) {
+        Objects.requireNonNull(message);
         requireOpenConnection();
 
-        writer.println(data);
+        writer.println(MessageUtils.serialize(message));
     }
 
     private void requireOpenConnection() {
@@ -37,10 +39,11 @@ public class ConnectionImpl implements Connection {
     }
 
     @Override
-    public String receive() throws IOException {
+    public <T extends Message> T receive(Class<T> clazz) throws IOException {
+        Objects.requireNonNull(clazz);
         requireOpenConnection();
 
-        return reader.readLine();
+        return MessageUtils.parse(reader.readLine(), clazz);
     }
 
     @Override

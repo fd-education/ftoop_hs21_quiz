@@ -33,7 +33,6 @@ public class ScoreboardStep extends GameStep {
     @Override
     protected void handlePlayer(Player player) {
         if (scoreboard == null) throw new IllegalStateException("Scoreboard has not been created.");
-        final String scoreboardJson = MessageUtils.serialize(new ScoreboardMessage(scoreboard));
-        player.send(scoreboardJson);
+        player.send(new ScoreboardMessage(scoreboard));
     }
 }

@@ -1,6 +1,5 @@
 package ch.ffhs.quiz.server.gamesteps;
 
-import ch.ffhs.quiz.messages.MessageUtils;
 import ch.ffhs.quiz.messages.QuestionMessage;
 import ch.ffhs.quiz.questions.Answer;
 import ch.ffhs.quiz.questions.Question;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SendQuestionStep extends GameStep {
-    String messageJson;
+    QuestionMessage questionMessage;
 
     public SendQuestionStep(GameContext gameContext) {
         super(gameContext);
@@ -30,12 +29,11 @@ public class SendQuestionStep extends GameStep {
             if (answer.isCorrect())
                 correctAnswer = i;
         }
-        final QuestionMessage questionMessage = new QuestionMessage(questionText, answerTexts, correctAnswer);
-        messageJson = MessageUtils.serialize(questionMessage);
+        questionMessage = new QuestionMessage(questionText, answerTexts, correctAnswer);
     }
 
     @Override
     protected void handlePlayer(Player player) {
-        player.send(messageJson);
+        player.send(questionMessage);
     }
 }

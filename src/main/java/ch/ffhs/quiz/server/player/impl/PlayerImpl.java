@@ -1,6 +1,7 @@
 package ch.ffhs.quiz.server.player.impl;
 
 import ch.ffhs.quiz.connectivity.Connection;
+import ch.ffhs.quiz.messages.Message;
 import ch.ffhs.quiz.server.player.*;
 
 import java.io.IOException;
@@ -19,13 +20,13 @@ public class PlayerImpl implements Player {
     }
 
     @Override
-    public String receive() throws IOException {
-        return connection.receive();
+    public <T extends Message> T receive(Class<T> clazz) throws IOException {
+        return connection.receive(clazz);
     }
 
     @Override
-    public void send(Object data) {
-        connection.send(data);
+    public void send(Message message) {
+        connection.send(message);
     }
 
     @Override

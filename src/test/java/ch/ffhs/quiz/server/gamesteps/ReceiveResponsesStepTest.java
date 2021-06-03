@@ -1,7 +1,9 @@
 package ch.ffhs.quiz.server.gamesteps;
 
 import ch.ffhs.quiz.messages.AnswerMessage;
+import ch.ffhs.quiz.messages.Message;
 import ch.ffhs.quiz.messages.MessageUtils;
+import ch.ffhs.quiz.messages.ScoreboardMessage;
 import ch.ffhs.quiz.questions.Question;
 import ch.ffhs.quiz.server.GameContext;
 import ch.ffhs.quiz.server.RoundContext;
@@ -13,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,8 +51,8 @@ class ReceiveResponsesStepTest {
 
     @Test
     void process_positive_simple() throws IOException {
-        when(player1.receive()).thenReturn(createAnswer(0));
-        when(player2.receive()).thenReturn(createAnswer(1));
+        when(player1.receive(AnswerMessage.class)).thenReturn(new AnswerMessage(0));
+        when(player2.receive(AnswerMessage.class)).thenReturn(new AnswerMessage(0));
 
         receiveResponsesStep.process();
 
@@ -59,9 +62,12 @@ class ReceiveResponsesStepTest {
 
     @Test
     void process_negative_invalidAnswer() throws IOException {
-        when(player1.receive()).thenReturn("""
-                {"type":"d"}
-                """);
+        when(player1.receive(AnswerMessage.class)).thenReturn(new AnswerMessage(0){
+            @Override
+            public Instant getTimeStamp() {
+                return null;
+            }
+        });
 
         assertThrows(RuntimeException.class, () -> receiveResponsesStep.process());
     }
