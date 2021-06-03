@@ -3,24 +3,21 @@ package ch.ffhs.quiz.client;
 import ch.ffhs.quiz.connectivity.impl.ConnectionImpl;
 import ch.ffhs.quiz.messages.Message;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 public class Client{
     private Socket client;
-    private PrintWriter out;
-    private BufferedReader in;
+    private OutputStream out;
+    private InputStream in;
     private final ConnectionImpl serverConnection;
 
     public Client(String host, int port) throws IOException{
 
         this.client = new Socket(host, port);
 
-        this.out = new PrintWriter(client.getOutputStream(), true);
-        this.in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+        this.out = client.getOutputStream();
+        this.in = client.getInputStream();
 
         this.serverConnection = new ConnectionImpl(out, in);
     }
@@ -28,8 +25,8 @@ public class Client{
     public void connectToGameServer(String host, int port, Message nameMessage) throws IOException, ClassNotFoundException{
         client = new Socket(host, port);
 
-        in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-        out = new PrintWriter(client.getOutputStream(), true);
+        in = client.getInputStream();
+        out = client.getOutputStream();
 
         serverConnection.send(nameMessage);
         System.out.println("Connected");
@@ -41,7 +38,7 @@ public class Client{
         out.close();
     }
 
-    public BufferedReader getInput(){return in;}
+    public InputStream getInput(){return in;}
 
-    public PrintWriter getOutput(){return out;}
+    public OutputStream getOutput(){return out;}
 }
