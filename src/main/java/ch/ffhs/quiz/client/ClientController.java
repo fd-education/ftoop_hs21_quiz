@@ -1,19 +1,21 @@
 package ch.ffhs.quiz.client;
 
-import ch.ffhs.quiz.client.textinterface.*;
+import ch.ffhs.quiz.client.stages.InitializationStage;
+import ch.ffhs.quiz.messages.FeedbackMessage;
 import ch.ffhs.quiz.messages.Message;
-import ch.ffhs.quiz.messages.*;
+import ch.ffhs.quiz.messages.NameMessage;
+import ch.ffhs.quiz.messages.QuestionMessage;
 import ch.ffhs.quiz.server.MockServer;
 
 import java.io.IOException;
 
-import static java.lang.Integer.parseInt;
-
-public class ClientController {
+public class ClientController{
     private static final InputHandler inputHandler = new InputHandler();
-    private static final Client client = new Client();
+    private static Client client;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException{
+        client = new Client("localhost", 3141);
+        new InitializationStage().process();
         new Thread(() -> {
             try {
                 MockServer.main(new String[0]);
@@ -21,29 +23,17 @@ public class ClientController {
                 ioException.printStackTrace();
             }
         });
-        handleConversation();
+        //handleConversation();
     }
 
     private static void handleConversation() {
         try {
 
-            String welcome = Colors.BLUE_BOLD.colorText(TextInterface.WELCOME.getComponent());
-            System.out.println(welcome);
 
-            System.out.println(TextInterface.EXPLANATION.getComponent());
-
-            String userName = inputHandler.getUsersName();
+            String userName = inputHandler.getUserName();
 
             client.connectToGameServer("localhost", 3141, new NameMessage(userName));
 
-            System.out.println("Sent name");
-//            String input = inputHandler.getInputLine();
-//            Message message = (Message) client.sendMessage(new AnswerMessage(input));
-//            handleResponse(message);
-
-            String answer = inputHandler.getUsersAnswer();
-            client.sendMessage(new AnswerMessage(parseInt(answer)));
-            // System.out.println(message.getText());
 
         } catch(IOException | ClassNotFoundException ioEx){
             ioEx.printStackTrace();

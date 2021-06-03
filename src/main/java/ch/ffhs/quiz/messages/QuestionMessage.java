@@ -17,7 +17,7 @@ public class QuestionMessage extends Message {
 
     }
 
-    public int getCorrectAnswer(){return this.correctAnswer;}
+    public int getCorrectAnswer(){return correctAnswer;}
 
-    public List<String> getAnswers(){return this.answers;}
+    public List<String> getAnswers(){return answers;}
 }
