@@ -4,17 +4,12 @@ package questions;
 import java.io.*;
 import java.util.*;
 public class QuestionFactory {
-    List<Question> questions;
 
     public static void main(String[] args) {
-        //QuestionImp questionImp = new QuestionImp();
-        AnswerImp answerImp = new AnswerImp();
-        Map<String, List<String>> allQuestions = fullQuestionCatalog();
-        System.out.println(allQuestions);
-        //Map<Integer, String> questionCatalog = questionImp.getQuestions(allQuestions);
-        Map<Integer, List<String>> answerCatalog = answerImp.getAnswers(allQuestions);
-
-
+        QuestionImp questionImp = new QuestionImp();
+        Map<String, List<String>> mappedQuiz = fullQuestionCatalog();
+        ArrayList<QuestionImp> quizList = questionImp.getQuestions(mappedQuiz);
+        System.out.println(quizList);
     }
     private static Map<String, List<String>> loadFromFile(String fileName) {
         String question = "";
