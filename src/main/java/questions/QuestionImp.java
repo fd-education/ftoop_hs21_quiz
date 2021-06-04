@@ -5,25 +5,39 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class QuestionImp {
-    List<Answer> answers;
+public class QuestionImp implements Question {
+    List<AnswerImp> answers;
     String question;
     Integer correctAnswer;
-    public QuestionImp(String question){
-        this.question = question;
-    }
-    public Map<Integer, String> getQuestions(Map<String, List<String>> QuestionsCatalog) {
-        Map<Integer, String> question = new HashMap<>();
-        ArrayList<QuestionImp> questionImps = new ArrayList<QuestionImp>();
-        int index = 0;
-        for (String key : QuestionsCatalog.keySet()) {
-            question.put(index, key);
-            questionImps.add(new QuestionImp(key));
-            index++;
+    public ArrayList<QuestionImp> getQuestions(Map<String, List<String>> QuestionsCatalog) {
+        ArrayList<QuestionImp> questionImps = new ArrayList<>();
+        AnswerImp answerImp = new AnswerImp();
+        QuestionImp questionImp = new QuestionImp();
+        Map<String, List<AnswerImp>> mappedAnswers = answerImp.getAnswers(QuestionsCatalog);
+        for(Map.Entry<String, List<AnswerImp>> entry : mappedAnswers.entrySet()) {
+            String question = entry.getKey();
+            List<AnswerImp> answerImpList = entry.getValue();
+            int i = 1;
+            while (i < (answerImpList.size()) ){
+                if (answerImpList.get(i).isCorrectAnswer) {
+                    questionImp.correctAnswer = i;
+                }
+                i++;
+            }
+            questionImp.question = question;
+            questionImp.answers = answerImpList;
+            questionImps.add(questionImp);
         }
-        System.out.println(question);
-        return question;
+        return questionImps;
     }
 
+    @Override
+    public boolean checkAnswer(Integer questionNumber) {
+        return questionNumber.equals(this.correctAnswer);
+    }
 
+    @Override
+    public List<AnswerImp> getAnswers() {
+        return this.answers;
+    }
 }
