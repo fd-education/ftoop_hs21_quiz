@@ -13,7 +13,6 @@ public class FeedbackStep extends GameStep {
 
     @Override
     protected void handlePlayer(Player player) {
-        final RoundContext roundContext = gameContext.getRoundContext();
         final String feedback;
         final Player winningPlayer = roundContext.getWinningPlayer();
         final boolean wasCorrect = roundContext.wasPlayerCorrect(player);
@@ -22,7 +21,7 @@ public class FeedbackStep extends GameStep {
                 player.reward();
                 feedback = "You have won this round!";
             } else {
-                feedback = "Your answer was correct, but Player %s was faster!".formatted(player.getId());
+                feedback = "Your answer was correct, but Player %s was faster!".formatted(winningPlayer.getId());
             }
         } else {
             if (winningPlayer != null)
