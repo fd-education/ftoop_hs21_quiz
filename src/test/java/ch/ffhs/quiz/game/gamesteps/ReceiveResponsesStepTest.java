@@ -1,5 +1,6 @@
 package ch.ffhs.quiz.game.gamesteps;
 
+import ch.ffhs.quiz.game.gamesteps.impl.ReceiveResponsesStep;
 import ch.ffhs.quiz.messages.AnswerMessage;
 import ch.ffhs.quiz.messages.MessageUtils;
 import ch.ffhs.quiz.questions.Question;

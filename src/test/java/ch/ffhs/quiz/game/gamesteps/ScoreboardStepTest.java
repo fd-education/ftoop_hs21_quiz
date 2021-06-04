@@ -1,6 +1,6 @@
 package ch.ffhs.quiz.game.gamesteps;
 
-import ch.ffhs.quiz.messages.Message;
+import ch.ffhs.quiz.game.gamesteps.impl.ScoreboardStep;
 import ch.ffhs.quiz.messages.ScoreboardMessage;
 import ch.ffhs.quiz.questions.Question;
 import ch.ffhs.quiz.game.GameContext;
@@ -8,14 +8,12 @@ import ch.ffhs.quiz.game.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 

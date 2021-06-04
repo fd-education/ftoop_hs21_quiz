@@ -1,5 +1,6 @@
-package ch.ffhs.quiz.game.gamesteps;
+package ch.ffhs.quiz.game.gamesteps.impl;
 
+import ch.ffhs.quiz.game.gamesteps.GameStep;
 import ch.ffhs.quiz.messages.FeedbackMessage;
 import ch.ffhs.quiz.game.GameContext;
 import ch.ffhs.quiz.game.RoundContext;
