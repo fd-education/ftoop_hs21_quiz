@@ -1,4 +1,4 @@
-package ch.ffhs.quiz.server.player;
+package ch.ffhs.quiz.game.player;
 
 import ch.ffhs.quiz.messages.Message;
 

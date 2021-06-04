@@ -1,14 +1,11 @@
-package ch.ffhs.quiz.server.player;
+package ch.ffhs.quiz.game.player;
 
 import ch.ffhs.quiz.connectivity.Connection;
 import ch.ffhs.quiz.connectivity.impl.ConnectionImpl;
 import ch.ffhs.quiz.server.Server;
-import ch.ffhs.quiz.server.player.impl.*;
+import ch.ffhs.quiz.game.player.impl.*;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;

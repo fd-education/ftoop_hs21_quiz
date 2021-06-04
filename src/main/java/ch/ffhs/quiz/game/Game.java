@@ -1,8 +1,8 @@
-package ch.ffhs.quiz.server;
+package ch.ffhs.quiz.game;
 
 import ch.ffhs.quiz.questions.Question;
-import ch.ffhs.quiz.server.gamesteps.GameStep;
-import ch.ffhs.quiz.server.player.Player;
+import ch.ffhs.quiz.game.gamesteps.GameStep;
+import ch.ffhs.quiz.game.player.Player;
 
 import java.io.IOException;
 import java.util.List;

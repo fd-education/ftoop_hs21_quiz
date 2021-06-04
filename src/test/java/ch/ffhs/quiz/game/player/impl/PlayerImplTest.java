@@ -1,7 +1,7 @@
-package ch.ffhs.quiz.server.player.impl;
+package ch.ffhs.quiz.game.player.impl;
 
 import org.junit.jupiter.api.Test;
-import ch.ffhs.quiz.server.player.PlayerData;
+import ch.ffhs.quiz.game.player.PlayerData;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;

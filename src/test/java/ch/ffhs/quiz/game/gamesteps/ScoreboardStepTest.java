@@ -1,12 +1,9 @@
-package ch.ffhs.quiz.server.gamesteps;
+package ch.ffhs.quiz.game.gamesteps;
 
-import ch.ffhs.quiz.messages.AnswerMessage;
 import ch.ffhs.quiz.messages.Message;
-import ch.ffhs.quiz.messages.MessageUtils;
-import ch.ffhs.quiz.messages.ScoreboardMessage;
 import ch.ffhs.quiz.questions.Question;
-import ch.ffhs.quiz.server.GameContext;
-import ch.ffhs.quiz.server.player.Player;
+import ch.ffhs.quiz.game.GameContext;
+import ch.ffhs.quiz.game.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

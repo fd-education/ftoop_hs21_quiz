@@ -41,7 +41,7 @@ public class InitializationStage extends Stage{
                 input = inputHandler.getUserName();
                 serverConnection.send(new NameMessage(input));
 
-                name = MessageUtils.parse(serverConnection.receive(), NameMessage.class);
+                name = serverConnection.receive(NameMessage.class);
 
             } while(!name.isConfirmed());
 
