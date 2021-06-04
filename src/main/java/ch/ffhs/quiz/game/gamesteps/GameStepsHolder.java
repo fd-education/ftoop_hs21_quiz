@@ -14,7 +14,8 @@ public class GameStepsHolder {
         gameStepClassIterator = gameStepClassList.iterator();
     }
 
-    public static GameStepsHolder of(Class<? extends GameStep>... gameStepClassArray) {
+    @SafeVarargs
+    public static GameStepsHolder of(final Class<? extends GameStep>... gameStepClassArray) {
         return new GameStepsHolder(List.of(gameStepClassArray));
     }
 
