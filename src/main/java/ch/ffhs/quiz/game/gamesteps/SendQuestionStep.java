@@ -22,14 +22,10 @@ public class SendQuestionStep extends GameStep {
         final String questionText = question.getQuestionText();
         final List<Answer> answers = question.getAnswers();
         final List<String> answerTexts = new ArrayList<>();
-        int correctAnswer = 0;
-        for (int i = 0; i < answers.size(); i++) {
-            Answer answer = answers.get(i);
+        for (Answer answer : answers) {
             answerTexts.add(answer.toString());
-            if (answer.isCorrect())
-                correctAnswer = i;
         }
-        questionMessage = new QuestionMessage(questionText, answerTexts, correctAnswer);
+        questionMessage = new QuestionMessage(questionText, answerTexts);
     }
 
     @Override

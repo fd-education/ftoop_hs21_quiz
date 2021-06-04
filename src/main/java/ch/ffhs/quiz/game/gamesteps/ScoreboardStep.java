@@ -20,7 +20,7 @@ public class ScoreboardStep extends GameStep {
         List<Player> players = new ArrayList<>(gameContext.getPlayers());
         final Comparator<Player> maxScoreComparator = Comparator.comparing(Player::getScore).reversed();
         players.sort(maxScoreComparator);
-        StringBuilder scoreboardSB = new StringBuilder("Scoreboard for round %s:\n".formatted(gameContext.getRoundContext().getRoundNumber()));
+        StringBuilder scoreboardSB = new StringBuilder("Scoreboard for round %s:\n".formatted(roundContext.getRoundNumber()));
         int nthPlace = 1;
         for (Player player : players) {
             scoreboardSB.append(String.format("%d. Place: Player %d with %d Points\n", nthPlace, player.getId(), player.getScore()));

@@ -1,6 +1,7 @@
 package ch.ffhs.quiz.game.gamesteps;
 
 import ch.ffhs.quiz.messages.Message;
+import ch.ffhs.quiz.messages.ScoreboardMessage;
 import ch.ffhs.quiz.questions.Question;
 import ch.ffhs.quiz.game.GameContext;
 import ch.ffhs.quiz.game.player.Player;
@@ -44,13 +45,14 @@ class ScoreboardStepTest {
 
         scoreboardStep.process();
 
-        final String expectedScoreboard = "Scoreboard for round 0:\n1. Place: Player 1 with 1 Points\n2. Place: Player 0 with 0 Points\n";
-        verify(player1).send(argThat(isScoreboard(expectedScoreboard)));
-        verify(player2).send(argThat(isScoreboard(expectedScoreboard)));
-    }
-
-    private ArgumentMatcher<Message> isScoreboard(String expectedScoreboard) {
-        return message -> message.getText().equals(expectedScoreboard);
+        final String expectedScoreboard = """
+                Scoreboard for round 0:
+                1. Place: Player 1 with 1 Points
+                2. Place: Player 0 with 0 Points
+                """;
+        ScoreboardMessage expectedMessage = new ScoreboardMessage(expectedScoreboard);
+        verify(player1).send(expectedMessage);
+        verify(player2).send(expectedMessage);
     }
 
     @Test
@@ -62,7 +64,8 @@ class ScoreboardStepTest {
                 1. Place: Player 0 with 0 Points
                 2. Place: Player 1 with 0 Points
                 """;
-        verify(player1).send(argThat(isScoreboard(expectedScoreboard)));
-        verify(player2).send(argThat(isScoreboard(expectedScoreboard)));
+        ScoreboardMessage expectedMessage = new ScoreboardMessage(expectedScoreboard);
+        verify(player1).send(expectedMessage);
+        verify(player2).send(expectedMessage);
     }
 }
