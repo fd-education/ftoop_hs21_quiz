@@ -18,32 +18,34 @@ public class InputHandlerTest {
     void validateNameTestNegative() throws Exception{
         String EXPECTED_TEXT = "Your name must contain at least three characters.";
         try {
-            // Input too short
+            // Input too short, NullPointerException ignored
             String input1 = "ab";
             withTextFromSystemIn(input1)
                     .execute(() -> {
-                            String text = tapSystemOut(() -> inputHandler.getUsersName());
+                            String text = tapSystemOut(() -> inputHandler.getUserName());
                             assertEquals(EXPECTED_TEXT, text);
                     });
 
-            // No input
+            // No input, NullPointerException ignored
             String input2 = "";
             withTextFromSystemIn(input2)
                     .execute(() -> {
-                        String text = tapSystemOut(() -> inputHandler.getUsersName());
+                        String text = tapSystemOut(() -> inputHandler.getUserName());
                         assertEquals(EXPECTED_TEXT, text);
                     });
-        } catch(NullPointerException ignore){}
+        } catch(NullPointerException ignored){}
     }
 
     @Test
     void validateNameTestPositive() throws Exception{
-        String input1 = "1-a";
-        withTextFromSystemIn(input1)
-                .execute(() -> {
-                    String text = inputHandler.getUsersName();
-                    assertEquals(input1, text);
-                });
+        try {
+            String input1 = "1-a";
+            withTextFromSystemIn(input1)
+                    .execute(() -> {
+                        String text = inputHandler.getUserName();
+                        assertEquals(input1, text);
+                    });
+        } catch(NullPointerException ignored){}
     }
 
     @Test
@@ -55,7 +57,7 @@ public class InputHandlerTest {
 
             withTextFromSystemIn(input1)
                     .execute(() -> {
-                        String text = tapSystemOut(() -> inputHandler.getUsersAnswer());
+                        String text = tapSystemOut(() -> inputHandler.getUserAnswer());
                         assertEquals(EXPECTED_TEXT1, text);
                     });
 
@@ -65,10 +67,10 @@ public class InputHandlerTest {
 
             withTextFromSystemIn(input2)
                     .execute(() -> {
-                        String text = tapSystemOut(() -> inputHandler.getUsersAnswer());
+                        String text = tapSystemOut(() -> inputHandler.getUserAnswer());
                         assertEquals(EXPECTED_TEXT2, text);
                     });
-        } catch(NullPointerException ignore){}
+        } catch(NullPointerException ignored){}
     }
 
     @Test
@@ -76,7 +78,7 @@ public class InputHandlerTest {
         String input1 = "A";
         withTextFromSystemIn(input1)
                 .execute(() -> {
-                    String text = inputHandler.getUsersAnswer();
+                    String text = inputHandler.getUserAnswer();
                     assertEquals(input1, text);
                 });
     }
