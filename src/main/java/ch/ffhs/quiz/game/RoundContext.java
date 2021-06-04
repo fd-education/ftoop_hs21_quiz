@@ -8,7 +8,7 @@ import java.util.*;
 
 public class RoundContext {
     private Player winningPlayer;
-    private final List<Player> correctPlayers = new ArrayList<>();
+    private final Set<Player> correctPlayers = new HashSet<>();
     private final Map<Player, AnswerMessage> playerAnswersMap = new HashMap<>();
     private int roundNumber = 0;
     private Question currentQuestion;
@@ -42,6 +42,7 @@ public class RoundContext {
         Objects.requireNonNull(winningPlayer);
         if (this.winningPlayer != null) throw new IllegalStateException("Winning player has already been set");
         this.winningPlayer = winningPlayer;
+        addCorrectPlayer(winningPlayer);
     }
 
     public void addCorrectPlayer(Player player) {
