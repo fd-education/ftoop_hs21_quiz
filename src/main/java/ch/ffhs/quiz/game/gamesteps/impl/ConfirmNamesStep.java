@@ -6,8 +6,9 @@ import ch.ffhs.quiz.game.player.Player;
 import ch.ffhs.quiz.messages.NameMessage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 public class ConfirmNamesStep extends GameStep {
 
@@ -34,28 +35,42 @@ public class ConfirmNamesStep extends GameStep {
 
         boolean allPlayersHaveName = false;
         while (!allPlayersHaveName) {
-            for (Player player : players) {
-                if (player.getName() == null && player.hasMessage()) {
-                    String name = receivePlayerName(player);
-                    boolean nameIsConfirmed = !takenNames.contains(name);
+            Map<Player, NameMessage> playerMessageMap = getPlayerMessageMap(players);
+            final Comparator<Entry<Player, NameMessage>> byEarliestMessage = Comparator.comparing(
+                    entry -> entry.getValue().getTimeStamp()
+            );
+            List<Entry<Player, NameMessage>> sortedPlayerMessageEntries = playerMessageMap
+                    .entrySet().stream()
+                    .sorted(byEarliestMessage)
+                    .collect(Collectors.toList());
 
-                    NameMessage nameMessage = new NameMessage(name);
-                    nameMessage.setConfirmed(nameIsConfirmed);
-                    player.send(nameMessage);
+            for (Entry<Player, NameMessage> entry : sortedPlayerMessageEntries) {
+                String name = entry.getValue().getText();
+                Player player = entry.getKey();
+                boolean nameIsConfirmed = !takenNames.contains(name);
 
-                    if (nameIsConfirmed) {
-                        takenNames.add(name);
-                        player.setName(name);
-                    }
+                NameMessage nameMessage = new NameMessage(name);
+                nameMessage.setConfirmed(nameIsConfirmed);
+                player.send(nameMessage);
+
+                if (nameIsConfirmed) {
+                    takenNames.add(name);
+                    player.setName(name);
                 }
             }
             allPlayersHaveName = takenNames.size() == players.size();
         }
     }
 
-    private String receivePlayerName(Player player) throws IOException {
-        NameMessage nameMessage = player.receive(NameMessage.class);
-
-        return nameMessage.getText();
+    private Map<Player, NameMessage> getPlayerMessageMap(List<Player> players) throws IOException {
+        Map<Player, NameMessage> playerAnswerMap = new HashMap<>();
+        for (Player player : players) {
+            if (player.getName() == null && player.hasMessage()) {
+                NameMessage answer = player.receive(NameMessage.class);
+                playerAnswerMap.put(player, answer);
+            }
+        }
+        return playerAnswerMap;
     }
+
 }
