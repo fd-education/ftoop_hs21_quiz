@@ -1,21 +1,24 @@
 package ch.ffhs.quiz.game;
 
+import ch.ffhs.quiz.game.gamesteps.GameStep;
 import ch.ffhs.quiz.game.gamesteps.GameStepsHolder;
+import ch.ffhs.quiz.game.gamesteps.impl.EvaluateResponsesStep;
 import ch.ffhs.quiz.game.player.Player;
 import ch.ffhs.quiz.questions.Question;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.MockedConstruction;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class GameTest {
@@ -33,43 +36,68 @@ class GameTest {
     Player player2;
     @Mock
     Question question;
+    Game game;
+    Game.GameBuilder gameBuilder;
 
     @BeforeEach
     void setUp() {
         questions = new ArrayList<>();
         questions.add(question);
         players = List.of(player1, player2);
+        game = Game.builder().build();
+        gameBuilder = Game.builder();
     }
 
     @Test
-    void ctor_nullArgsFail() {
-        assertThrows(NullPointerException.class, () -> new Game(null, players, setupSteps, mainSteps, teardownSteps));
-        assertThrows(NullPointerException.class, () -> new Game(questions, null, setupSteps, mainSteps, teardownSteps));
-        assertThrows(NullPointerException.class, () -> new Game(questions, players, null, mainSteps, teardownSteps));
+    void builder_nullArgsFail() {
+        assertThrows(NullPointerException.class, () -> gameBuilder.withSetupSteps((GameStepsHolder) null));
+        assertThrows(NullPointerException.class, () -> gameBuilder.withSetupSteps((Class<? extends GameStep>) null));
     }
 
     @Test
-    void ctor_invalidPlayerCountFails() {
-        assertThrows(IllegalArgumentException.class, () -> new Game(questions, new ArrayList<>(), setupSteps, mainSteps, teardownSteps));
+    void builder_positive_simple() {
+        gameBuilder
+                .withSetupSteps(setupSteps)
+                .withMainSteps(EvaluateResponsesStep.class)
+                .withTeardownSteps(teardownSteps);
+
+        assertDoesNotThrow(gameBuilder::build);
     }
 
     @Test
-    void ctor_playerListsWithNullsFails() {
+    void play_invalidListSizesFail() {
+        assertThrows(IllegalArgumentException.class, () -> game.play(new ArrayList<>(), questions));
+        assertThrows(IllegalArgumentException.class, () -> game.play(players, new ArrayList<>()));
+    }
+
+    @Test
+    void ctor_playerListsWithNullsFail() {
         List<Player> nullPlayerList = new ArrayList<>();
 
         nullPlayerList.add(null);
-        assertThrows(IllegalArgumentException.class, () -> new Game(questions, nullPlayerList, setupSteps, mainSteps, teardownSteps));
+        assertThrows(IllegalArgumentException.class, () -> game.play(nullPlayerList, questions));
+
+        List<Question> nullQuestionList = new ArrayList<>();
+
+        nullQuestionList.add(null);
+        assertThrows(IllegalArgumentException.class, () -> game.play(players, nullQuestionList));
     }
 
     @Test
     void start_positive_simple() {
-        questions.add(question);
-        final Game game = new Game(questions, players, setupSteps, mainSteps, teardownSteps);
+        try (MockedConstruction<EvaluateResponsesStep> mocked = mockConstruction(EvaluateResponsesStep.class)){
+            game = gameBuilder
+                    .withSetupSteps(setupSteps)
+                    .withMainSteps(mainSteps)
+                    .withTeardownSteps(EvaluateResponsesStep.class)
+                    .build();
+            questions.add(question);
 
-        game.play();
+            game.play(players, questions);
 
-        verify(setupSteps).processAll(any());
-        verify(mainSteps, times(2)).processAll(any());
-        verify(teardownSteps).processAll(any());
+            verify(setupSteps).processAll(any());
+            verify(mainSteps, times(2)).processAll(any());
+            verify(mocked.constructed().get(0)).process();
+        }
     }
 }
