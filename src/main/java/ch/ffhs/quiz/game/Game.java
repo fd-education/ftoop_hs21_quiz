@@ -1,5 +1,6 @@
 package ch.ffhs.quiz.game;
 
+import ch.ffhs.quiz.game.gamesteps.GameStep;
 import ch.ffhs.quiz.game.gamesteps.GameStepsHolder;
 import ch.ffhs.quiz.game.gamesteps.impl.*;
 import ch.ffhs.quiz.game.player.Player;
@@ -15,42 +16,33 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Game {
-    private final List<Player> players;
-    private final List<Question> questions;
     private final GameStepsHolder setupSteps;
     private final GameStepsHolder mainSteps;
     private final GameStepsHolder teardownSteps;
 
-    public Game(List<Question> questions, List<Player> players, GameStepsHolder setupSteps, GameStepsHolder mainSteps, GameStepsHolder teardownSteps) {
-        Objects.requireNonNull(questions);
-        Objects.requireNonNull(players);
-        Objects.requireNonNull(setupSteps);
-        Objects.requireNonNull(mainSteps);
-        Objects.requireNonNull(teardownSteps);
+    private Game(GameBuilder gameBuilder) {
+        this.setupSteps = gameBuilder.setupSteps;
+        this.mainSteps = gameBuilder.mainSteps;
+        this.teardownSteps = gameBuilder.teardownSteps;
+    }
 
-        players = filterNullValues(players);
-        if (players.size() < 1)
-            throw new IllegalArgumentException("Cannot create a game with less than one player");
-
-        this.players = players;
-        this.questions = filterNullValues(questions);
-        this.setupSteps = setupSteps;
-        this.mainSteps = mainSteps;
-        this.teardownSteps = teardownSteps;
+    public static GameBuilder builder() {
+        return new GameBuilder();
     }
 
     public static void main(String[] args) throws IOException {
-        GameStepsHolder setup = GameStepsHolder.of(ConfirmNamesStep.class);
-        GameStepsHolder main = GameStepsHolder.of(
-                SendQuestionStep.class,
-                ReceiveResponsesStep.class,
-                EvaluateResponsesStep.class,
-                FeedbackStep.class,
-                RoundSummaryStep.class
-        );
-        GameStepsHolder teardown = GameStepsHolder.of(
-                StopPlayersStep.class
-        );
+        Game game = Game.builder()
+                .withSetupSteps(ConfirmNamesStep.class)
+                .withMainSteps(
+                        SendQuestionStep.class,
+                        ReceiveResponsesStep.class,
+                        EvaluateResponsesStep.class,
+                        FeedbackStep.class,
+                        RoundSummaryStep.class
+                )
+                .withTeardownSteps(
+                        StopPlayersStep.class
+                ).build();
 
         // TODO: Remove asap
         Question question1 = new QuestionImpl("Question 1", List.of(
@@ -67,7 +59,7 @@ public class Game {
         ));
         Server server = new Server(3141);
         List<Player> players = PlayerFactory.connectPlayers(server, 2);
-        new Game(List.of(question1, question2), players, setup, main, teardown).play();
+        game.play(players, List.of(question1, question2));
     }
 
     private static <T> List<T> filterNullValues(List<T> list) {
@@ -76,13 +68,74 @@ public class Game {
         return list.stream().filter(Objects::nonNull).collect(Collectors.toList());
     }
 
-    public void play() {
+    public void play(List<Player> players, List<Question> questions) {
+        Objects.requireNonNull(questions);
+        Objects.requireNonNull(players);
+
+        players = filterNullValues(players);
+        if (players.size() < 1)
+            throw new IllegalArgumentException("Cannot play a game with less than one player");
+
+        questions = filterNullValues(questions);
+        if (questions.size() < 1)
+            throw new IllegalArgumentException("Cannot play a game with less than one question");
+
         GameContext gameContext = new GameContext(players, questions);
+
         setupSteps.processAll(gameContext);
         while (!gameContext.isFinished()) {
             gameContext.nextRound();
             mainSteps.processAll(gameContext);
         }
         teardownSteps.processAll(gameContext);
+    }
+
+    public static class GameBuilder {
+        private GameStepsHolder setupSteps = GameStepsHolder.emptyHolder();
+        private GameStepsHolder mainSteps = GameStepsHolder.emptyHolder();
+        private GameStepsHolder teardownSteps = GameStepsHolder.emptyHolder();
+
+        @SafeVarargs
+        public final GameBuilder withSetupSteps(final Class<? extends GameStep>... gameStepClassArray) {
+            Objects.requireNonNull(gameStepClassArray);
+            setupSteps = GameStepsHolder.of(gameStepClassArray);
+            return this;
+        }
+
+        @SafeVarargs
+        public final GameBuilder withMainSteps(final Class<? extends GameStep>... gameStepClassArray) {
+            Objects.requireNonNull(gameStepClassArray);
+            mainSteps = GameStepsHolder.of(gameStepClassArray);
+            return this;
+        }
+
+        @SafeVarargs
+        public final GameBuilder withTeardownSteps(final Class<? extends GameStep>... gameStepClassArray) {
+            Objects.requireNonNull(gameStepClassArray);
+            teardownSteps = GameStepsHolder.of(gameStepClassArray);
+            return this;
+        }
+
+        public final GameBuilder withSetupSteps(GameStepsHolder setupSteps) {
+            Objects.requireNonNull(setupSteps);
+            this.setupSteps = setupSteps;
+            return this;
+        }
+
+        public final GameBuilder withMainSteps(GameStepsHolder mainSteps) {
+            Objects.requireNonNull(mainSteps);
+            this.mainSteps = mainSteps;
+            return this;
+        }
+
+        public final GameBuilder withTeardownSteps(GameStepsHolder teardownSteps) {
+            Objects.requireNonNull(teardownSteps);
+            this.teardownSteps = teardownSteps;
+            return this;
+        }
+
+        public Game build() {
+            return new Game(this);
+        }
     }
 }
