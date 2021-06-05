@@ -27,7 +27,7 @@ class ConnectionImplTest {
         inputStream = new ByteArrayInputStream(MessageUtils.serialize(new FailureMessage("test")).getBytes(StandardCharsets.UTF_8));
         connection = new ConnectionImpl(outputStream, inputStream);
 
-        assertEquals("test", connection.receive(RoundSummaryMessage.class).getText());
+        assertEquals("test", connection.receive(FailureMessage.class).getText());
     }
 
     @Test
@@ -73,5 +73,17 @@ class ConnectionImplTest {
         connection.stop();
 
         assertThrows(IllegalStateException.class, () -> connection.send(new FailureMessage("Test")));
+    }
+
+    @Test
+    void hasMessage_positive_simple() throws IOException {
+        InputStream inputStreamWithText = new ByteArrayInputStream("Some test text".getBytes(StandardCharsets.UTF_8));
+        InputStream inputStreamWithoutText = new ByteArrayInputStream(new byte[0]);
+
+        Connection connectionWithMessage = new ConnectionImpl(outputStream, inputStreamWithText);
+        Connection connectionWithoutMessage = new ConnectionImpl(outputStream, inputStreamWithoutText);
+
+        assertTrue(connectionWithMessage.hasMessage());
+        assertFalse(connectionWithoutMessage.hasMessage());
     }
 }
