@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -62,12 +63,13 @@ class GameTest {
 
     @Test
     void start_positive_simple() {
+        questions.add(question);
         final Game game = new Game(questions, players, setupSteps, mainSteps, teardownSteps);
 
         game.play();
 
         verify(setupSteps).processAll(any());
-        verify(mainSteps).processAll(any());
+        verify(mainSteps, times(2)).processAll(any());
         verify(teardownSteps).processAll(any());
     }
 }

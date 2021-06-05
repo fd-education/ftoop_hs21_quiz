@@ -1,9 +1,11 @@
 package ch.ffhs.quiz.client.stages;
 
 import ch.ffhs.quiz.client.Client;
+import ch.ffhs.quiz.client.InputHandler;
 import ch.ffhs.quiz.client.textinterface.TextInterface;
 import ch.ffhs.quiz.client.ui.AnsiBuilder;
 import ch.ffhs.quiz.client.ui.AnsiBuilder.*;
+import ch.ffhs.quiz.connectivity.Connection;
 import ch.ffhs.quiz.connectivity.impl.ConnectionImpl;
 import ch.ffhs.quiz.messages.MessageUtils;
 import ch.ffhs.quiz.messages.NameMessage;
@@ -11,14 +13,16 @@ import ch.ffhs.quiz.messages.NameMessage;
 import java.io.IOException;
 
 public class InitializationStage extends Stage{
+
+    public InitializationStage(Client client, Connection con, InputHandler inputHandler){
+        this.client = client;
+        this.serverConnection = con;
+        this.inputHandler = inputHandler;
+    }
+
     @Override
     protected void setupStage(){
-        try{
-            client = new Client("localhost", 3134);
-            serverConnection = new ConnectionImpl(client.getOutput(), client.getInput());
-        } catch(IOException ioEx){
-            throw new RuntimeException("This exception must not occur, because inputs get checked.", ioEx);
-        }
+
     }
 
     @Override
@@ -46,10 +50,10 @@ public class InitializationStage extends Stage{
             } while(!name.isConfirmed());
 
         } catch(IOException ioEx){
+            ioEx.printStackTrace();
             throw new RuntimeException("This exception must not occur, because inputs get checked.", ioEx);
         }
     }
-
     @Override
     protected void terminateStage(){
     }

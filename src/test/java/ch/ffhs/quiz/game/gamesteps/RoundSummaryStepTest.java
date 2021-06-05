@@ -1,7 +1,8 @@
 package ch.ffhs.quiz.game.gamesteps;
 
-import ch.ffhs.quiz.game.gamesteps.impl.ScoreboardStep;
-import ch.ffhs.quiz.messages.ScoreboardMessage;
+import ch.ffhs.quiz.game.gamesteps.impl.RoundSummaryStep;
+import ch.ffhs.quiz.messages.RoundSummaryMessage;
+import ch.ffhs.quiz.messages.ScoreboardEntry;
 import ch.ffhs.quiz.questions.Question;
 import ch.ffhs.quiz.game.GameContext;
 import ch.ffhs.quiz.game.player.Player;
@@ -18,13 +19,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ScoreboardStepTest {
+class RoundSummaryStepTest {
     GameContext gameContext;
     @Mock
     Player player1;
     @Mock
     Player player2;
-    ScoreboardStep scoreboardStep;
+    RoundSummaryStep roundSummaryStep;
     List<Question> questions;
 
     @BeforeEach
@@ -33,36 +34,29 @@ class ScoreboardStepTest {
         when(player1.getId()).thenReturn(0);
         when(player2.getId()).thenReturn(1);
         gameContext = new GameContext(List.of(player1, player2), questions);
-        scoreboardStep = new ScoreboardStep(gameContext);
+        roundSummaryStep = new RoundSummaryStep(gameContext);
     }
 
     @Test
     void process_positive_simple() {
         when(player1.getScore()).thenReturn(0);
         when(player2.getScore()).thenReturn(1);
+        when(player1.getName()).thenReturn("Player 1");
+        when(player2.getName()).thenReturn("Player 2");
 
-        scoreboardStep.process();
-
-        final String expectedScoreboard = """
-                Scoreboard for round 0:
-                1. Place: Player 1 with 1 Points
-                2. Place: Player 0 with 0 Points
-                """;
-        ScoreboardMessage expectedMessage = new ScoreboardMessage(expectedScoreboard);
+        roundSummaryStep.process();
+        RoundSummaryMessage expectedMessage = new RoundSummaryMessage(List.of(new ScoreboardEntry("Player 2", 1), new ScoreboardEntry("Player 1", 0)), true);
         verify(player1).send(expectedMessage);
         verify(player2).send(expectedMessage);
     }
 
     @Test
     void process_positive_noPoints() {
-        scoreboardStep.process();
-
-        final String expectedScoreboard = """
-                Scoreboard for round 0:
-                1. Place: Player 0 with 0 Points
-                2. Place: Player 1 with 0 Points
-                """;
-        ScoreboardMessage expectedMessage = new ScoreboardMessage(expectedScoreboard);
+        when(player1.getName()).thenReturn("Player 1");
+        when(player2.getName()).thenReturn("Player 2");
+        roundSummaryStep.process();
+        // TODO:
+        RoundSummaryMessage expectedMessage = new RoundSummaryMessage(List.of(new ScoreboardEntry("Player 1", 0), new ScoreboardEntry("Player 2", 0)), true);
         verify(player1).send(expectedMessage);
         verify(player2).send(expectedMessage);
     }

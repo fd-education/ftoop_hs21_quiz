@@ -17,4 +17,10 @@ public interface Player {
     void reward();
 
     void stop() throws IOException;
+
+    void setName(String name);
+
+    String getName();
+
+    boolean hasMessage() throws IOException;
 }

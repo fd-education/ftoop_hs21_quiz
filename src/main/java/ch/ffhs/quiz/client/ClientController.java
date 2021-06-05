@@ -1,6 +1,9 @@
 package ch.ffhs.quiz.client;
 
+import ch.ffhs.quiz.client.stages.GameStage;
 import ch.ffhs.quiz.client.stages.InitializationStage;
+import ch.ffhs.quiz.connectivity.Connection;
+import ch.ffhs.quiz.connectivity.impl.ConnectionImpl;
 import ch.ffhs.quiz.messages.FeedbackMessage;
 import ch.ffhs.quiz.messages.Message;
 import ch.ffhs.quiz.messages.NameMessage;
@@ -14,39 +17,17 @@ public class ClientController{
     private static Client client;
 
     public static void main(String[] args) throws IOException{
-        client = new Client("localhost", 3141);
-        new InitializationStage().process();
-        new Thread(() -> {
-            try {
-                MockServer.main(new String[0]);
-            } catch (IOException | ClassNotFoundException ioException) {
-                ioException.printStackTrace();
-            }
-        });
-        //handleConversation();
-    }
 
-    private static void handleConversation() {
-        try {
+        Client client = new Client("localhost", 3141);
+        Connection con = new ConnectionImpl(client.getOutput(), client.getInput());
+        new InitializationStage(client, con, inputHandler).process();
 
+        GameStage gStage;
+        do{
+            gStage = new GameStage(client, con, inputHandler);
+            gStage.process();
+        } while(!gStage.wasLastRound());
 
-            String userName = inputHandler.getUserName();
-
-            client.connectToGameServer("localhost", 3141, new NameMessage(userName));
-
-
-        } catch(IOException | ClassNotFoundException ioEx){
-            ioEx.printStackTrace();
-        }
-    }
-
-    public static void handleResponse(Message message){
-        if(message instanceof QuestionMessage){
-            // ui entsprechende ausgabe
-        }
-
-        if(message instanceof FeedbackMessage){
-            // ui entsprechende ausgabe
-        }
+        System.out.println("Client finished...");
     }
 }

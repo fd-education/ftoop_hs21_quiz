@@ -47,6 +47,12 @@ public class ConnectionImpl implements Connection {
     }
 
     @Override
+    public boolean hasMessage() throws IOException {
+        requireOpenConnection();
+        return reader.ready();
+    }
+
+    @Override
     public void stop() throws IOException {
         writer.close();
         reader.close();

@@ -4,11 +4,13 @@ import java.util.Objects;
 
 public class FeedbackMessage extends Message {
     private final boolean wasCorrect;
+    private final boolean wasFastest;
+    private final String winningPlayer;
 
-    public FeedbackMessage(String text, boolean wasCorrect) {
-        Objects.requireNonNull(text);
-        this.text = text;
-
+    public FeedbackMessage(boolean wasCorrect, boolean wasFastest, String winningPlayer) {
+        Objects.requireNonNull(winningPlayer);
+        this.winningPlayer = winningPlayer;
+        this.wasFastest = wasFastest;
         this.wasCorrect = wasCorrect;
     }
 
@@ -16,21 +18,31 @@ public class FeedbackMessage extends Message {
         return wasCorrect;
     }
 
+    public boolean wasFastest() {
+        return wasFastest;
+    }
+
+    public String getWinningPlayer() {
+        return winningPlayer;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
 
         FeedbackMessage that = (FeedbackMessage) o;
 
-        return wasCorrect == that.wasCorrect;
+        if (wasCorrect != that.wasCorrect) return false;
+        if (wasFastest != that.wasFastest) return false;
+        return winningPlayer.equals(that.winningPlayer);
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (wasCorrect ? 1 : 0);
+        int result = (wasCorrect ? 1 : 0);
+        result = 31 * result + (wasFastest ? 1 : 0);
+        result = 31 * result + winningPlayer.hashCode();
         return result;
     }
 }

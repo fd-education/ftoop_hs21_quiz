@@ -10,6 +10,7 @@ import java.util.Objects;
 public class PlayerImpl implements Player {
     private final Connection connection;
     private final PlayerData data;
+    private String name;
 
     public PlayerImpl(PlayerData data, Connection connection) {
         Objects.requireNonNull(data);
@@ -47,5 +48,20 @@ public class PlayerImpl implements Player {
     @Override
     public void stop() throws IOException {
         connection.stop();
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public boolean hasMessage() throws IOException {
+        return connection.hasMessage();
     }
 }

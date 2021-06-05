@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Objects;
 
 public class GameStepsHolder {
-    private final Iterator<Class<? extends GameStep>> gameStepClassIterator;
+    private final List<Class<? extends GameStep>> gameStepClassIterator;
 
     private GameStepsHolder(List<Class<? extends GameStep>> gameStepClassList) {
         Objects.requireNonNull(gameStepClassList);
 
-        gameStepClassIterator = gameStepClassList.iterator();
+        gameStepClassIterator = gameStepClassList;
     }
 
     @SafeVarargs
@@ -23,22 +23,18 @@ public class GameStepsHolder {
         return new GameStepsHolder(new ArrayList<>());
     }
 
-    private boolean hasNext() {
-        return gameStepClassIterator.hasNext();
-    }
 
-    private <T> GameStep nextStep(T ctorArgument) {
-        Class<? extends GameStep> gameStepClass = gameStepClassIterator.next();
+    private <T> GameStep nextStep(Class<? extends GameStep> clazz, T ctorArgument) {
         try {
-            return gameStepClass.getDeclaredConstructor(ctorArgument.getClass()).newInstance(ctorArgument);
+            return clazz.getDeclaredConstructor(ctorArgument.getClass()).newInstance(ctorArgument);
         } catch (ReflectiveOperationException e) {
-            throw new RuntimeException(String.format("Calling constructor of game step %s failed with exception %s", gameStepClass.getName(), e.getCause()));
+            throw new RuntimeException(String.format("Calling constructor of game step %s failed with exception %s", clazz.getName(), e.getCause()));
         }
     }
 
     public <T> void processAll(T ctorArgument) {
-        while (hasNext()) {
-            nextStep(ctorArgument).process();
+        for (Class<? extends GameStep> clazz : gameStepClassIterator) {
+            nextStep(clazz, ctorArgument).process();
         }
     }
 }

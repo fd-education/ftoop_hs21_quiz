@@ -1,10 +1,7 @@
 package ch.ffhs.quiz.connectivity.impl;
 
 import ch.ffhs.quiz.connectivity.Connection;
-import ch.ffhs.quiz.messages.AnswerMessage;
-import ch.ffhs.quiz.messages.FeedbackMessage;
-import ch.ffhs.quiz.messages.MessageUtils;
-import ch.ffhs.quiz.messages.ScoreboardMessage;
+import ch.ffhs.quiz.messages.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,17 +24,38 @@ class ConnectionImplTest {
 
     @Test
     void receive_positive_simple() throws IOException {
-        inputStream = new ByteArrayInputStream(MessageUtils.serialize(new ScoreboardMessage("test")).getBytes(StandardCharsets.UTF_8));
+        inputStream = new ByteArrayInputStream(MessageUtils.serialize(new FailureMessage("test")).getBytes(StandardCharsets.UTF_8));
         connection = new ConnectionImpl(outputStream, inputStream);
 
-        assertEquals("test", connection.receive(ScoreboardMessage.class).getText());
+        assertEquals("test", connection.receive(RoundSummaryMessage.class).getText());
     }
 
     @Test
     void send_positive_simple()  {
-        connection.send(new ScoreboardMessage("Test"));
+        connection.send(new FailureMessage("Test"));
 
         assertTrue(outputStream.toString().contains("Test"));
+    }
+
+    @Test
+    void send_receive_positive() throws IOException {
+        PipedInputStream inputStream = new PipedInputStream();
+        PipedInputStream inputStream2 = new PipedInputStream();
+        PipedOutputStream outputStream = new PipedOutputStream(inputStream2);
+        PipedOutputStream outputStream2 = new PipedOutputStream(inputStream);
+
+        connection = new ConnectionImpl(outputStream, inputStream);
+        Connection connection2 = new ConnectionImpl(outputStream2, inputStream2);
+
+        final AnswerMessage answerMessage = new AnswerMessage(0);
+        final FailureMessage failureMessage = new FailureMessage("""
+                This is a very important test.
+                """);
+        connection.send(failureMessage);
+        connection2.send(answerMessage);
+
+        assertEquals(answerMessage, connection.receive(AnswerMessage.class));
+        assertEquals(failureMessage, connection2.receive(FailureMessage.class));
     }
 
     @Test
@@ -54,6 +72,6 @@ class ConnectionImplTest {
     void stop_positive_simple() throws IOException {
         connection.stop();
 
-        assertThrows(IllegalStateException.class, () -> connection.send(new ScoreboardMessage("Test")));
+        assertThrows(IllegalStateException.class, () -> connection.send(new FailureMessage("Test")));
     }
 }

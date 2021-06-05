@@ -6,7 +6,6 @@ public class AnswerMessage extends Message {
 
     public AnswerMessage(int chosenAnswer) {
         this.chosenAnswer = chosenAnswer;
-        this.text = "";
     }
 
     @Override

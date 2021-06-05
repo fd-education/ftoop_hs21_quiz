@@ -5,7 +5,7 @@ import java.time.Instant;
 import java.util.Objects;
 
 public abstract class Message implements Serializable {
-    protected String text;
+    protected String text = "";
     protected Instant timeStamp;
 
     public Message() {
