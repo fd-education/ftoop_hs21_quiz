@@ -1,9 +1,12 @@
-package ch.ffhs.quiz.game.gamesteps;
+package ch.ffhs.quiz.game.gamesteps.impl;
 
 import ch.ffhs.quiz.game.GameContext;
+import ch.ffhs.quiz.game.gamesteps.GameStep;
+import ch.ffhs.quiz.game.gamesteps.GameStepsHolder;
 import ch.ffhs.quiz.game.gamesteps.impl.ConfirmNamesStep;
 import ch.ffhs.quiz.game.gamesteps.impl.EvaluateResponsesStep;
 import ch.ffhs.quiz.game.gamesteps.impl.FeedbackStep;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 
@@ -14,7 +17,7 @@ class GameStepsHolderTest {
 
     @Test
     void emptyOfEqualsEmptyHolder() {
-        assertEquals(GameStepsHolder.of(), GameStepsHolder.emptyHolder());
+        Assertions.assertEquals(GameStepsHolder.of(), GameStepsHolder.emptyHolder());
     }
 
     @Test

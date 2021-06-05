@@ -1,4 +1,4 @@
-package ch.ffhs.quiz.game.gamesteps;
+package ch.ffhs.quiz.game.gamesteps.impl;
 
 import ch.ffhs.quiz.game.gamesteps.impl.ReceiveResponsesStep;
 import ch.ffhs.quiz.messages.AnswerMessage;
@@ -18,8 +18,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -29,7 +28,6 @@ class ReceiveResponsesStepTest {
     private Player player1;
     @Mock
     private Player player2;
-    private GameContext gameContext;
     private RoundContext roundContext;
     private ReceiveResponsesStep receiveResponsesStep;
 
@@ -38,15 +36,12 @@ class ReceiveResponsesStepTest {
         List<Question> questions = new ArrayList<>();
         Question question = mock(Question.class);
         questions.add(question);
-        gameContext = new GameContext(List.of(player1, player2), questions);
+        GameContext gameContext = new GameContext(List.of(player1, player2), questions);
         roundContext = gameContext.getRoundContext();
         receiveResponsesStep = new ReceiveResponsesStep(gameContext);
         gameContext.nextRound();
     }
 
-    private String createAnswer(int answer) {
-        return MessageUtils.serialize(new AnswerMessage(answer));
-    }
 
     @Test
     void process_positive_simple() throws IOException {

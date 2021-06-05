@@ -1,4 +1,4 @@
-package ch.ffhs.quiz.game.gamesteps;
+package ch.ffhs.quiz.game.gamesteps.impl;
 
 import ch.ffhs.quiz.game.gamesteps.impl.RoundSummaryStep;
 import ch.ffhs.quiz.messages.RoundSummaryMessage;
