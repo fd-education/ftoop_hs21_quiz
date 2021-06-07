@@ -7,6 +7,9 @@ import static java.lang.StackWalker.Option.RETAIN_CLASS_REFERENCE;
 public class LoggerUtils {
     public static Logger getLogger() {
         Class<?> callingClass = StackWalker.getInstance(RETAIN_CLASS_REFERENCE).getCallerClass();
-        return Logger.getLogger(callingClass.getName());
+        final Logger logger = Logger.getLogger(callingClass.getName());
+        logger.setUseParentHandlers(false);
+        logger.addHandler(new CustomConsoleHandler());
+        return logger;
     }
 }
