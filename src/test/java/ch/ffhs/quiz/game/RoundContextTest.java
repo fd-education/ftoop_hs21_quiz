@@ -43,14 +43,27 @@ class RoundContextTest {
     }
 
     @Test
-    void addCorrectPlayer() {
+    void addCorrectPlayerWasPlayerCorrect_positive_simple() {
+        roundContext.addCorrectPlayer(player1);
+
+        assertTrue(roundContext.wasPlayerCorrect(player1));
+        assertFalse(roundContext.wasPlayerCorrect(player2));
     }
 
     @Test
-    void wasPlayerCorrect() {
+    void setWinningPlayer_negative_cantSetWinningPlayerTwice() {
+        roundContext.setWinningPlayer(player1);
+
+        assertThrows(IllegalStateException.class, (() -> roundContext.setWinningPlayer(player1)));
     }
 
     @Test
-    void getRoundNumber() {
+    void all_negative_nullArgsThrow() {
+        assertThrows(NullPointerException.class, (() -> roundContext.getPlayerAnswer(null)));
+        assertThrows(NullPointerException.class, (() -> roundContext.setWinningPlayer(null)));
+        assertThrows(NullPointerException.class, (() -> roundContext.addCorrectPlayer(null)));
+        assertThrows(NullPointerException.class, (() -> roundContext.wasPlayerCorrect(null)));
+        assertThrows(NullPointerException.class, (() -> roundContext.setPlayerAnswer(null, null)));
+        assertThrows(NullPointerException.class, (() -> roundContext.setPlayerAnswer(player1, null)));
     }
 }

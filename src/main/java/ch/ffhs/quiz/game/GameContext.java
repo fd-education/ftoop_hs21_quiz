@@ -6,6 +6,7 @@ import ch.ffhs.quiz.game.player.Player;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class GameContext {
     private final List<Player> players;
@@ -16,9 +17,24 @@ public class GameContext {
         Objects.requireNonNull(players);
         Objects.requireNonNull(questions);
 
+        players = filterNullValues(players);
+        if (players.size() < 1)
+            throw new IllegalArgumentException("At least one player is required");
+
+        questions = filterNullValues(questions);
+        if (questions.size() < 1)
+            throw new IllegalArgumentException("At least one question is required");
+
         this.players = players;
         this.questions = questions.listIterator();
     }
+
+    private static <T> List<T> filterNullValues(List<T> list) {
+        Objects.requireNonNull(list);
+
+        return list.stream().filter(Objects::nonNull).collect(Collectors.toList());
+    }
+
 
     public RoundContext getRoundContext() {
         if (roundContext == null) {

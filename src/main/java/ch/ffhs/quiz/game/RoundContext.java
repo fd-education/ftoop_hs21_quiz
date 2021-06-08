@@ -52,6 +52,7 @@ public class RoundContext {
     }
 
     public boolean wasPlayerCorrect(Player player) {
+        Objects.requireNonNull(player);
         return correctPlayers.contains(player);
     }
 }

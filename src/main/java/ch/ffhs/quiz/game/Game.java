@@ -61,23 +61,11 @@ public class Game {
 //        game.play(players, List.of(question1, question2));
 //    }
 
-    private static <T> List<T> filterNullValues(List<T> list) {
-        Objects.requireNonNull(list);
-
-        return list.stream().filter(Objects::nonNull).collect(Collectors.toList());
-    }
 
     public void play(List<Player> players, List<Question> questions) {
         Objects.requireNonNull(questions);
         Objects.requireNonNull(players);
 
-        players = filterNullValues(players);
-        if (players.size() < 1)
-            throw new IllegalArgumentException("Cannot play a game with less than one player");
-
-        questions = filterNullValues(questions);
-        if (questions.size() < 1)
-            throw new IllegalArgumentException("Cannot play a game with less than one question");
 
         GameContext gameContext = new GameContext(players, questions);
 

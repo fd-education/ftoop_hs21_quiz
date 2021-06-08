@@ -65,25 +65,6 @@ class GameTest {
     }
 
     @Test
-    void play_invalidListSizesFail() {
-        assertThrows(IllegalArgumentException.class, () -> game.play(new ArrayList<>(), questions));
-        assertThrows(IllegalArgumentException.class, () -> game.play(players, new ArrayList<>()));
-    }
-
-    @Test
-    void ctor_playerListsWithNullsFail() {
-        List<Player> nullPlayerList = new ArrayList<>();
-
-        nullPlayerList.add(null);
-        assertThrows(IllegalArgumentException.class, () -> game.play(nullPlayerList, questions));
-
-        List<Question> nullQuestionList = new ArrayList<>();
-
-        nullQuestionList.add(null);
-        assertThrows(IllegalArgumentException.class, () -> game.play(players, nullQuestionList));
-    }
-
-    @Test
     void start_positive_simple() {
         try (MockedConstruction<EvaluateResponsesStep> mocked = mockConstruction(EvaluateResponsesStep.class)){
             game = gameBuilder
