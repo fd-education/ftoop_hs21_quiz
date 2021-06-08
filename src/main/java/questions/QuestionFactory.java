@@ -6,12 +6,6 @@ import java.util.*;
 public class QuestionFactory {
 
     public static void main(String[] args) {
-        //QuestionImp questionImp = new QuestionImp();
-        //Map<String, List<String>> mappedQuiz = fullQuestionCatalog();
-        //ArrayList<QuestionImp> quizList = questionImp.getQuestions(mappedQuiz);
-        //System.out.println(quizList);
-        //QuestionFactory questionFactory = new QuestionFactory();
-        //questionFactory.questionBuilder(mappedQuiz);
         ArrayList<QuestionImp> quizCatalog = questionBuilder(fullQuestionCatalog());
         System.out.println(quizCatalog);
     }
