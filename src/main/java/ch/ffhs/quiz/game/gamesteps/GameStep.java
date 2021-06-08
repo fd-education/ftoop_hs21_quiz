@@ -9,15 +9,16 @@ import java.util.logging.Logger;
 
 public abstract class GameStep {
     protected final GameContext gameContext;
+    protected Logger logger;
 
     public GameStep(GameContext gameContext) {
         this.gameContext = gameContext;
+        this.logger = LoggerUtils.getLogger();
     }
     protected void prepareStep() {}
     protected abstract void handlePlayer(Player player);
     protected void completeStep() {}
     public final void process() {
-        Logger logger = LoggerUtils.getLogger();
         logger.info("Starting game step: "+this.getClass().getSimpleName());
         logger.info("Preparing game step");
         prepareStep();

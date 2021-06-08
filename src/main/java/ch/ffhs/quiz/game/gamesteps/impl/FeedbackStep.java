@@ -1,14 +1,18 @@
 package ch.ffhs.quiz.game.gamesteps.impl;
 
 import ch.ffhs.quiz.game.GameContext;
-import ch.ffhs.quiz.game.gamesteps.MainGameStep;
+import ch.ffhs.quiz.game.RoundContext;
+import ch.ffhs.quiz.game.gamesteps.GameStep;
 import ch.ffhs.quiz.game.player.Player;
 import ch.ffhs.quiz.messages.FeedbackMessage;
 
-public class FeedbackStep extends MainGameStep {
+public class FeedbackStep extends GameStep {
+
+    private final RoundContext roundContext;
 
     public FeedbackStep(GameContext gameContext) {
         super(gameContext);
+        this.roundContext = gameContext.getRoundContext();
     }
 
     @Override

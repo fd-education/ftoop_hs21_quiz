@@ -1,7 +1,7 @@
 package ch.ffhs.quiz.game.gamesteps.impl;
 
 import ch.ffhs.quiz.game.GameContext;
-import ch.ffhs.quiz.game.gamesteps.MainGameStep;
+import ch.ffhs.quiz.game.gamesteps.GameStep;
 import ch.ffhs.quiz.game.player.Player;
 import ch.ffhs.quiz.messages.RoundSummaryMessage;
 import ch.ffhs.quiz.messages.ScoreboardEntry;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class RoundSummaryStep extends MainGameStep {
+public class RoundSummaryStep extends GameStep {
     private RoundSummaryMessage summaryMessage;
 
     public RoundSummaryStep(GameContext gameContext) {
