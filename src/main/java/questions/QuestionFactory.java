@@ -6,11 +6,16 @@ import java.util.*;
 public class QuestionFactory {
 
     public static void main(String[] args) {
-        QuestionImp questionImp = new QuestionImp();
-        Map<String, List<String>> mappedQuiz = fullQuestionCatalog();
-        ArrayList<QuestionImp> quizList = questionImp.getQuestions(mappedQuiz);
-        System.out.println(quizList);
+        //QuestionImp questionImp = new QuestionImp();
+        //Map<String, List<String>> mappedQuiz = fullQuestionCatalog();
+        //ArrayList<QuestionImp> quizList = questionImp.getQuestions(mappedQuiz);
+        //System.out.println(quizList);
+        //QuestionFactory questionFactory = new QuestionFactory();
+        //questionFactory.questionBuilder(mappedQuiz);
+        ArrayList<QuestionImp> quizCatalog = questionBuilder(fullQuestionCatalog());
+        System.out.println(quizCatalog);
     }
+
     private static Map<String, List<String>> loadFromFile(String fileName) {
         String question = "";
         String answerA = "";
@@ -59,12 +64,9 @@ public class QuestionFactory {
                 }
 
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //System.out.println(questions);
         return questions;
     }
 
@@ -83,7 +85,32 @@ public class QuestionFactory {
         allQuestions.putAll(catalog2);
         allQuestions.putAll(catalog3);
         return allQuestions;
+    }
 
+    public static ArrayList<QuestionImp> questionBuilder(Map<String, List<String>> Quiz) {
+        ArrayList<QuestionImp> quizList = new ArrayList<>();
+        for (Map.Entry<String, List<String>> entry : Quiz.entrySet()) {
+            String question = entry.getKey();
+            List<AnswerImp> answerList = new ArrayList<>();
+            int intCorrectAnswer = 0;
+            for (int i = 0; i < Quiz.get(entry.getKey()).size(); i++) {
+                String valueSecond = String.valueOf(Quiz.get(entry.getKey()).get(i).charAt(1));
+                if (valueSecond.equals("*")) {
+                    String correctAnswer = Quiz.get(entry.getKey()).get(i);
+                    correctAnswer = correctAnswer.replace("*", "");
+                    intCorrectAnswer = i;
+                    AnswerImp answerImp = new AnswerImp(correctAnswer, true);
+                    answerList.add(answerImp);
+                } else {
+                    String incorrectAnswer = Quiz.get(entry.getKey()).get(i);
+                    AnswerImp answerImp = new AnswerImp(incorrectAnswer, false);
+                    answerList.add(answerImp);
+                }
+            }
+            QuestionImp questionImp = new QuestionImp(answerList, question, intCorrectAnswer);
+            quizList.add(questionImp);
+        }
+        return quizList;
     }
 
 
