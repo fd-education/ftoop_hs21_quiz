@@ -14,27 +14,6 @@ public class QuestionImp implements Question {
         this.question = question;
         this.correctAnswer = correctAnswer;
     }
- /*   public ArrayList<QuestionImp> getQuestions(Map<String, List<String>> QuestionsCatalog) {
-        ArrayList<QuestionImp> questionImps = new ArrayList<>();
-        AnswerImp answerImp = new AnswerImp();
-        QuestionImp questionImp = new QuestionImp();
-        Map<String, List<AnswerImp>> mappedAnswers = answerImp.getAnswers(QuestionsCatalog);
-        for(Map.Entry<String, List<AnswerImp>> entry : mappedAnswers.entrySet()) {
-            String question = entry.getKey();
-            List<AnswerImp> answerImpList = entry.getValue();
-            int i = 1;
-            while (i < (answerImpList.size()) ){
-                if (answerImpList.get(i).isCorrectAnswer) {
-                    questionImp.correctAnswer = i;
-                }
-                i++;
-            }
-            questionImp.question = question;
-            questionImp.answers = answerImpList;
-            questionImps.add(questionImp);
-        }
-        return questionImps;
-    }*/
 
     @Override
     public boolean checkAnswer(Integer questionNumber) {
