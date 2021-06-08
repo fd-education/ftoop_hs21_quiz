@@ -1,5 +1,7 @@
 package ch.ffhs.quiz.game.gamesteps;
 
+import ch.ffhs.quiz.game.GameContext;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -38,17 +40,17 @@ public class GameStepsHolder {
         return gameStepClassList.hashCode();
     }
 
-    private <T> GameStep newGameStepInstance(Class<? extends GameStep> clazz, T ctorArgument) {
+    private GameStep newGameStepInstance(Class<? extends GameStep> clazz, GameContext gameContext) {
         try {
-            return clazz.getDeclaredConstructor(ctorArgument.getClass()).newInstance(ctorArgument);
+            return clazz.getDeclaredConstructor(GameContext.class).newInstance(gameContext);
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException(String.format("Calling constructor of game step %s failed with exception %s", clazz.getName(), e.getCause()));
         }
     }
 
-    public <T> void processAll(T ctorArgument) {
+    public <T> void processAll(GameContext gameContext) {
         for (Class<? extends GameStep> clazz : gameStepClassList) {
-            newGameStepInstance(clazz, ctorArgument).process();
+            newGameStepInstance(clazz, gameContext).process();
         }
     }
 }
