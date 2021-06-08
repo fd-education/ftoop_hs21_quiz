@@ -31,6 +31,7 @@ public class RoundContext {
     }
 
     public AnswerMessage getPlayerAnswer(Player player) {
+        Objects.requireNonNull(player);
         return playerAnswersMap.get(player);
     }
 
