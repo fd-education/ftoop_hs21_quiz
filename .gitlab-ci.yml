@@ -1,23 +1,26 @@
+# You can override the included template(s) by including variable overrides
+# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
+# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
+# Note that environment variables can be set in several places
+# See https://docs.gitlab.com/ee/ci/variables/#priority-of-environment-variables
 variables:
   MAVEN_OPTS: "-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN
-               -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true
-               -Dorg.slf4j.simpleLogger.defaultLogLevel=WARN
-               -Dmaven.repo.local=/cache/maven.repository"
-
+    -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true -Dorg.slf4j.simpleLogger.defaultLogLevel=WARN
+    -Dmaven.repo.local=/cache/maven.repository"
 image: maven:3.6.3-openjdk-15-slim
-
 stages:
-    - Unit Tests
-
+- Unit Tests
+- test
 maven-test:
-    stage: Unit Tests
-    script: "mvn $MAVEN_OPTS test"
-    artifacts:
-        paths:
-            - target/surefire-reports/TEST-*.xml
-        reports:
-            junit:
-                - target/surefire-reports/TEST-*.xml
-
-
-
+  stage: Unit Tests
+  script: mvn $MAVEN_OPTS test
+  artifacts:
+    paths:
+    - target/surefire-reports/TEST-*.xml
+    reports:
+      junit:
+      - target/surefire-reports/TEST-*.xml
+sast:
+  stage: test
+include:
+- template: Security/SAST.gitlab-ci.yml
