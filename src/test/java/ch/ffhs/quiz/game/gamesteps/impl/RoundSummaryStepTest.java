@@ -15,8 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class RoundSummaryStepTest {
@@ -30,10 +29,11 @@ class RoundSummaryStepTest {
 
     @BeforeEach
     void setUp() {
-        questions = new ArrayList<>();
+        questions = List.of(mock(Question.class));
         when(player1.getId()).thenReturn(0);
         when(player2.getId()).thenReturn(1);
         gameContext = new GameContext(List.of(player1, player2), questions);
+        gameContext.nextRound();
         roundSummaryStep = new RoundSummaryStep(gameContext);
     }
 

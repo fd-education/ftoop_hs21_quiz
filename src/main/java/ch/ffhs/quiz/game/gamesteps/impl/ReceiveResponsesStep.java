@@ -1,14 +1,14 @@
 package ch.ffhs.quiz.game.gamesteps.impl;
 
-import ch.ffhs.quiz.game.gamesteps.GameStep;
-import ch.ffhs.quiz.messages.AnswerMessage;
 import ch.ffhs.quiz.game.GameContext;
+import ch.ffhs.quiz.game.gamesteps.MainGameStep;
 import ch.ffhs.quiz.game.player.Player;
+import ch.ffhs.quiz.messages.AnswerMessage;
 
 import java.io.IOException;
 import java.util.Objects;
 
-public class ReceiveResponsesStep extends GameStep {
+public class ReceiveResponsesStep extends MainGameStep {
 
     public ReceiveResponsesStep(GameContext gameContext) {
         super(gameContext);

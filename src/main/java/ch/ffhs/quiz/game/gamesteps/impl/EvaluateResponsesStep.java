@@ -1,13 +1,13 @@
 package ch.ffhs.quiz.game.gamesteps.impl;
 
-import ch.ffhs.quiz.game.gamesteps.GameStep;
-import ch.ffhs.quiz.messages.AnswerMessage;
 import ch.ffhs.quiz.game.GameContext;
+import ch.ffhs.quiz.game.gamesteps.MainGameStep;
 import ch.ffhs.quiz.game.player.Player;
+import ch.ffhs.quiz.messages.AnswerMessage;
 
 import java.time.Instant;
 
-public class EvaluateResponsesStep extends GameStep {
+public class EvaluateResponsesStep extends MainGameStep {
     private Instant earliestAnswerTimestamp = Instant.MAX;
 
     public EvaluateResponsesStep(GameContext gameContext) {
@@ -19,7 +19,7 @@ public class EvaluateResponsesStep extends GameStep {
         AnswerMessage answer = roundContext.getPlayerAnswer(player);
         int chosenAnswer = answer.getChosenAnswer();
         Instant timestamp = answer.getTimeStamp();
-        if (roundContext.getCurrentQuestion().checkAnswer(chosenAnswer)) {
+        if (roundContext.getQuestion().checkAnswer(chosenAnswer)) {
             roundContext.addCorrectPlayer(player);
             if (timestamp.isBefore(earliestAnswerTimestamp)) {
                 earliestAnswerTimestamp = timestamp;

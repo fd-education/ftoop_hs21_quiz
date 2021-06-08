@@ -10,7 +10,7 @@ import java.util.Objects;
 public class GameContext {
     private final List<Player> players;
     private final Iterator<Question> questions;
-    private final RoundContext roundContext;
+    private RoundContext roundContext;
 
     public GameContext(List<Player> players, List<Question> questions) {
         Objects.requireNonNull(players);
@@ -18,10 +18,12 @@ public class GameContext {
 
         this.players = players;
         this.questions = questions.listIterator();
-        this.roundContext = new RoundContext();
     }
 
     public RoundContext getRoundContext() {
+        if (roundContext == null) {
+            throw new IllegalStateException("Round context can't be returned if no round has been started");
+        }
         return roundContext;
     }
 
@@ -31,7 +33,7 @@ public class GameContext {
 
     public void nextRound() {
         if (isFinished()) throw new IllegalStateException("Game is over, no new questions available.");
-        roundContext.nextRound(questions.next());
+        roundContext = new RoundContext(questions.next());
     }
 
     public List<Player> getPlayers() {

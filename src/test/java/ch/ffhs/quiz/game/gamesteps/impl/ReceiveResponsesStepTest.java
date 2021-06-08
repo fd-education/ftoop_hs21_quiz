@@ -37,9 +37,9 @@ class ReceiveResponsesStepTest {
         Question question = mock(Question.class);
         questions.add(question);
         GameContext gameContext = new GameContext(List.of(player1, player2), questions);
+        gameContext.nextRound();
         roundContext = gameContext.getRoundContext();
         receiveResponsesStep = new ReceiveResponsesStep(gameContext);
-        gameContext.nextRound();
     }
 
 

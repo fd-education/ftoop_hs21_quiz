@@ -38,8 +38,8 @@ class FeedbackStepTest {
         when(player2.getId()).thenReturn(1);
 //        when(player2.getName()).thenReturn("Player 2");
         gameContext = new GameContext(List.of(player1, player2), questions);
-        roundContext = gameContext.getRoundContext();
         gameContext.nextRound();
+        roundContext = gameContext.getRoundContext();
 
         feedbackStep = new FeedbackStep(gameContext);
     }

@@ -1,6 +1,7 @@
 package ch.ffhs.quiz.game;
 
 import ch.ffhs.quiz.game.player.Player;
+import ch.ffhs.quiz.messages.AnswerMessage;
 import ch.ffhs.quiz.questions.Question;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 class RoundContextTest {
@@ -24,31 +26,20 @@ class RoundContextTest {
 
     @BeforeEach
     void setup() {
-        roundContext = new RoundContext();
-    }
-
-    @Test
-    void nextRound_positive_simple() {
-        roundContext.nextRound(question1);
-        final int roundNumber1 = roundContext.getRoundNumber();
-        final Question returnedQuestion1 = roundContext.getCurrentQuestion();
-        roundContext.nextRound(question2);
-        final int roundNumber2 = roundContext.getRoundNumber();
-        final Question returnedQuestion2 = roundContext.getCurrentQuestion();
-
-        assertEquals(question1, returnedQuestion1);
-        assertEquals(question2, returnedQuestion2);
-        assertEquals(1, roundNumber1);
-        assertEquals(2, roundNumber2);
+        roundContext = new RoundContext(question1);
     }
 
     @Test
     void setAndGetPlayerAnswer_positive_simple() {
+        final AnswerMessage mockAnswer = mock(AnswerMessage.class);
+        roundContext.setPlayerAnswer(player1, mockAnswer);
 
+        assertEquals(mockAnswer, roundContext.getPlayerAnswer(player1));
     }
 
     @Test
-    void getPlayerAnswer() {
+    void getPlayerAnswer_negative_noAnswerForPlayer() {
+        assertThrows(IllegalArgumentException.class, (() -> roundContext.getPlayerAnswer(player2)));
     }
 
     @Test

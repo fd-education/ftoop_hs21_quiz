@@ -1,16 +1,16 @@
 package ch.ffhs.quiz.game.gamesteps.impl;
 
-import ch.ffhs.quiz.game.gamesteps.GameStep;
+import ch.ffhs.quiz.game.GameContext;
+import ch.ffhs.quiz.game.gamesteps.MainGameStep;
+import ch.ffhs.quiz.game.player.Player;
 import ch.ffhs.quiz.messages.QuestionMessage;
 import ch.ffhs.quiz.questions.Answer;
 import ch.ffhs.quiz.questions.Question;
-import ch.ffhs.quiz.game.GameContext;
-import ch.ffhs.quiz.game.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SendQuestionStep extends GameStep {
+public class SendQuestionStep extends MainGameStep {
     QuestionMessage questionMessage;
 
     public SendQuestionStep(GameContext gameContext) {
@@ -19,7 +19,7 @@ public class SendQuestionStep extends GameStep {
 
     @Override
     protected void prepareStep() {
-        final Question question = roundContext.getCurrentQuestion();
+        final Question question = roundContext.getQuestion();
         final String questionText = question.getQuestionText();
         final List<Answer> answers = question.getAnswers();
         final List<String> answerTexts = new ArrayList<>();

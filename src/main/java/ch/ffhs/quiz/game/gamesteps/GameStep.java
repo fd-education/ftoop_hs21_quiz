@@ -9,11 +9,9 @@ import java.util.logging.Logger;
 
 public abstract class GameStep {
     protected final GameContext gameContext;
-    protected final RoundContext roundContext;
 
     public GameStep(GameContext gameContext) {
         this.gameContext = gameContext;
-        this.roundContext = gameContext.getRoundContext();
     }
     protected void prepareStep() {}
     protected abstract void handlePlayer(Player player);

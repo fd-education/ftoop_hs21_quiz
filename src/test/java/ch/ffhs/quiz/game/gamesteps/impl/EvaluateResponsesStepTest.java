@@ -42,9 +42,9 @@ class EvaluateResponsesStepTest {
         when(player1.getId()).thenReturn(0);
         when(player2.getId()).thenReturn(1);
         gameContext = new GameContext(List.of(player1, player2), questions);
+        gameContext.nextRound();
         roundContext = gameContext.getRoundContext();
         evaluateResponsesStep = new EvaluateResponsesStep(gameContext);
-        gameContext.nextRound();
         lenient().when(question.checkAnswer(eq(0))).thenReturn(true);
     }
 

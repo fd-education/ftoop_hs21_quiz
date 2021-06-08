@@ -1,27 +1,25 @@
 package ch.ffhs.quiz.game;
 
+import ch.ffhs.quiz.game.player.Player;
 import ch.ffhs.quiz.messages.AnswerMessage;
 import ch.ffhs.quiz.questions.Question;
-import ch.ffhs.quiz.game.player.Player;
 
 import java.util.*;
 
 public class RoundContext {
-    private Player winningPlayer;
     private final Set<Player> correctPlayers = new HashSet<>();
     private final Map<Player, AnswerMessage> playerAnswersMap = new HashMap<>();
-    private int roundNumber = 0;
-    private Question currentQuestion;
+    private Player winningPlayer;
+    private final Question question;
 
-    public Question getCurrentQuestion() {
-        return currentQuestion;
+    public RoundContext(Question question) {
+        Objects.requireNonNull(question);
+        this.question = question;
+        winningPlayer = null;
     }
 
-    public void nextRound(Question currentQuestion) {
-        Objects.requireNonNull(currentQuestion);
-        this.currentQuestion = currentQuestion;
-        roundNumber += 1;
-        winningPlayer = null;
+    public Question getQuestion() {
+        return question;
     }
 
     public void setPlayerAnswer(Player player, AnswerMessage answerMessage) {
@@ -32,6 +30,8 @@ public class RoundContext {
 
     public AnswerMessage getPlayerAnswer(Player player) {
         Objects.requireNonNull(player);
+        if (!playerAnswersMap.containsKey(player))
+            throw new IllegalArgumentException("There is no answer from this player");
         return playerAnswersMap.get(player);
     }
 
@@ -53,9 +53,5 @@ public class RoundContext {
 
     public boolean wasPlayerCorrect(Player player) {
         return correctPlayers.contains(player);
-    }
-
-    public int getRoundNumber() {
-        return roundNumber;
     }
 }
