@@ -6,7 +6,12 @@ public class AnswerImp implements Answer {
     String answer;
     Boolean isCorrectAnswer;
 
-    public Map<String, List<AnswerImp>> getAnswers(Map<String, List<String>> AnswerCatalog) {
+    public AnswerImp(String answer, boolean isCorrectAnswer) {
+        this.answer = answer;
+        this.isCorrectAnswer = isCorrectAnswer;
+    }
+
+ /*   public Map<String, List<AnswerImp>> getAnswers(Map<String, List<String>> AnswerCatalog) {
         Map<String , List<AnswerImp>> mappedAnswers = new HashMap<>();
 
         for (Map.Entry<String, List<String>> entry : AnswerCatalog.entrySet()) {
@@ -21,9 +26,9 @@ public class AnswerImp implements Answer {
                     answerImp.isCorrectAnswer = true;
                     answerList.add(answerImp);
                 } else {
-                    String correctAnswer = AnswerCatalog.get(entry.getKey()).get(i);
+                    String incorrectAnswer = AnswerCatalog.get(entry.getKey()).get(i);
                     AnswerImp answerImp = new AnswerImp();
-                    answerImp.answer = correctAnswer;
+                    answerImp.answer = incorrectAnswer;
                     answerImp.isCorrectAnswer = false;
                     answerList.add(answerImp);
                 }
@@ -31,7 +36,7 @@ public class AnswerImp implements Answer {
             mappedAnswers.put(entry.getKey(), answerList);
         }
         return mappedAnswers;
-    }
+    }*/
 
     @Override
     public boolean isCorrect() {
