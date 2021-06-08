@@ -16,6 +16,7 @@ class LoggerUtilsTest {
 
     @BeforeEach
     void setup() {
+        LoggerUtils.setGlobalLogLevel(Level.ALL);
         logger = LoggerUtils.getLogger();
     }
 
@@ -37,5 +38,19 @@ class LoggerUtilsTest {
 
         assertTrue(err.contains("errTest"));
         assertTrue(out.contains("outTest"));
+    }
+
+    @Test
+    void setGlobalLogLevel_positive_simple() throws Exception {
+        String out1 = tapSystemOut((() -> logger.info("outTest")));
+        String err1 = tapSystemErr((() -> logger.warning("errTest")));
+        LoggerUtils.setGlobalLogLevel(Level.WARNING);
+        String err2 = tapSystemErr((() -> logger.warning("errTest")));
+        String out2 = tapSystemOut((() -> logger.info("outTest")));
+
+        assertFalse(out1.isEmpty());
+        assertFalse(err1.isEmpty());
+        assertTrue(out2.isEmpty());
+        assertFalse(err2.isEmpty());
     }
 }
