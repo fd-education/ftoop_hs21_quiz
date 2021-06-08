@@ -9,7 +9,12 @@ public class QuestionImp implements Question {
     List<AnswerImp> answers;
     String question;
     Integer correctAnswer;
-    public ArrayList<QuestionImp> getQuestions(Map<String, List<String>> QuestionsCatalog) {
+    public QuestionImp(List<AnswerImp> answers, String question, Integer correctAnswer) {
+        this.answers = answers;
+        this.question = question;
+        this.correctAnswer = correctAnswer;
+    }
+ /*   public ArrayList<QuestionImp> getQuestions(Map<String, List<String>> QuestionsCatalog) {
         ArrayList<QuestionImp> questionImps = new ArrayList<>();
         AnswerImp answerImp = new AnswerImp();
         QuestionImp questionImp = new QuestionImp();
@@ -29,7 +34,7 @@ public class QuestionImp implements Question {
             questionImps.add(questionImp);
         }
         return questionImps;
-    }
+    }*/
 
     @Override
     public boolean checkAnswer(Integer questionNumber) {
