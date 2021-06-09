@@ -4,11 +4,11 @@ import ch.ffhs.quiz.client.Client;
 import ch.ffhs.quiz.client.InputHandler;
 import ch.ffhs.quiz.client.textinterface.TextInterface;
 import ch.ffhs.quiz.client.ui.AnsiBuilder;
-import ch.ffhs.quiz.client.ui.AnsiBuilder.*;
+import ch.ffhs.quiz.client.ui.AnsiBuilder.Color;
+import ch.ffhs.quiz.client.ui.AnsiBuilder.Decoration;
 import ch.ffhs.quiz.connectivity.Connection;
-import ch.ffhs.quiz.connectivity.impl.ConnectionImpl;
-import ch.ffhs.quiz.messages.MessageUtils;
 import ch.ffhs.quiz.messages.NameMessage;
+import ch.ffhs.quiz.messages.ReadyMessage;
 
 import java.io.IOException;
 
