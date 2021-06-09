@@ -37,7 +37,9 @@ public class InitializationStage extends Stage{
     @Override
     protected void handleConversation() {
 
+
         try{
+            while(!serverConnection.receive(ReadyMessage.class).isReady());
             NameMessage name;
 
             do{
