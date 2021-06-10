@@ -1,5 +1,6 @@
 package ch.ffhs.quiz.logger;
 
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,7 +11,10 @@ public class LoggerUtils {
         Class<?> callingClass = StackWalker.getInstance(RETAIN_CLASS_REFERENCE).getCallerClass();
         final Logger logger = Logger.getLogger(callingClass.getName());
         logger.setUseParentHandlers(false);
-        logger.addHandler(new CustomConsoleHandler());
+        // Only add a handler when no handler is defined yet
+        if (logger.getHandlers().length == 0) {
+            logger.addHandler(new CustomConsoleHandler());
+        }
         return logger;
     }
 
