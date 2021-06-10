@@ -1,7 +1,9 @@
 package ch.ffhs.quiz.messages;
 
-import ch.ffhs.quiz.connectivity.Connection;
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
@@ -57,7 +59,7 @@ public class MessageUtils {
             long epochSecond = 0;
             while (jsonReader.hasNext()) {
                 String name = jsonReader.nextName();
-                if (name.equals("epochSecond")){
+                if (name.equals("epochSecond")) {
                     epochSecond = jsonReader.nextLong();
                 } else if (name.equals("nano")) {
                     nano = jsonReader.nextInt();

@@ -7,12 +7,12 @@ import ch.ffhs.quiz.game.player.Player;
 import ch.ffhs.quiz.game.player.PlayerFactory;
 import ch.ffhs.quiz.questions.AnswerImpl;
 import ch.ffhs.quiz.questions.Question;
+import ch.ffhs.quiz.questions.QuestionImpl;
 import ch.ffhs.quiz.server.Server;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class Game {
     private final GameStepsHolder setupSteps;
@@ -29,37 +29,40 @@ public class Game {
         return new GameBuilder();
     }
 
-//    public static void main(String[] args) throws IOException {
-//        Game game = Game.builder()
-//                .withSetupSteps(ConfirmNamesStep.class)
-//                .withMainSteps(
-//                        SendQuestionStep.class,
-//                        ReceiveResponsesStep.class,
-//                        EvaluateResponsesStep.class,
-//                        FeedbackStep.class,
-//                        RoundSummaryStep.class
-//                )
-//                .withTeardownSteps(
-//                        StopPlayersStep.class
-//                ).build();
-//
-//        // TODO: Remove asap
-//        Question question1 = new QuestionImpl("Question 1", List.of(
-//                new AnswerImpl("A", true),
-//                new AnswerImpl("B", false),
-//                new AnswerImpl("C", false)
-//        ));
-//
-//        // TODO: Remove asap
-//        Question question2 = new QuestionImpl("Question 2", List.of(
-//                new AnswerImpl("A", false),
-//                new AnswerImpl("B", true),
-//                new AnswerImpl("C", false)
-//        ));
-//        Server server = new Server(3141);
-//        List<Player> players = PlayerFactory.connectPlayers(server, 2);
-//        game.play(players, List.of(question1, question2));
-//    }
+    public static void main(String[] args) throws IOException {
+        Game game = Game.builder()
+                .withSetupSteps(
+                        NotifyGameStartsStep.class,
+                        ConfirmNamesStep.class
+                )
+                .withMainSteps(
+                        SendQuestionStep.class,
+                        ReceiveResponsesStep.class,
+                        EvaluateResponsesStep.class,
+                        FeedbackStep.class,
+                        RoundSummaryStep.class
+                )
+                .withTeardownSteps(
+                        StopPlayersStep.class
+                ).build();
+
+        // TODO: Remove asap
+        Question question1 = new QuestionImpl("Question 1", List.of(
+                new AnswerImpl("A", true),
+                new AnswerImpl("B", false),
+                new AnswerImpl("C", false)
+        ));
+
+        // TODO: Remove asap
+        Question question2 = new QuestionImpl("Question 2", List.of(
+                new AnswerImpl("A", false),
+                new AnswerImpl("B", true),
+                new AnswerImpl("C", false)
+        ));
+        Server server = new Server(3141);
+        List<Player> players = PlayerFactory.connectPlayers(server, 2);
+        game.play(players, List.of(question1, question2));
+    }
 
 
     public void play(List<Player> players, List<Question> questions) {

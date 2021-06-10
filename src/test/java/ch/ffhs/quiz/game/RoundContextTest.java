@@ -18,8 +18,6 @@ class RoundContextTest {
     @Mock
     Question question1;
     @Mock
-    Question question2;
-    @Mock
     Player player1;
     @Mock
     Player player2;

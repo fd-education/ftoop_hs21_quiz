@@ -2,14 +2,13 @@ package ch.ffhs.quiz.game.gamesteps;
 
 import ch.ffhs.quiz.logger.LoggerUtils;
 import ch.ffhs.quiz.game.GameContext;
-import ch.ffhs.quiz.game.RoundContext;
 import ch.ffhs.quiz.game.player.Player;
 
 import java.util.logging.Logger;
 
 public abstract class GameStep {
     protected final GameContext gameContext;
-    protected Logger logger;
+    protected final Logger logger;
 
     public GameStep(GameContext gameContext) {
         this.gameContext = gameContext;
