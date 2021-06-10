@@ -25,11 +25,6 @@ public class ConfirmNamesStep extends GameStep {
         }
     }
 
-    @Override
-    protected void handlePlayer(Player player) {
-
-    }
-
     private void confirmPlayerNames(List<Player> players) throws IOException {
         List<String> takenNames = new ArrayList<>();
 

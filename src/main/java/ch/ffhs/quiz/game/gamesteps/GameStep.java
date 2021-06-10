@@ -16,7 +16,7 @@ public abstract class GameStep {
         this.logger = LoggerUtils.getLogger();
     }
     protected void prepareStep() {}
-    protected abstract void handlePlayer(Player player);
+    protected void handlePlayer(Player player) {}
     protected void completeStep() {}
     public final void process() {
         logger.info("Starting game step: "+this.getClass().getSimpleName());
@@ -29,6 +29,6 @@ public abstract class GameStep {
         }
         logger.info("Completing game step");
         completeStep();
-        logger.info("Game step completed!");
+        logger.info("Game step %s completed!".formatted(this.getClass().getSimpleName()));
     }
 }
