@@ -1,4 +1,4 @@
-package questions;
+package ch.ffhs.quiz.questions;
 
 
 import java.io.*;
@@ -6,9 +6,9 @@ import java.util.*;
 public class QuestionFactory {
 
     public static void main(String[] args) {
-        ArrayList<QuestionImp> quiz2019 = questionBuilder("fragenkataloge/fragenkatalog_2019.txt");
-        ArrayList<QuestionImp> quiz2020 = questionBuilder("fragenkataloge/fragenkatalog_2020.txt");
-        ArrayList<QuestionImp> quiz2021 = questionBuilder("fragenkataloge/fragenkatalog_2021.txt");
+        List<Question> quiz2019 = questionBuilder("fragenkataloge/fragenkatalog_2019.txt");
+        List<Question> quiz2020 = questionBuilder("fragenkataloge/fragenkatalog_2020.txt");
+        List<Question> quiz2021 = questionBuilder("fragenkataloge/fragenkatalog_2021.txt");
         System.out.println(quiz2019);
         System.out.println(quiz2020);
         System.out.println(quiz2021);
@@ -68,13 +68,13 @@ public class QuestionFactory {
         return questions;
     }
 
-    public static ArrayList<QuestionImp> questionBuilder(String filename) {
+    public static List<Question> questionBuilder(String filename) {
         Map<String, List<String>> quiz = loadFromFile(filename);
 
-        ArrayList<QuestionImp> quizList = new ArrayList<>();
+        List<Question> quizList = new ArrayList<>();
         for (Map.Entry<String, List<String>> entry : quiz.entrySet()) {
             String question = entry.getKey();
-            List<AnswerImp> answerList = new ArrayList<>();
+            List<Answer> answerList = new ArrayList<>();
             int intCorrectAnswer = 0;
             for (int i = 0; i < quiz.get(entry.getKey()).size(); i++) {
                 String valueSecond = String.valueOf(quiz.get(entry.getKey()).get(i).charAt(1));
@@ -82,16 +82,14 @@ public class QuestionFactory {
                     String correctAnswer = quiz.get(entry.getKey()).get(i);
                     correctAnswer = correctAnswer.replace("*", "");
                     intCorrectAnswer = i;
-                    AnswerImp answerImp = new AnswerImp(correctAnswer, true);
-                    answerList.add(answerImp);
+                    answerList.add(new AnswerImpl(correctAnswer, true));
                 } else {
                     String incorrectAnswer = quiz.get(entry.getKey()).get(i);
-                    AnswerImp answerImp = new AnswerImp(incorrectAnswer, false);
-                    answerList.add(answerImp);
+                    answerList.add(new AnswerImpl(incorrectAnswer, false));
                 }
             }
-            QuestionImp questionImp = new QuestionImp(answerList, question, intCorrectAnswer);
-            quizList.add(questionImp);
+            Question questionImpl = new QuestionImpl(answerList, question, intCorrectAnswer);
+            quizList.add(questionImpl);
         }
         return quizList;
     }

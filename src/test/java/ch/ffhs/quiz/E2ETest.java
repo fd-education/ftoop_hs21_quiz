@@ -10,15 +10,16 @@ import ch.ffhs.quiz.game.Game;
 import ch.ffhs.quiz.game.gamesteps.impl.*;
 import ch.ffhs.quiz.game.player.Player;
 import ch.ffhs.quiz.game.player.PlayerFactory;
-import ch.ffhs.quiz.questions.AnswerImpl;
+import ch.ffhs.quiz.logger.LoggerUtils;
 import ch.ffhs.quiz.questions.Question;
-import ch.ffhs.quiz.questions.QuestionImpl;
+import ch.ffhs.quiz.questions.QuestionFactory;
 import ch.ffhs.quiz.server.Server;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.logging.Level;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -43,24 +44,14 @@ class E2ETest {
                         StopPlayersStep.class
                 ).build();
 
-        // TODO: Remove asap
-        Question question1 = new QuestionImpl("Question 1", List.of(
-                new AnswerImpl("A", true),
-                new AnswerImpl("B", false),
-                new AnswerImpl("C", false)
-        ));
+        List<Question> questions = QuestionFactory.questionBuilder("fragenkataloge/fragenkatalog_2019.txt").subList(0, 2);
 
-        // TODO: Remove asap
-        Question question2 = new QuestionImpl("Question 2", List.of(
-                new AnswerImpl("A", false),
-                new AnswerImpl("B", true),
-                new AnswerImpl("C", false)
-        ));
+        LoggerUtils.setGlobalLogLevel(Level.OFF);
         Server server = new Server(3141);
 
         final Thread gameThread = new Thread(() -> {
             List<Player> players = PlayerFactory.connectPlayers(server, 2);
-            game.play(players, List.of(question1, question2));
+            game.play(players, questions);
         });
         gameThread.start();
 

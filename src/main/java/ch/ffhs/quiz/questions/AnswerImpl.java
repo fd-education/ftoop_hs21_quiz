@@ -1,23 +1,23 @@
 package ch.ffhs.quiz.questions;
 
+import java.util.*;
+
 public class AnswerImpl implements Answer {
+    String answer;
+    Boolean isCorrectAnswer;
 
-    private final String answerText;
-    private final boolean isCorrect;
-
-    public AnswerImpl(String answerText, boolean isCorrect) {
-
-        this.answerText = answerText;
-        this.isCorrect = isCorrect;
+    public AnswerImpl(String answer, boolean isCorrectAnswer) {
+        this.answer = answer;
+        this.isCorrectAnswer = isCorrectAnswer;
     }
 
     @Override
     public boolean isCorrect() {
-        return isCorrect;
+        return this.isCorrectAnswer;
     }
 
     @Override
-    public String toString() {
-        return answerText;
+    public String getAnswer() {
+        return this.answer;
     }
 }
