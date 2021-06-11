@@ -2,13 +2,9 @@ package ch.ffhs.quiz.client;
 
 import ch.ffhs.quiz.client.stages.GameStage;
 import ch.ffhs.quiz.client.stages.InitializationStage;
+import ch.ffhs.quiz.client.ui.UserInterface;
 import ch.ffhs.quiz.connectivity.Connection;
 import ch.ffhs.quiz.connectivity.impl.ConnectionImpl;
-import ch.ffhs.quiz.messages.FeedbackMessage;
-import ch.ffhs.quiz.messages.Message;
-import ch.ffhs.quiz.messages.NameMessage;
-import ch.ffhs.quiz.messages.QuestionMessage;
-import ch.ffhs.quiz.server.MockServer;
 
 import java.io.IOException;
 
@@ -20,11 +16,12 @@ public class ClientController{
 
         Client client = new Client("localhost", 3141);
         Connection con = new ConnectionImpl(client.getOutput(), client.getInput());
-        new InitializationStage(client, con, inputHandler).process();
+        UserInterface ui = new UserInterface();
+        new InitializationStage(client, con, inputHandler, ui).process();
 
         GameStage gStage;
         do{
-            gStage = new GameStage(client, con, inputHandler);
+            gStage = new GameStage(client, con, inputHandler, ui);
             gStage.process();
         } while(!gStage.wasLastRound());
 

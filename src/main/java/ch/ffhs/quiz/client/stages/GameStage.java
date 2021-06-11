@@ -2,7 +2,7 @@ package ch.ffhs.quiz.client.stages;
 
 import ch.ffhs.quiz.client.Client;
 import ch.ffhs.quiz.client.InputHandler;
-import ch.ffhs.quiz.client.textinterface.TextInterface;
+import ch.ffhs.quiz.client.textinterface.TextComponents;
 import ch.ffhs.quiz.client.ui.AnsiBuilder;
 import ch.ffhs.quiz.client.ui.AnsiBuilder.Color;
 import ch.ffhs.quiz.client.ui.AnsiBuilder.Decoration;
@@ -40,13 +40,13 @@ public class GameStage extends Stage{
 
     @Override
     protected void createUserInterface(){
-        String questionTitle = TextInterface.QUESTION.getComponent();
+        String questionTitle = TextComponents.QUESTION.getComponent();
         new AnsiBuilder(questionTitle).setFont(Color.BLUE, Decoration.BOLD, true).print();
 
         System.out.println(question);
         answers.forEach(System.out::println);
         // TODO: implement
-        // TextInterface.printQuestion(question, answers);
+        // TextComponents.printQuestion(question, answers);
     }
 
     @Override
