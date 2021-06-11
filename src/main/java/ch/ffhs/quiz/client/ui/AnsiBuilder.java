@@ -110,6 +110,11 @@ public class AnsiBuilder {
      */
     public void print(){
         String text = create();
+        System.out.print(text);
+    }
+
+    public void println(){
+        String text = create();
         System.out.println(text);
     }
 
