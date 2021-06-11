@@ -5,7 +5,7 @@ package ch.ffhs.quiz.client.ui;
  */
 public class AnsiTerminal {
     // ANSI Prefix String
-    private final String PREFIX = "\033[";
+    private static final String PREFIX = "\033[";
 
     public AnsiTerminal(){}
 
@@ -13,7 +13,7 @@ public class AnsiTerminal {
      * Moves the cursor down a certain amount of lines
      * @param lines number of lines to move the cursor
      */
-    public void moveCursorUp(int lines){
+    public static void moveCursorUp(int lines){
         moveCursor(Direction.UP, lines);
     }
 
@@ -21,7 +21,7 @@ public class AnsiTerminal {
      * Moves the cursor up a certain amount of lines
      * @param lines number of lines to move the cursor
      */
-    public void moveCursorDown(int lines){
+    public static void moveCursorDown(int lines){
         moveCursor(Direction.DOWN, lines);
     }
 
@@ -29,7 +29,7 @@ public class AnsiTerminal {
      * Moves the cursor to the left by a certain amount of chars
      * @param chars number of chars to move the cursor
      */
-    public void moveCursorLeft(int chars){
+    public static void moveCursorLeft(int chars){
         moveCursor(Direction.LEFT, chars);
     }
 
@@ -37,27 +37,47 @@ public class AnsiTerminal {
      * Moves the cursor to the right by a certain amount of chars
      * @param chars number of chars to move the cursor
      */
-    public void moveCursorRight(int chars){
+    public static void moveCursorRight(int chars){
         moveCursor(Direction.RIGHT, chars);
     }
 
     // move the cursor on the terminal in a specified direction by a specified number of chars/ lines
-    private void moveCursor(Direction direction, int number){
+    private static void moveCursor(Direction direction, int number){
         System.out.printf("%s%s%s", PREFIX, number, direction.getDirection());
+    }
+
+    // store the current cursor position
+    public static void saveCursorPos(){
+        String ansi = PREFIX + "s";
+        System.out.print(ansi);
+    }
+
+    // go to the last saved cursor position
+    public static void restoreCursorPos(){
+        String ansi = PREFIX + "u";
+        System.out.print(ansi);
     }
 
     /**
      * Clear the whole terminal
      */
-    public void clearTerminal(){
+    public static void clearTerminal(){
         String ansi = PREFIX + "H" + PREFIX + "2J";
+        System.out.print(ansi);
+    }
+
+    /**
+     * Clear the terminal up from the current cursor position
+     */
+    public static void clearRemainingOfTerminal(){
+        String ansi = PREFIX + "0J";
         System.out.print(ansi);
     }
 
     /**
      * Clear the line where the cursor currently resides
      */
-    public void clearLine(){
+    public static void clearLine(){
         String ansi = PREFIX + "2K";
         System.out.print(ansi);
     }
@@ -65,7 +85,7 @@ public class AnsiTerminal {
     /**
      * Clear the line from cursor to the end of line
      */
-    public void clearRemainingOfLine(){
+    public static void clearRemainingOfLine(){
         String ansi = PREFIX + "0K";
         System.out.print(ansi);
     }
