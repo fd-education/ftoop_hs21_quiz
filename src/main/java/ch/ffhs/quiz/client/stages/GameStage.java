@@ -6,6 +6,7 @@ import ch.ffhs.quiz.client.textinterface.TextInterface;
 import ch.ffhs.quiz.client.ui.AnsiBuilder;
 import ch.ffhs.quiz.client.ui.AnsiBuilder.Color;
 import ch.ffhs.quiz.client.ui.AnsiBuilder.Decoration;
+import ch.ffhs.quiz.client.ui.UserInterface;
 import ch.ffhs.quiz.connectivity.Connection;
 import ch.ffhs.quiz.messages.*;
 
@@ -19,10 +20,11 @@ public class GameStage extends Stage{
 
     private static final String RUNTIME_EX = "This exception must not occur, because inputs get checked.";
 
-    public GameStage(Client client, Connection con, InputHandler inputHandler){
+    public GameStage(Client client, Connection con, InputHandler inputHandler, UserInterface ui){
         this.inputHandler = inputHandler;
         this.client = client;
         this.serverConnection = con;
+        this.ui = ui;
     }
 
     @Override

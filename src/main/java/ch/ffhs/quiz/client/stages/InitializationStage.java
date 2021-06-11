@@ -2,10 +2,7 @@ package ch.ffhs.quiz.client.stages;
 
 import ch.ffhs.quiz.client.Client;
 import ch.ffhs.quiz.client.InputHandler;
-import ch.ffhs.quiz.client.textinterface.TextInterface;
-import ch.ffhs.quiz.client.ui.AnsiBuilder;
-import ch.ffhs.quiz.client.ui.AnsiBuilder.Color;
-import ch.ffhs.quiz.client.ui.AnsiBuilder.Decoration;
+import ch.ffhs.quiz.client.ui.UserInterface;
 import ch.ffhs.quiz.connectivity.Connection;
 import ch.ffhs.quiz.messages.NameMessage;
 import ch.ffhs.quiz.messages.ReadyMessage;
@@ -14,10 +11,11 @@ import java.io.IOException;
 
 public class InitializationStage extends Stage{
 
-    public InitializationStage(Client client, Connection con, InputHandler inputHandler){
+    public InitializationStage(Client client, Connection con, InputHandler inputHandler, UserInterface ui){
         this.client = client;
         this.serverConnection = con;
         this.inputHandler = inputHandler;
+        this.ui = ui;
     }
 
     @Override
@@ -27,11 +25,7 @@ public class InitializationStage extends Stage{
 
     @Override
     protected void createUserInterface(){
-        String welcome = TextInterface.WELCOME.getComponent();
-        new AnsiBuilder(welcome).setFont(Color.BLUE, Decoration.BOLD, true).print();
-
-        String explanation = TextInterface.EXPLANATION.getComponent();
-        new AnsiBuilder(explanation).setFont(Color.BLUE, Decoration.BOLD, true).print();
+        ui.welcomeAndExplain();
     }
 
     @Override
@@ -40,6 +34,7 @@ public class InitializationStage extends Stage{
 
         try{
             while(!serverConnection.receive(ReadyMessage.class).isReady());
+            ui.proceed();
             NameMessage name;
 
             do{
