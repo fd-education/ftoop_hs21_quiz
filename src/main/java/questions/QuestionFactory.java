@@ -6,8 +6,12 @@ import java.util.*;
 public class QuestionFactory {
 
     public static void main(String[] args) {
-        ArrayList<QuestionImp> quizCatalog = questionBuilder(fullQuestionCatalog());
-        System.out.println(quizCatalog);
+        ArrayList<QuestionImp> quiz2019 = questionBuilder("fragenkataloge/fragenkatalog_2019.txt");
+        ArrayList<QuestionImp> quiz2020 = questionBuilder("fragenkataloge/fragenkatalog_2020.txt");
+        ArrayList<QuestionImp> quiz2021 = questionBuilder("fragenkataloge/fragenkatalog_2021.txt");
+        System.out.println(quiz2019);
+        System.out.println(quiz2020);
+        System.out.println(quiz2021);
     }
 
     private static Map<String, List<String>> loadFromFile(String fileName) {
@@ -64,39 +68,24 @@ public class QuestionFactory {
         return questions;
     }
 
-    private static Map<String, List<String>> fullQuestionCatalog(){
-        String fileName1 = "fragenkataloge/fragenkatalog_2019.txt";
-        String fileName2 = "fragenkataloge/fragenkatalog_2020.txt";
-        String fileName3 = "fragenkataloge/fragenkatalog_2021.txt";
+    public static ArrayList<QuestionImp> questionBuilder(String filename) {
+        Map<String, List<String>> quiz = loadFromFile(filename);
 
-        Map<String, List<String>> catalog1 = loadFromFile(fileName1);
-        Map<String, List<String>> catalog2 = loadFromFile(fileName2);
-        Map<String, List<String>> catalog3 = loadFromFile(fileName3);
-
-        Map<String, List<String>> allQuestions = new HashMap<>();
-
-        allQuestions.putAll(catalog1);
-        allQuestions.putAll(catalog2);
-        allQuestions.putAll(catalog3);
-        return allQuestions;
-    }
-
-    public static ArrayList<QuestionImp> questionBuilder(Map<String, List<String>> Quiz) {
         ArrayList<QuestionImp> quizList = new ArrayList<>();
-        for (Map.Entry<String, List<String>> entry : Quiz.entrySet()) {
+        for (Map.Entry<String, List<String>> entry : quiz.entrySet()) {
             String question = entry.getKey();
             List<AnswerImp> answerList = new ArrayList<>();
             int intCorrectAnswer = 0;
-            for (int i = 0; i < Quiz.get(entry.getKey()).size(); i++) {
-                String valueSecond = String.valueOf(Quiz.get(entry.getKey()).get(i).charAt(1));
+            for (int i = 0; i < quiz.get(entry.getKey()).size(); i++) {
+                String valueSecond = String.valueOf(quiz.get(entry.getKey()).get(i).charAt(1));
                 if (valueSecond.equals("*")) {
-                    String correctAnswer = Quiz.get(entry.getKey()).get(i);
+                    String correctAnswer = quiz.get(entry.getKey()).get(i);
                     correctAnswer = correctAnswer.replace("*", "");
                     intCorrectAnswer = i;
                     AnswerImp answerImp = new AnswerImp(correctAnswer, true);
                     answerList.add(answerImp);
                 } else {
-                    String incorrectAnswer = Quiz.get(entry.getKey()).get(i);
+                    String incorrectAnswer = quiz.get(entry.getKey()).get(i);
                     AnswerImp answerImp = new AnswerImp(incorrectAnswer, false);
                     answerList.add(answerImp);
                 }
