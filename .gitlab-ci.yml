@@ -10,7 +10,6 @@ variables:
 image: maven:3.6.3-openjdk-15-slim
 stages:
 - Unit Tests
-- test
 maven-test:
   stage: Unit Tests
   script: mvn $MAVEN_OPTS test
@@ -20,7 +19,3 @@ maven-test:
     reports:
       junit:
       - target/surefire-reports/TEST-*.xml
-sast:
-  stage: test
-include:
-- template: Security/SAST.gitlab-ci.yml
