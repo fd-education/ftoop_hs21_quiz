@@ -45,9 +45,13 @@ public enum TextComponents {
             Viel Spass (und Glück, falls du's nötig hast)!
             """),
     WAITING_FOR_PLAYERS("Warte auf andere Spieler"),
+
     ASK_FOR_NAME("Tippe einen Namen ein :"),
     NAME_RESERVED("Dieser Name ist bereits vergeben."),
+    NAME_INVALID("Dein Name muss mehr als 3 Buchstaben enthalten"),
+
     ASK_FOR_ANSWER("Tippe deine Antwort ein :"),
+    ANSWER_INVALID("Deine Antwort muss A, B oder C lauten."),
     PLAYER_WON("Super! Du hast diese Runde gewonnen!"),
     CORRECT_ANSWER("Schade. Deine Antwort war korrekt, aber %s war schneller"),
     WRONG_ANSWER("Deine Antwort war falsch. %s hat gewonnen."),
