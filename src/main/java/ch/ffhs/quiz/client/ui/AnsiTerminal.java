@@ -1,4 +1,4 @@
-package Quiz.Client.ui;
+package ch.ffhs.quiz.client.ui;
 
 /**
  * Class contains logic for Terminal manipulation with ANSI

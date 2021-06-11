@@ -1,4 +1,4 @@
-package Quiz.Client.ui;
+package ch.ffhs.quiz.client.ui;
 
 public enum InterfaceComponents {
     WELCOME("""
