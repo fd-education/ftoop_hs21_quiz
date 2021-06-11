@@ -1,15 +1,24 @@
 package ch.ffhs.quiz.client;
 
-import java.io.*;
-import java.util.*;
+import ch.ffhs.quiz.client.ui.UserInterface;
+import ch.ffhs.quiz.client.ui.text_components.PlayerInteraction;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class to get and validate user input.
  */
 public class InputHandler {
     private final static ArrayList<String> VALID_ANSWERS = new ArrayList<>(List.of("A", "B", "C"));
+    private final UserInterface ui;
 
-    public InputHandler(){ }
+    public InputHandler(){
+        ui = new UserInterface();
+    }
 
     /**
      * Ask for the user's answer and validate the input.
@@ -18,13 +27,11 @@ public class InputHandler {
      */
     public String getUserAnswer(){
         while(true){
-            System.out.println("Enter your answer: ");
-
             String answer = getInputLine();
 
             if(validateAnswer(answer)) return answer;
 
-            System.out.printf("%s is not a valid answer.\n\n", answer);
+            ui.invalidInput(PlayerInteraction.ANSWER_INVALID.getInteraction(answer));
         }
     }
 
@@ -35,13 +42,11 @@ public class InputHandler {
      */
     public String getUserName(){
         while(true){
-            System.out.println("Enter your name: ");
-
             String name = getInputLine();
 
             if(validateName(name))  return name;
 
-            System.out.println("Your name must contain at least three characters.");
+            ui.invalidInput(PlayerInteraction.NAME_INVALID.getInteraction(name));
         }
     }
 
