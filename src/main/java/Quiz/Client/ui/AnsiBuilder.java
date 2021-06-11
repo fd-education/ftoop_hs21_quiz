@@ -1,5 +1,6 @@
 package Quiz.Client.ui;
 
+@SuppressWarnings("unused")
 public class AnsiBuilder {
     private int font;
     private int background;
@@ -33,9 +34,9 @@ public class AnsiBuilder {
     }
 
     public String create() {
-        String ANSI_ESCAPE = "\u001b[";
+        String ANSI_ESCAPE = "\033[";
         String ANSI_POSTFIX = "m";
-        String ANSI_RESET = "\u001b[0m";
+        String ANSI_RESET = "\033[0m";
 
         StringBuilder sb = new StringBuilder();
         sb.append(ANSI_ESCAPE);
