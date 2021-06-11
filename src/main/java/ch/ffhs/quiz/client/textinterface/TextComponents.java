@@ -1,6 +1,6 @@
 package ch.ffhs.quiz.client.textinterface;
 
-public enum TextInterface {
+public enum TextComponents {
     WELCOME("""
             
             ███████╗ █████╗  ██████╗ █████╗ ██████╗ ███████╗     ██████╗ ██╗   ██╗██╗███████╗
@@ -55,7 +55,7 @@ public enum TextInterface {
 
     private final String component;
 
-    TextInterface(String component){
+    TextComponents(String component){
         this.component = component;
     }
 
