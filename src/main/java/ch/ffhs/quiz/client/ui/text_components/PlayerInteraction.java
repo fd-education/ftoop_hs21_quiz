@@ -13,13 +13,13 @@ public enum PlayerInteraction {
             """),
     WAITING_FOR_PLAYERS("\nWarte auf andere Spieler"),
 
-    ASK_FOR_NAME("\n\nTippe einen Namen ein :"),
+    ASK_FOR_NAME("\n\nTippe einen Namen ein: "),
     NAME_RESERVED("%s ist bereits vergeben."),
     NAME_INVALID("\n%s kann nicht verarbeitet werden. \nDein Name muss mehr als 3 Buchstaben enthalten. \nVersuche es nochmal: "),
     PERSONALIZED_WELCOME("\n\nHallo %s!"),
 
-    ASK_FOR_ANSWER("Tippe deine Antwort ein :"),
-    ANSWER_INVALID("%s kann keine Antwort sein. \nDeine Antwort muss A, B oder C lauten. \nVersuche es nochmal: "),
+    ASK_FOR_ANSWER("Tippe deine Antwort ein: "),
+    ANSWER_INVALID("\n%s kann keine Antwort sein. \nDeine Antwort muss A, B oder C lauten. \nVersuche es nochmal: "),
     PLAYER_WON("Super! Du hast diese Runde gewonnen!"),
     CORRECT_ANSWER("Schade. Deine Antwort war korrekt, aber %s war schneller"),
     WRONG_ANSWER("Deine Antwort war falsch. %s hat gewonnen."),
