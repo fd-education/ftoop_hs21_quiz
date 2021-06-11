@@ -39,7 +39,7 @@ public class GameStage extends Stage{
     @Override
     protected void createUserInterface(){
         String questionTitle = TextInterface.QUESTION.getComponent();
-        new AnsiBuilder(questionTitle).font(Color.BLUE, Decoration.BOLD, true).print();
+        new AnsiBuilder(questionTitle).setFont(Color.BLUE, Decoration.BOLD, true).print();
 
         System.out.println(question);
         answers.forEach(System.out::println);

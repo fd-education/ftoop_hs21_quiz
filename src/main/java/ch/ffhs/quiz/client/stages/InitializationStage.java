@@ -28,10 +28,10 @@ public class InitializationStage extends Stage{
     @Override
     protected void createUserInterface(){
         String welcome = TextInterface.WELCOME.getComponent();
-        new AnsiBuilder(welcome).font(Color.BLUE, Decoration.BOLD, true).print();
+        new AnsiBuilder(welcome).setFont(Color.BLUE, Decoration.BOLD, true).print();
 
         String explanation = TextInterface.EXPLANATION.getComponent();
-        new AnsiBuilder(explanation).font(Color.BLUE, Decoration.BOLD, true).print();
+        new AnsiBuilder(explanation).setFont(Color.BLUE, Decoration.BOLD, true).print();
     }
 
     @Override
