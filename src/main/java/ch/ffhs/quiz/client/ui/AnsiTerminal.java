@@ -58,7 +58,15 @@ public class AnsiTerminal {
      * Clear the line where the cursor currently resides
      */
     public void clearLine(){
-        String ansi = PREFIX + "{2}K";
+        String ansi = PREFIX + "2K";
+        System.out.print(ansi);
+    }
+
+    /**
+     * Clear the line from cursor to the end of line
+     */
+    public void clearRemainingOfLine(){
+        String ansi = PREFIX + "0K";
         System.out.print(ansi);
     }
 
