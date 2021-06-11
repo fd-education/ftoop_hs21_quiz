@@ -1,6 +1,6 @@
 package Quiz.Client.ui;
 
-public enum TextInterface {
+public enum InterfaceComponents {
     WELCOME("""
             
             ███████╗ █████╗  ██████╗ █████╗ ██████╗ ███████╗     ██████╗ ██╗   ██╗██╗███████╗
@@ -35,11 +35,15 @@ public enum TextInterface {
             Sollte niemand die Antwort wissen, geht die Runde nach 60 Sekunden vorbei. \u23F1
     
             Viel Spass (und Glück, falls du's nötig hast \uD83D\uDE09)!
-            """);
+            """),
+    TOP_BORDER("""
+    ███████████████████████████████████████████████████████████████████████████████████████████████████████╗
+    ╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝
+    """);
 
     private final String component;
 
-    TextInterface(String component){
+    InterfaceComponents(String component){
         this.component = component;
     }
 
