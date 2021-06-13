@@ -13,6 +13,7 @@ public class QuestionImpl implements Question{
 
     @Override
     public boolean checkAnswer(int questionNumber) {
+        if(questionNumber < 0 || questionNumber >= answers.size()) return false;
         return answers.get(questionNumber).isCorrect();
     }
 
