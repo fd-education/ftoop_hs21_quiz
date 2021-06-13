@@ -12,6 +12,8 @@ public class Client{
     private InputStream in;
     private final ConnectionImpl serverConnection;
 
+    private String playerName;
+
     public Client(String host, int port) throws IOException{
 
         this.client = new Socket(host, port);
@@ -41,4 +43,12 @@ public class Client{
     public InputStream getInput(){return in;}
 
     public OutputStream getOutput(){return out;}
+
+    public void setPlayerName(String name){
+        this.playerName = name;
+    }
+
+    public String getPlayerName(){
+        return playerName;
+    }
 }
