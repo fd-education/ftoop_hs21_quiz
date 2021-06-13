@@ -1,7 +1,6 @@
 package ch.ffhs.quiz.client;
 
 import ch.ffhs.quiz.client.ui.UserInterface;
-import ch.ffhs.quiz.client.ui.text_components.PlayerInteraction;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,7 +30,7 @@ public class InputHandler {
 
             if(validateAnswer(answer)) return answer;
 
-            ui.invalidInput(PlayerInteraction.ANSWER_INVALID.getInteraction(answer));
+            ui.alertInvalidAnswer(answer);
         }
     }
 
@@ -46,7 +45,7 @@ public class InputHandler {
 
             if(validateName(name))  return name;
 
-            ui.invalidInput(PlayerInteraction.NAME_INVALID.getInteraction(name));
+            ui.alertInvalidName(name);
         }
     }
 
