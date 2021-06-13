@@ -12,18 +12,17 @@ public abstract class Stage {
     protected UserInterface ui;
 
     protected String input;
-    protected String serverResponse;
 
 
     protected abstract void setupStage();
 
-    protected abstract void createUserInterface();
+    protected abstract void createInitialUserInterface();
     protected abstract void handleConversation();
     protected abstract void terminateStage();
 
     public final void process(){
         setupStage();
-        createUserInterface();
+        createInitialUserInterface();
         handleConversation();
         terminateStage();
     }
