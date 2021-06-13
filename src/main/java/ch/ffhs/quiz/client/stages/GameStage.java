@@ -57,7 +57,8 @@ public class GameStage extends Stage{
             AnsiTerminal.clearTerminal();
             ui.await();
             ui.markChosenAnswer(question, answers, answerIndex);
-            ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getText(), 30000);
+            ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getText(), 3000000);
+
             serverConnection.send(new AnswerMessage(answerIndex));
 
             FeedbackMessage feedback = serverConnection.receive(FeedbackMessage.class);
@@ -118,7 +119,6 @@ public class GameStage extends Stage{
     }
 
     private void processRoundSummaryMessage(RoundSummaryMessage roundSummary){
-
         AnsiTerminal.clearTerminal();
         ui.printScoreboard(roundSummary.getRankedPlayersList(), client.getPlayerName());
 

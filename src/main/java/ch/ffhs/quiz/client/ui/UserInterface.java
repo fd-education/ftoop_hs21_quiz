@@ -23,10 +23,10 @@ public class UserInterface {
     private final static int PADDING_BORDER_TITLE = 2;
 
     public void welcomeAndExplain(){
-        StaticUIComponent welcome = AsciiArtTitles.WELCOME;
+        StaticUIComponent welcome = AsciiArtTitles.FACADE_QUIZ;
         StaticUIComponent explanation = StaticTextComponent.EXPLANATION;
 
-        frameContent(welcome, explanation.getLinesOfContent());
+        frameContent(welcome);
 
         String formattedExplanation = UserInterfaceUtils.createWithDefaultStyle(explanation.getText());
 
@@ -57,7 +57,7 @@ public class UserInterface {
 
         try {
             for (int i = 5; i >= 0; i--) {
-                frameContent(null, 6);
+                frameContent(null);
                 AnsiTerminal.moveCursorDown(9);
                 UserInterfaceUtils.printWithDefaultStyle(AsciiArtNumbers.getText(i));
                 Thread.sleep(1000);
@@ -124,10 +124,10 @@ public class UserInterface {
 
     public void printScoreboard(List<ScoreboardEntry> scoreboardEntries, String name){
 
-        frameContent(AsciiArtTitles.SCORE, 10);
+        frameContent(AsciiArtTitles.SCORE);
 
         Scoreboard sb = new Scoreboard(scoreboardEntries);
-        UserInterfaceUtils.printWithDefaultStyle(sb.getScoreboardForPlayer("Fabian"));
+        UserInterfaceUtils.printWithDefaultStyle(sb.getScoreboardForPlayer(name));
     }
 
     public UserInterface proceed(){
@@ -148,7 +148,7 @@ public class UserInterface {
         AnsiTerminal.moveCursorDown(1);
     }
 
-    private static void frameContent(StaticUIComponent title, int linesOfContent){
+    private static void frameContent(StaticUIComponent title){
         emptyTerminal();
         StaticUIComponent topFrame = AsciiArtDecorations.TOP_LINE;
         StaticUIComponent bottomFrame = AsciiArtDecorations.BOTTOM_LINE;
@@ -170,7 +170,7 @@ public class UserInterface {
 
     private void printQuestion(String question, List<String> answers, int answerIndex){
         StaticUIComponent title = AsciiArtTitles.QUESTION;
-        frameContent(title, 10);
+        frameContent(title);
 
         AnsiTerminal.moveCursorDown(2);
         AnsiTerminal.moveCursorRight(5);
@@ -195,7 +195,7 @@ public class UserInterface {
 
             new AnsiBuilder(UserInterfaceUtils.splitPhrase(answer, MAX_TEXT_LENGTH))
                     .setFont(BLUE, BOLD, true)
-                    .println();;
+                    .println();
         }
     }
 

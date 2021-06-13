@@ -77,14 +77,6 @@ public class AnsiTerminal {
     }
 
     /**
-     * Clear the terminal up from the current cursor position
-     */
-    public static void clearRemainingOfTerminal(){
-        String ansi = PREFIX + "0J";
-        System.out.print(ansi);
-    }
-
-    /**
      * Clear the line where the cursor currently resides
      */
     public static void clearLine(){

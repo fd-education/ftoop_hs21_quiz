@@ -68,14 +68,6 @@ public class Scoreboard {
         }
     }
 
-    private boolean findPlayerInTopTen(String name){
-        for(ScoreboardEntry entry: topTenPlayers){
-            if(name.equals(entry.getPlayerName())) return true;
-        }
-
-        return false;
-    }
-
     private static int getMaxLengthFromEntries(List<ScoreboardEntry> entries){
         int longest = 0;
         for(ScoreboardEntry entry: entries){

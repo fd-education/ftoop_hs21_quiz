@@ -3,7 +3,7 @@ package ch.ffhs.quiz.client.ui.components.ascii;
 import ch.ffhs.quiz.client.ui.components.interfaces.StaticUIComponent;
 
 public enum AsciiArtTitles implements StaticUIComponent {
-    WELCOME("""
+    FACADE_QUIZ("""
                  ███████╗ █████╗  ██████╗ █████╗ ██████╗ ███████╗     ██████╗ ██╗   ██╗██╗███████╗
                  ██╔════╝██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔════╝    ██╔═══██╗██║   ██║██║╚══███╔╝
                  █████╗  ███████║██║     ███████║██║  ██║█████╗      ██║   ██║██║   ██║██║  ███╔╝

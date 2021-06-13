@@ -10,7 +10,6 @@ import java.io.IOException;
 
 public class ClientController{
     private static final InputHandler inputHandler = new InputHandler();
-    private static Client client;
 
     public static void main(String[] args) throws IOException{
 

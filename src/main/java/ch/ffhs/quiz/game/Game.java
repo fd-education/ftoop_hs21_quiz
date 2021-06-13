@@ -7,12 +7,12 @@ import ch.ffhs.quiz.game.player.Player;
 import ch.ffhs.quiz.game.player.PlayerFactory;
 import ch.ffhs.quiz.questions.AnswerImpl;
 import ch.ffhs.quiz.questions.Question;
+import ch.ffhs.quiz.questions.QuestionImpl;
 import ch.ffhs.quiz.server.Server;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class Game {
     private final GameStepsHolder setupSteps;
@@ -47,18 +47,19 @@ public class Game {
                 ).build();
 
         // TODO: Remove asap
-        Question question1 = new QuestionImpl("Question 1", List.of(
-                new AnswerImpl("A", true),
-                new AnswerImpl("B", false),
-                new AnswerImpl("C", false)
+        Question question1 = new QuestionImpl("Question 1: wueidddd ddddddddddd dddd dddddddddddd ddddddddddddd dddddd ddddddddd dddddddd ddddddddd dddddddddd ddddddddddfguwz ecuzwvecuzgwu ezhcguwzhegcuzw eikujqghich", List.of(
+                new AnswerImpl("A: iuhefiuwebfiuwbefiuwbefiuwjbeivubweiujgbviwuegbvikjwbe", true),
+                new AnswerImpl("B: ewuhfiwuehfiuwgefiuwgeifvweiufgwiuehciwuebciuwhgeciuwh", false),
+                new AnswerImpl("C: wuebiwuehciuwehciuvwbeicugwieuchiwuevbciuwbeciuhweicub", false)
         ));
 
         // TODO: Remove asap
-        Question question2 = new QuestionImpl("Question 2", List.of(
-                new AnswerImpl("A", false),
-                new AnswerImpl("B", true),
-                new AnswerImpl("C", false)
+        Question question2 = new QuestionImpl("Question 2: Some other question that is probably very easy...", List.of(
+                new AnswerImpl("A: stupid answer one", false),
+                new AnswerImpl("B: rather strange, but correct one", true),
+                new AnswerImpl("C: most sensible, but wrong", false)
         ));
+
         Server server = new Server(3141);
         List<Player> players = PlayerFactory.connectPlayers(server, 1);
         game.play(players, List.of(question1, question2));

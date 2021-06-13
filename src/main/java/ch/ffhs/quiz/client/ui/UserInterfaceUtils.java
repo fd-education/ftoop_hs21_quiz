@@ -1,9 +1,5 @@
 package ch.ffhs.quiz.client.ui;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Set;
-
 public class UserInterfaceUtils {
 
     public static void printWithDefaultStyle(String text){
@@ -37,20 +33,6 @@ public class UserInterfaceUtils {
         String secondPart = phrase.substring(lastSpaceIndex + 1);
 
         return String.format("%s\n     %s", firstPart, secondPart);
-    }
-
-    public static int getMaxLengthFromSetEntries(Set<String> set){
-
-        Comparator<String> stringLengthComparator = new Comparator<>() {
-            @Override
-            public int compare(String o1, String o2) {
-                return Integer.compare(o1.length(), o2.length());
-            }
-        };
-
-        String longestKey = Collections.max(set, stringLengthComparator);
-
-        return longestKey.length();
     }
 
     enum Delay{

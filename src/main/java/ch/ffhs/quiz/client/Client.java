@@ -1,9 +1,10 @@
 package ch.ffhs.quiz.client;
 
 import ch.ffhs.quiz.connectivity.impl.ConnectionImpl;
-import ch.ffhs.quiz.messages.Message;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 
 public class Client{
@@ -22,16 +23,6 @@ public class Client{
         this.in = client.getInputStream();
 
         this.serverConnection = new ConnectionImpl(out, in);
-    }
-
-    public void connectToGameServer(String host, int port, Message nameMessage) throws IOException, ClassNotFoundException{
-        client = new Socket(host, port);
-
-        in = client.getInputStream();
-        out = client.getOutputStream();
-
-        serverConnection.send(nameMessage);
-        System.out.println("Connected");
     }
 
     public void closeConnection() throws IOException{
