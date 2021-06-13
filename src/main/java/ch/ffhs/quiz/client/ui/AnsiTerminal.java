@@ -46,6 +46,16 @@ public class AnsiTerminal {
         System.out.printf("%s%s%s", PREFIX, number, direction.getDirection());
     }
 
+    /**
+     * Sets the cursor to the specified position, starting at the top left at (0, 0)
+     * @param line to place the cursor
+     * @param column to place the cursor on the specified line
+     */
+    public static void positionCursor(int line, int column){
+        String ansi = String.format("%s%s;%sH", PREFIX, line ,column);
+        System.out.print(ansi);
+    }
+
     // store the current cursor position
     public static void saveCursorPos(){
         String ansi = PREFIX + "s";
@@ -86,8 +96,23 @@ public class AnsiTerminal {
      * Clear the line from cursor to the end of line
      */
     public static void clearRemainingOfLine(){
-        String ansi = PREFIX + "0K";
+        String ansi = PREFIX + "K";
         System.out.print(ansi);
+    }
+
+    /**
+     * Clears a specified number of lines,
+     * starting with the current cursor position.
+     * Restores cursor to the current position.
+     * @param number how many lines to clear
+     */
+    public static void clearNumberOfLines(int number){
+        saveCursorPos();
+        for(int i = 0; i < number; i++){
+            clearLine();
+            moveCursorDown(1);
+        }
+        restoreCursorPos();
     }
 
     // Available directions for cursor movements
