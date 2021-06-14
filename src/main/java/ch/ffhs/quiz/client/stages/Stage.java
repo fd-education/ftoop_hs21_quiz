@@ -15,7 +15,6 @@ public abstract class Stage {
 
 
     protected abstract void setupStage();
-
     protected abstract void createInitialUserInterface();
     protected abstract void handleConversation();
     protected abstract void terminateStage();
