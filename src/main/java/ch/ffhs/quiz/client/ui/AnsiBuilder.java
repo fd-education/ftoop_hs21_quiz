@@ -1,5 +1,7 @@
 package ch.ffhs.quiz.client.ui;
 
+import java.util.Objects;
+
 /**
  * Class to work with text decorations and styles using ANSI
  */
@@ -9,6 +11,7 @@ public class AnsiBuilder {
     private final String text;
 
     public AnsiBuilder(final String text) {
+        if(text.isBlank()) throw new IllegalArgumentException("text must contain letters and not be only whitespace");
         this.text = text;
     }
 
@@ -19,6 +22,8 @@ public class AnsiBuilder {
      * @return AnsiBuilder instance
      */
     public AnsiBuilder setFont(final Color color, boolean bright) {
+        Objects.requireNonNull(color, "color must not be null");
+
         if (bright) this.font = Property.FONT_BRIGHT.getProperty() + color.getColor();
         if (!bright) this.font = Property.FONT.getProperty() + color.getColor();
 
@@ -32,6 +37,8 @@ public class AnsiBuilder {
      * @return AnsiBuilder instance
      */
     public AnsiBuilder setBackground(final Color color, boolean bright) {
+        Objects.requireNonNull(color, "color must not be null");
+
         if (bright) this.background = Property.BACKGROUND_BRIGHT.getProperty() + color.getColor();
         if (!bright) this.background = Property.BACKGROUND.getProperty() + color.getColor();
 
@@ -80,7 +87,7 @@ public class AnsiBuilder {
         FONT_BRIGHT(90),
         BACKGROUND_BRIGHT(100);
 
-        int property;
+        private final int property;
 
         Property(int property) {
             this.property = property;
@@ -100,7 +107,7 @@ public class AnsiBuilder {
         YELLOW(3),
         BLUE(4);
 
-        int color;
+        private final int color;
 
         Color(int color) {
             this.color = color;
