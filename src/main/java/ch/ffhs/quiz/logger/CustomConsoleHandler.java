@@ -4,6 +4,11 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
+/**
+ * Logs messages to the console.
+ * Messages of level warning and higher are logged to the system error stream,
+ * all others to the system out stream.
+ */
 public class CustomConsoleHandler extends ConsoleHandler {
 
     @Override

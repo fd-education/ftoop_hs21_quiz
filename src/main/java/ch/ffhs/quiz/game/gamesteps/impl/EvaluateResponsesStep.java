@@ -8,15 +8,22 @@ import ch.ffhs.quiz.messages.AnswerMessage;
 
 import java.time.Instant;
 
+/**
+ * Evaluates the answer for every player.
+ * Adds every correct player to the game context and
+ * sets the fastest correct player as the winning player of the round
+ */
 public class EvaluateResponsesStep extends GameStep {
     private final RoundContext roundContext;
     private Instant earliestAnswerTimestamp = Instant.MAX;
+    private Player winningPlayer;
 
     public EvaluateResponsesStep(GameContext gameContext) {
         super(gameContext);
         this.roundContext = gameContext.getRoundContext();
     }
 
+    // Checks if the player has a correct answer and if he is currently the fastest one
     @Override
     protected void handlePlayer(Player player) {
         AnswerMessage answer;
@@ -26,15 +33,31 @@ public class EvaluateResponsesStep extends GameStep {
             logger.warning("Answer for player %s wasn't found, probably because it is missing.".formatted(player.getName()));
             return;
         }
-        int chosenAnswer = answer.getChosenAnswer();
-        Instant timestamp = answer.getTimeStamp();
-        if (roundContext.getQuestion().checkAnswer(chosenAnswer)) {
+        if (isAnswerCorrect(answer)) {
             roundContext.addCorrectPlayer(player);
-            if (timestamp.isBefore(earliestAnswerTimestamp)) {
-                earliestAnswerTimestamp = timestamp;
-                roundContext.setWinningPlayer(player);
+            if (isEarliestAnswer(answer)) {
+                earliestAnswerTimestamp = answer.getTimeStamp();
+                winningPlayer = player;
             }
         }
     }
 
+    // Checks if the given answer was earlier than the current earliest answer
+    private boolean isEarliestAnswer(AnswerMessage answer) {
+        return earliestAnswerTimestamp.isAfter(answer.getTimeStamp());
+    }
+
+    // Checks if the answer was correct
+    private boolean isAnswerCorrect(AnswerMessage answer) {
+        int chosenAnswer = answer.getChosenAnswer();
+        return roundContext.getQuestion().checkAnswer(chosenAnswer);
+    }
+
+    // Finally sets the winning player
+    @Override
+    protected void completeStep() {
+        if (winningPlayer != null) {
+            roundContext.setWinningPlayer(winningPlayer);
+        }
+    }
 }

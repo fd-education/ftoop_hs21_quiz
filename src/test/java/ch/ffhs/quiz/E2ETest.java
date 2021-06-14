@@ -41,7 +41,7 @@ class E2ETest {
                         RoundSummaryStep.class
                 )
                 .withTeardownSteps(
-                        StopPlayersStep.class
+                        DisconnectPlayersStep.class
                 ).build();
 
         List<Question> questions = QuestionFactory.questionBuilder("fragenkataloge/fragenkatalog_2019.txt").subList(0, 2);

@@ -4,14 +4,29 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+/**
+ * A message is a read-only class that contains data that can be sent over a connection.
+ */
 public abstract class Message implements Serializable {
     protected String text = "";
-    protected final Instant timeStamp;
+    private final Instant timeStamp;
 
+    /**
+     * Instantiates a new message object.
+     */
     public Message() {
         this.timeStamp = Instant.now();
     }
 
+
+    /**
+     * Compares another message object to this message.
+     * To allow for useful comparison, the timestamp is ignored in this method.
+     * For referential equality checks use the == operator
+     *
+     * @param o the other object
+     * @return true if the messages have the same data apart from the timestamp, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -27,6 +42,12 @@ public abstract class Message implements Serializable {
         return text != null ? text.hashCode() : 0;
     }
 
+    /**
+     * Gets the timestamp of this message.
+     * This allows to see the time the message was created.
+     *
+     * @return the time stamp
+     */
     public Instant getTimeStamp() {
         return timeStamp;
     }
@@ -36,6 +57,11 @@ public abstract class Message implements Serializable {
         return text;
     }
 
+    /**
+     * Gets the text of the message.
+     *
+     * @return the text
+     */
     public String getText() {
         return text;
     }

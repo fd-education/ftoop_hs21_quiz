@@ -6,45 +6,45 @@ import ch.ffhs.quiz.game.gamesteps.GameStep;
 import ch.ffhs.quiz.game.player.Player;
 import ch.ffhs.quiz.messages.FeedbackMessage;
 
+/**
+ * Sends a feedback to every player.
+ * This message informs every player if his answer was correct and if he won the round.
+ * Every feedback also contains the name of the winning player, which is empty when no player won.
+ */
 public class FeedbackStep extends GameStep {
 
     private final RoundContext roundContext;
+    Player winningPlayer;
+    String winningPlayerName;
+    boolean winningPlayerExists;
 
     public FeedbackStep(GameContext gameContext) {
         super(gameContext);
         this.roundContext = gameContext.getRoundContext();
     }
 
+    // Sets up the static information on the winning player
+    @Override
+    protected void prepareStep() {
+        winningPlayer = roundContext.getWinningPlayer();
+        if (winningPlayer == null) {
+            winningPlayerName = "";
+            winningPlayerExists = false;
+        } else {
+            winningPlayerName = winningPlayer.getName();
+            winningPlayerExists = true;
+        }
+    }
+
+    // Builds and sends the feedback
     @Override
     protected void handlePlayer(Player player) {
-        final String feedback;
-        final Player winningPlayer = roundContext.getWinningPlayer();
         final boolean wasCorrect = roundContext.wasPlayerCorrect(player);
 
-        // TODO: Transfer to client side
-//        if (wasCorrect) {
-//            if (winningPlayer.equals(player)) {
-//
-//                feedback = "You have won this round!";
-//            } else {
-//                feedback = "Your answer was correct, but Player %s was faster!".formatted(winningPlayer.getId());
-//            }
-//        } else {
-//            if (winningPlayer != null)
-//                feedback = "Your answer was not correct. Player %s won the round!".formatted(winningPlayer.getId());
-//            else
-//                feedback = "Nobody's answer was correct.";
-//        }
-
         boolean isFastestPlayer = false;
-        String winningPlayerName = "";
-        if (winningPlayer != null) {
-            winningPlayerName = winningPlayer.getName();
-
-            if (winningPlayer.equals(player)) {
-                player.reward();
-                isFastestPlayer = true;
-            }
+        if (winningPlayerExists && winningPlayer.equals(player)) {
+            player.reward();
+            isFastestPlayer = true;
         }
         player.send(new FeedbackMessage(wasCorrect, isFastestPlayer, winningPlayerName));
     }

@@ -70,7 +70,7 @@ class ConnectionImplTest {
 
     @Test
     void stop_positive_simple() throws IOException {
-        connection.stop();
+        connection.close();
 
         assertThrows(IllegalStateException.class, () -> connection.send(new FailureMessage("Test")));
     }

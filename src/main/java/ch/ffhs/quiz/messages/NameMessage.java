@@ -2,21 +2,33 @@ package ch.ffhs.quiz.messages;
 
 import java.util.Objects;
 
+/**
+ * Contains the name of a player and whether this name is confirmed to be unique.
+ */
 public class NameMessage extends Message {
-    private boolean confirmed;
+    protected boolean confirmed;
 
-    public NameMessage(String text) {
-        Objects.requireNonNull(text);
-        this.text = text;
+    /**
+     * Instantiates a new name message.
+     * The name is set as not confirmed.
+     *
+     * @param name the unconfirmed name of the player
+     */
+    public NameMessage(String name) {
+        Objects.requireNonNull(name);
+        this.text = name;
+        this.confirmed = false;
     }
 
+    /**
+     * Return whether the name of the player is confirmed to be unique.
+     *
+     * @return true if the name is confirmed to be unique, false otherwise.
+     */
     public boolean isConfirmed() {
         return confirmed;
     }
 
-    public void setConfirmed(boolean confirmed) {
-        this.confirmed = confirmed;
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -11,9 +11,16 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.Objects;
 
+/**
+ * A helper class for messages, mostly providing methods to convert messages to json and back.
+ */
 public class MessageUtils {
     private static final Gson gson = getGson();
 
+    // To prevent an instantiation of this helper class
+    private MessageUtils() {}
+
+    // Creates a customized gson instance
     private static Gson getGson() {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Instant.class, new InstantAdapter());
@@ -21,6 +28,13 @@ public class MessageUtils {
         return builder.create();
     }
 
+    /**
+     * Parse a message of a given type from a given string containing the JSON formatted message.
+     *
+     * @param text        the text containing the message
+     * @param messageType the message type
+     * @return the parsed message
+     */
     public static <T extends Message> T parse(String text, Class<T> messageType) {
         Objects.requireNonNull(text);
         Objects.requireNonNull(messageType);
@@ -35,10 +49,17 @@ public class MessageUtils {
         }
     }
 
+    /**
+     * Serialize a message to a JSON formatted string.
+     *
+     * @param message the message
+     * @return the JSON formatted string
+     */
     public static String serialize(Message message) {
         return gson.toJson(message);
     }
 
+    // This adapter is needed because an Instant cannot be properly serialized by GSON
     private static class InstantAdapter extends TypeAdapter<Instant> {
         @Override
         public void write(JsonWriter jsonWriter, Instant instant) throws IOException {

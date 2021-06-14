@@ -5,6 +5,9 @@ import ch.ffhs.quiz.game.GameContext;
 import ch.ffhs.quiz.game.player.Player;
 import ch.ffhs.quiz.messages.ReadyMessage;
 
+/**
+ * Tells every player the game is ready to start
+ */
 public class NotifyGameStartsStep extends GameStep {
     public NotifyGameStartsStep(GameContext gameContext){
         super(gameContext);

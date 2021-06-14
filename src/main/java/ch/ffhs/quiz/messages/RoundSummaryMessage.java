@@ -4,23 +4,42 @@ import java.util.List;
 import java.util.Objects;
 
 
+/**
+ * Contains relevant information for the end of a round.
+ */
 public class RoundSummaryMessage extends Message {
     private final List<ScoreboardEntry> rankedPlayersList;
-    private final boolean lastRound;
+    private final boolean isLastRound;
 
-    public RoundSummaryMessage(List<ScoreboardEntry> rankedPlayersList, boolean lastRound) {
+    /**
+     * Instantiates a new Round summary message.
+     *
+     * @param rankedPlayersList the list of scoreboard entries
+     * @param isLastRound       if this was the last round
+     */
+    public RoundSummaryMessage(List<ScoreboardEntry> rankedPlayersList, boolean isLastRound) {
         Objects.requireNonNull(rankedPlayersList);
 
         this.rankedPlayersList = rankedPlayersList;
-        this.lastRound = lastRound;
+        this.isLastRound = isLastRound;
     }
 
+    /**
+     * Gets the contained list of scoreboard entries.
+     *
+     * @return the list of scoreboard entries
+     */
     public List<ScoreboardEntry> getRankedPlayersList() {
         return rankedPlayersList;
     }
 
+    /**
+     * Whether this was the last round.
+     *
+     * @return true if this was the last round, false otherwise.
+     */
     public boolean isLastRound() {
-        return lastRound;
+        return isLastRound;
     }
 
     @Override
@@ -30,14 +49,14 @@ public class RoundSummaryMessage extends Message {
 
         RoundSummaryMessage that = (RoundSummaryMessage) o;
 
-        if (lastRound != that.lastRound) return false;
+        if (isLastRound != that.isLastRound) return false;
         return rankedPlayersList.equals(that.rankedPlayersList);
     }
 
     @Override
     public int hashCode() {
         int result = rankedPlayersList.hashCode();
-        result = 31 * result + (lastRound ? 1 : 0);
+        result = 31 * result + (isLastRound ? 1 : 0);
         return result;
     }
 }
