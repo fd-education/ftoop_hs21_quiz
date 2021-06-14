@@ -15,8 +15,9 @@ import static ch.ffhs.quiz.client.ui.AnsiBuilder.Color.*;
 import static ch.ffhs.quiz.client.ui.AnsiBuilder.Decoration.*;
 
 public class UserInterface {
-    private boolean proceed;
+    private boolean proceed = true;
     private Thread waitingThread;
+
     private final static int MAX_TEXT_LENGTH = 95;
     private final static int FRAME_HEIGHT = 26;
     private final static int PADDING_BORDER_TITLE = 2;
@@ -29,7 +30,8 @@ public class UserInterface {
 
         String formattedExplanation = UserInterfaceUtils.createWithDefaultStyle(explanation.getText());
 
-        UserInterfaceUtils.printLetterByLetter(formattedExplanation, UserInterfaceUtils.Delay.FAST);
+        // TODO change Delay to Fast
+        UserInterfaceUtils.printLetterByLetter(formattedExplanation, UserInterfaceUtils.Delay.ZERO);
     }
 
     public void alertInvalidName(String name){
@@ -95,20 +97,22 @@ public class UserInterface {
     }
 
     public void waiting(String reason){
+        if(waitingThread != null && waitingThread.isAlive()) return;
+        if(proceed) proceed = false;
+
         waitingThread = new Thread(() -> {
+            AnsiTerminal.saveCursorPos();
+            AnsiTerminal.positionCursor(25, 32);
+            UserInterfaceUtils.printWithDefaultStyle(reason);
 
-                if (!proceed) {
-                    AnsiTerminal.positionCursor(25, 35);
-                    UserInterfaceUtils.printWithDefaultStyle(reason);
+            while (!proceed) {
+                UserInterfaceUtils.printLetterByLetter(UserInterfaceUtils.createWithDefaultStyle(" . . ."), UserInterfaceUtils.Delay.SLOW);
+                AnsiTerminal.moveCursorLeft(6);
+                AnsiTerminal.clearRemainingOfLine();
+            }
 
-                    while (!proceed) {
-                        UserInterfaceUtils.printLetterByLetter(UserInterfaceUtils.createWithDefaultStyle(" . . ."), UserInterfaceUtils.Delay.SLOW);
-                        AnsiTerminal.moveCursorLeft(6);
-                        AnsiTerminal.clearRemainingOfLine();
-                    }
-                }
-
-                AnsiTerminal.clearLine();
+            AnsiTerminal.clearLine();
+            AnsiTerminal.restoreCursorPos();
         });
 
         waitingThread.start();
@@ -156,13 +160,17 @@ public class UserInterface {
 
     public UserInterface proceed(){
         proceed = true;
-        if(this.waitingThread != null) waitingThread.interrupt();
+        try {
+            if (this.waitingThread != null) waitingThread.join();
+        } catch(InterruptedException iEx){
+            waitingThread.interrupt();
+        }
 
         return this;
     }
 
-    public void await(){
-        proceed = false;
+    public boolean isWaiting(){
+        return !proceed;
     }
 
     private void emptyTerminal() {
