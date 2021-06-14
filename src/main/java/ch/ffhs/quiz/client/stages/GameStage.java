@@ -57,8 +57,6 @@ public class GameStage extends Stage{
             ui.markChosenAnswer(question, answers, answerIndex);
             ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getText());
 
-            // ui.sleepSave(3000);
-
             serverConnection.send(new AnswerMessage(answerIndex));
 
             FeedbackMessage feedback = serverConnection.receive(FeedbackMessage.class);
@@ -157,10 +155,8 @@ public class GameStage extends Stage{
         esSchedule.schedule(() -> ui.alertTime("5"), 55, TimeUnit.SECONDS);
 
         try {
-            answerIndex = index.get(1, TimeUnit.MINUTES);
-        } catch(TimeoutException | InterruptedException | ExecutionException ignored){
-            ignored.printStackTrace();
-        }
+           answerIndex = index.get(1, TimeUnit.MINUTES);
+        } catch(TimeoutException | InterruptedException | ExecutionException ignored){}
 
         es.shutdown();
         try{

@@ -22,7 +22,7 @@ public class InitializationStage extends Stage{
 
     @Override
     protected void setupStage(){
-
+        // nothing to setup
     }
 
     @Override
@@ -32,7 +32,7 @@ public class InitializationStage extends Stage{
 
     @Override
     protected void handleConversation() {
-        NameMessage name;
+        NameMessage nameMessage;
 
         try{
             while(!serverConnection.receive(ReadyMessage.class).isReady()){
@@ -42,21 +42,21 @@ public class InitializationStage extends Stage{
             ui.proceed().askForName();
 
             do{
-                input = inputHandler.getUserName();
-                serverConnection.send(new NameMessage(input));
+                String name = inputHandler.getUserName();
+                serverConnection.send(new NameMessage(name));
 
-                name = serverConnection.receive(NameMessage.class);
+                nameMessage = serverConnection.receive(NameMessage.class);
 
-                if(!name.isConfirmed()) ui.alertNameReserved(name.getText());
-            } while(!name.isConfirmed());
+                if(!nameMessage.isConfirmed()) ui.alertNameReserved(nameMessage.getText());
+            } while(!nameMessage.isConfirmed());
 
         } catch(IOException ioEx){
             ioEx.printStackTrace();
             throw new RuntimeException("This exception must not occur, because inputs get checked.", ioEx);
         }
 
-        client.setPlayerName(name.getText());
-        ui.welcomePlayerPersonally(name.getText());
+        client.setPlayerName(nameMessage.getText());
+        ui.welcomePlayerPersonally(nameMessage.getText());
     }
 
     @Override

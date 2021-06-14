@@ -11,9 +11,6 @@ public abstract class Stage {
     protected Connection serverConnection;
     protected UserInterface ui;
 
-    protected String input;
-
-
     protected abstract void setupStage();
     protected abstract void createInitialUserInterface();
     protected abstract void handleConversation();

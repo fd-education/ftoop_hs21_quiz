@@ -18,7 +18,7 @@ public class TerminationStage extends Stage {
 
     @Override
     protected void setupStage() {
-        // nothing to do here
+        // nothing to setup here
     }
 
     @Override
