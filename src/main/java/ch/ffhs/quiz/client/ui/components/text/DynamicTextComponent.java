@@ -13,13 +13,13 @@ public enum DynamicTextComponent implements DynamicUIComponent {
     CORRECT_ANSWER("     Schade. Deine Antwort war korrekt, aber %s war schneller"),
     WRONG_ANSWER("     Deine Antwort war falsch. %s hat gewonnen.");
 
-    private final String interaction;
+    private final String component;
 
-    DynamicTextComponent(String interaction){
-        this.interaction = interaction;
+    DynamicTextComponent(String component){
+        this.component = component;
     }
 
-    public String getComponent(String text){
-        return String.format(interaction, text);
+    public String getComponent(String complement){
+        return String.format(component, complement);
     }
 }

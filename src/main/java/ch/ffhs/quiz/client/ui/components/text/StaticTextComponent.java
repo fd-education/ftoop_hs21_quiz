@@ -22,13 +22,13 @@ public enum StaticTextComponent implements StaticUIComponent {
     NO_PLAYER_CORRECT("     Niemand wusste die richtige Antwort."),
     THANKS("                           Danke für die Teilnahme an diesem Spiel ! ~N.S.F.");
 
-    private final String interaction;
+    private final String component;
 
-    StaticTextComponent(String interaction){
-        this.interaction = interaction;
+    StaticTextComponent(String component){
+        this.component = component;
     }
 
     public String getComponent(){
-        return interaction;
+        return component;
     }
 }
