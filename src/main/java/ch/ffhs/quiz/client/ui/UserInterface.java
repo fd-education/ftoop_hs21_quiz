@@ -27,7 +27,7 @@ public class UserInterface {
 
         frameContent(welcome);
 
-        String formattedExplanation = UserInterfaceUtils.createWithDefaultStyle(explanation.getText());
+        String formattedExplanation = UserInterfaceUtils.createWithDefaultStyle(explanation.getComponent());
 
         UserInterfaceUtils.printLetterByLetter(formattedExplanation, UserInterfaceUtils.Delay.FAST);
     }
@@ -47,7 +47,7 @@ public class UserInterface {
     public void welcomePlayerPersonally(String name){
         AnsiTerminal.positionCursor(23, 0);
         AnsiTerminal.clearNumberOfLines(4);
-        UserInterfaceUtils.printWithDefaultStyle(DynamicTextComponent.PERSONALIZED_WELCOME.getText(name));
+        UserInterfaceUtils.printWithDefaultStyle(DynamicTextComponent.PERSONALIZED_WELCOME.getComponent(name));
     }
 
     public void countdown(){
@@ -82,7 +82,7 @@ public class UserInterface {
     public void alertTime(String secondsLeft){
         AnsiTerminal.saveCursorPos();
         AnsiTerminal.moveCursorDown(2);
-        new AnsiBuilder(DynamicTextComponent.TIME_ALERT.getText(secondsLeft))
+        new AnsiBuilder(DynamicTextComponent.TIME_ALERT.getComponent(secondsLeft))
                 .setFont(RED, BOLD, true)
                 .print();
         AnsiTerminal.restoreCursorPos();
@@ -116,22 +116,22 @@ public class UserInterface {
 
     public void printPlayerHasWon(){
         AnsiTerminal.moveCursorDown(2);
-        new AnsiBuilder(StaticTextComponent.PLAYER_WON.getText()).setFont(GREEN, BOLD, true).print();
+        new AnsiBuilder(StaticTextComponent.PLAYER_WON.getComponent()).setFont(GREEN, BOLD, true).print();
     }
 
     public void printPlayerOnlyWasCorrect(String winningPlayer){
         AnsiTerminal.moveCursorDown(2);
-        new AnsiBuilder(DynamicTextComponent.CORRECT_ANSWER.getText(winningPlayer)).setFont(YELLOW, BOLD, false).print();
+        new AnsiBuilder(DynamicTextComponent.CORRECT_ANSWER.getComponent(winningPlayer)).setFont(YELLOW, BOLD, false).print();
     }
 
     public void printPlayerWasWrong(String winningPlayer){
         AnsiTerminal.moveCursorDown(2);
-        new AnsiBuilder(DynamicTextComponent.WRONG_ANSWER.getText(winningPlayer)).setFont(RED, BOLD, false).print();
+        new AnsiBuilder(DynamicTextComponent.WRONG_ANSWER.getComponent(winningPlayer)).setFont(RED, BOLD, false).print();
     }
 
     public void printNooneCorrect(){
         AnsiTerminal.moveCursorDown(2);
-        new AnsiBuilder(StaticTextComponent.NO_PLAYER_CORRECT.getText()).setFont(RED, BOLD, false).print();
+        new AnsiBuilder(StaticTextComponent.NO_PLAYER_CORRECT.getComponent()).setFont(RED, BOLD, false).print();
     }
 
     public void printScoreboard(List<ScoreboardEntry> scoreboardEntries, String name){
@@ -145,10 +145,10 @@ public class UserInterface {
     public void printEnd(){
         frameContent(null);
         AnsiTerminal.moveCursorDown(6);
-        UserInterfaceUtils.printWithDefaultStyle(AsciiArtTitles.END.getText());
+        UserInterfaceUtils.printWithDefaultStyle(AsciiArtTitles.END.getComponent());
 
         AnsiTerminal.moveCursorDown(2);
-        UserInterfaceUtils.printWithDefaultStyle(StaticTextComponent.THANKS.getText());
+        UserInterfaceUtils.printWithDefaultStyle(StaticTextComponent.THANKS.getComponent());
 
         sleepSave(10000);
         emptyTerminal();
@@ -174,17 +174,17 @@ public class UserInterface {
         StaticUIComponent topFrame = AsciiArtDecorations.TOP_LINE;
         StaticUIComponent bottomFrame = AsciiArtDecorations.BOTTOM_LINE;
 
-        UserInterfaceUtils.printWithDefaultStyle(topFrame.getText());
+        UserInterfaceUtils.printWithDefaultStyle(topFrame.getComponent());
 
         AnsiTerminal.saveCursorPos();
         AnsiTerminal.moveCursorDown(FRAME_HEIGHT);
-        UserInterfaceUtils.printWithDefaultStyle(bottomFrame.getText());
+        UserInterfaceUtils.printWithDefaultStyle(bottomFrame.getComponent());
 
         AnsiTerminal.restoreCursorPos();
         AnsiTerminal.moveCursorDown(1);
 
         if(title != null) {
-            UserInterfaceUtils.printWithDefaultStyle(title.getText());
+            UserInterfaceUtils.printWithDefaultStyle(title.getComponent());
             AnsiTerminal.moveCursorDown(PADDING_BORDER_TITLE);
         }
     }
@@ -223,7 +223,7 @@ public class UserInterface {
     private void alertInvalidInput(DynamicTextComponent alert, String input){
         AnsiTerminal.moveCursorDown(1);
 
-        new AnsiBuilder(alert.getText(input))
+        new AnsiBuilder(alert.getComponent(input))
                 .setFont(RED, BOLD, true)
                 .print();
 
@@ -233,7 +233,7 @@ public class UserInterface {
 
     private void askForInput(StaticTextComponent ask){
         AnsiTerminal.moveCursorDown(2);
-        UserInterfaceUtils.printWithDefaultStyle(ask.getText());
+        UserInterfaceUtils.printWithDefaultStyle(ask.getComponent());
         AnsiTerminal.saveCursorPos();
     }
 }

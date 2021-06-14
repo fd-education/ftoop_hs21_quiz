@@ -59,10 +59,10 @@ public enum AsciiArtNumbers implements StaticUIComponent {
     }
 
     public static String getText(int index){
-        return AsciiArtNumbers.values()[index].getText();
+        return AsciiArtNumbers.values()[index].getComponent();
     }
 
-    public String getText(){
+    public String getComponent(){
         return ascii;
     }
 }

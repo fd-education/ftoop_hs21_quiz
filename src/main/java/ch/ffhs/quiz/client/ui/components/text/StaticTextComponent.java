@@ -28,7 +28,7 @@ public enum StaticTextComponent implements StaticUIComponent {
         this.interaction = interaction;
     }
 
-    public String getText(){
+    public String getComponent(){
         return interaction;
     }
 }

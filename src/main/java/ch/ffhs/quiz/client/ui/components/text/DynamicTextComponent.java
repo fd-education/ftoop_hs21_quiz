@@ -19,7 +19,7 @@ public enum DynamicTextComponent implements DynamicUIComponent {
         this.interaction = interaction;
     }
 
-    public String getText(String text){
+    public String getComponent(String text){
         return String.format(interaction, text);
     }
 }

@@ -42,7 +42,7 @@ public enum AsciiArtTitles implements StaticUIComponent {
         this.ascii = ascii;
     }
 
-    public String getText(){
+    public String getComponent(){
         return ascii;
     }
 
