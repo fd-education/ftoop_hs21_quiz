@@ -1,6 +1,5 @@
 package ch.ffhs.quiz.messages;
 
-import ch.ffhs.quiz.connectivity.Connection;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
