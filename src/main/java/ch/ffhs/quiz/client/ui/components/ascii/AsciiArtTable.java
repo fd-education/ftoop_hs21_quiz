@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class AsciiArtTable {
     public static String getTableTop(int length){
-        String borderTemplate = "\n     ╔═════╦%s╦═════╗\n";
+        String borderTemplate = "     ╔═════╦%s╦═════╗\n";
         char[] border = new char[length + 5];
         Arrays.fill(border, '═');
 

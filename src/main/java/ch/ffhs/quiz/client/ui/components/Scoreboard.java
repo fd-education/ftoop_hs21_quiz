@@ -4,6 +4,7 @@ import ch.ffhs.quiz.client.ui.components.ascii.AsciiArtTable;
 import ch.ffhs.quiz.messages.ScoreboardEntry;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Scoreboard {
@@ -27,7 +28,10 @@ public class Scoreboard {
         int rank = 0;
 
         StringBuilder sb = new StringBuilder();
-        sb.append(AsciiArtTable.getTableTop(longestName));
+        String tableTop = AsciiArtTable.getTableTop(longestName);
+        String centerSpace = getWhiteSpaceToCenter(tableTop.length());
+
+        sb.append(centerSpace).append(tableTop);
 
         for(ScoreboardEntry entry: topTenPlayers){
             rank++;
@@ -35,23 +39,23 @@ public class Scoreboard {
             int score = entry.getScore();
             if(!playerContained) playerContained = playerName.equals(name);
 
-            sb.append(AsciiArtTable.getCellWithContent(longestName, rank, playerName, score));
+            sb.append(centerSpace).append(AsciiArtTable.getCellWithContent(longestName, rank, playerName, score));
         }
 
         if(!playerContained){
             int index = getIndexOfPlayer(name);
             int score = rankedPlayers.get(index).getScore();
-            sb.append(AsciiArtTable.getCellWithContent(longestName, index+1, name, score));
+            sb.append(centerSpace).append(AsciiArtTable.getCellWithContent(longestName, index+1, name, score));
         }
 
-        sb.append(AsciiArtTable.getTableBottom(longestName));
+        sb.append(centerSpace).append(AsciiArtTable.getTableBottom(longestName));
 
         return sb.toString();
     }
 
     private int getIndexOfPlayer(String name){
         for(int i = 9; i<rankedPlayers.size(); i++){
-            if(rankedPlayers.get(i).getPlayerName().equals(name)) return i+1;
+            if(rankedPlayers.get(i).getPlayerName().equals(name)) return i;
         }
 
         return -1;
@@ -76,5 +80,14 @@ public class Scoreboard {
         }
 
         return longest;
+    }
+
+    private String getWhiteSpaceToCenter(int tableLength){
+        int spaceToCenter = (105-tableLength)/2 - 1;
+
+        char[] whiteSpaces = new char[spaceToCenter];
+        Arrays.fill(whiteSpaces, ' ');
+
+        return new String(whiteSpaces);
     }
 }
