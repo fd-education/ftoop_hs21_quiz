@@ -6,21 +6,26 @@ import ch.ffhs.quiz.messages.ScoreboardEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Scoreboard {
     List<ScoreboardEntry> rankedPlayers;
     List<ScoreboardEntry> topTenPlayers;
 
     public Scoreboard(final List<ScoreboardEntry> rankedPlayers){
-        this.rankedPlayers = rankedPlayers;
+        this.rankedPlayers = Objects.requireNonNull(rankedPlayers, "rankedPlayers must not be null");
         topTenPlayers = extractTopTenPlayers();
     }
 
     public String getScoreboardForPlayer(final String name){
+        if(name.isBlank()) throw new IllegalArgumentException("name must contain letters and not only whitespace");
+
         return createScoreBoard(name);
     }
 
     private String createScoreBoard(final String name){
+        if(name.isBlank()) throw new IllegalArgumentException("name must contain letters and not only whitespace");
+
         int longestName = getMaxNameLength(rankedPlayers);
         boolean playerContained = false;
         int rank = 0;
@@ -52,6 +57,8 @@ public class Scoreboard {
     }
 
     private int getIndexOfPlayer(final String name){
+        if(name.isBlank()) throw new IllegalArgumentException("name must contain letters and not only whitespace");
+
         for(int i = 9; i<rankedPlayers.size(); i++){
             if(rankedPlayers.get(i).getPlayerName().equals(name)) return i;
         }
@@ -72,6 +79,8 @@ public class Scoreboard {
     }
 
     private static int getMaxNameLength(final List<ScoreboardEntry> rankedPlayers){
+        Objects.requireNonNull(rankedPlayers, "rankedPlayers must not be null");
+
         int longest = 0;
 
         for(ScoreboardEntry player: rankedPlayers){
