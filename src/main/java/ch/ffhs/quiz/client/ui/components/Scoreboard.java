@@ -13,9 +13,7 @@ public class Scoreboard {
 
     public Scoreboard(List<ScoreboardEntry> rankedPlayers){
         this.rankedPlayers = rankedPlayers;
-        topTenPlayers = new ArrayList<>();
-
-        findTopTen();
+        topTenPlayers = extractTopTenPlayers();
     }
 
     public String getScoreboardForPlayer(String name){
@@ -23,7 +21,7 @@ public class Scoreboard {
     }
 
     private String createScoreBoard(String name){
-        int longestName = getMaxLengthFromEntries(rankedPlayers);
+        int longestName = getMaxNameLength(rankedPlayers);
         boolean playerContained = false;
         int rank = 0;
 
@@ -61,27 +59,30 @@ public class Scoreboard {
         return -1;
     }
 
-    private void findTopTen() {
-        if(rankedPlayers.size() <= 10) {
-            topTenPlayers = rankedPlayers;
-            return;
-        }
+    private List<ScoreboardEntry> extractTopTenPlayers() {
+        if(rankedPlayers.size() <= 10) return rankedPlayers;
+
+        List<ScoreboardEntry> topTenPlayers = new ArrayList<>();
 
         for(int i = 0; i<10; i++){
             topTenPlayers.add(rankedPlayers.get(i));
         }
+
+        return topTenPlayers;
     }
 
-    private static int getMaxLengthFromEntries(List<ScoreboardEntry> entries){
+    private static int getMaxNameLength(List<ScoreboardEntry> rankedPlayers){
         int longest = 0;
-        for(ScoreboardEntry entry: entries){
-            int curr =  entry.getPlayerName().length();
-            longest = Math.max(longest, curr);
+
+        for(ScoreboardEntry player: rankedPlayers){
+            int current =  player.getPlayerName().length();
+            longest = Math.max(longest, current);
         }
 
         return longest;
     }
 
+    // TODO: Rebuild client to use String.indent() instead of hardcoded white space !!!
     private String getWhiteSpaceToCenter(int tableLength){
         int spaceToCenter = (105-tableLength)/2 - 1;
 
