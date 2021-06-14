@@ -10,7 +10,7 @@ public enum AsciiArtTitles implements StaticUIComponent {
                         ██╔══╝  ██╔══██║██║     ██╔══██║██║  ██║██╔══╝      ██║▄▄ ██║██║   ██║██║ ███╔╝
                         ██║     ██║  ██║╚██████╗██║  ██║██████╔╝███████╗    ╚██████╔╝╚██████╔╝██║███████╗
                         ╚═╝     ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═════╝ ╚══════╝     ╚══▀▀═╝  ╚═════╝ ╚═╝╚══════╝
-            """, 6),
+            """),
     QUESTION("""
                                             ███████╗██████╗  █████╗  ██████╗ ███████╗
                                             ██╔════╝██╔══██╗██╔══██╗██╔════╝ ██╔════╝
@@ -18,7 +18,7 @@ public enum AsciiArtTitles implements StaticUIComponent {
                                             ██╔══╝  ██╔══██╗██╔══██║██║   ██║██╔══╝
                                             ██║     ██║  ██║██║  ██║╚██████╔╝███████╗
                                             ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝
-            """, 6),
+            """),
     SCORE("""
                                             ███████╗ ██████╗ ██████╗ ██████╗ ███████╗
                                             ██╔════╝██╔════╝██╔═══██╗██╔══██╗██╔════╝
@@ -26,7 +26,7 @@ public enum AsciiArtTitles implements StaticUIComponent {
                                             ╚════██║██║     ██║   ██║██╔══██╗██╔══╝
                                             ███████║╚██████╗╚██████╔╝██║  ██║███████╗
                                             ╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝
-            """, 6),
+            """),
     END("""
                                                ███████╗███╗   ██╗██████╗ ███████╗
                                                ██╔════╝████╗  ██║██╔══██╗██╔════╝
@@ -34,19 +34,16 @@ public enum AsciiArtTitles implements StaticUIComponent {
                                                ██╔══╝  ██║╚██╗██║██║  ██║██╔══╝
                                                ███████╗██║ ╚████║██████╔╝███████╗
                                                ╚══════╝╚═╝  ╚═══╝╚═════╝ ╚══════╝
-            """, 6);
+            """);
 
     private final String ascii;
-    private final int linesOfContent;
 
-    AsciiArtTitles(String ascii, int linesOfContent){
+    AsciiArtTitles(String ascii){
         this.ascii = ascii;
-        this.linesOfContent = linesOfContent;
     }
 
     public String getText(){
         return ascii;
     }
 
-    public int getLinesOfContent(){return linesOfContent;}
 }

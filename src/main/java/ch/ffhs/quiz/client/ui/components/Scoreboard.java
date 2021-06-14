@@ -39,13 +39,13 @@ public class Scoreboard {
             int score = entry.getScore();
             if(!playerContained) playerContained = playerName.equals(name);
 
-            sb.append(centerSpace).append(AsciiArtTable.getCellWithContent(longestName, rank, playerName, score));
+            sb.append(centerSpace).append(AsciiArtTable.getCellBordersWithContent(longestName, rank, playerName, score));
         }
 
         if(!playerContained){
             int index = getIndexOfPlayer(name);
             int score = rankedPlayers.get(index).getScore();
-            sb.append(centerSpace).append(AsciiArtTable.getCellWithContent(longestName, index+1, name, score));
+            sb.append(centerSpace).append(AsciiArtTable.getCellBordersWithContent(longestName, index+1, name, score));
         }
 
         sb.append(centerSpace).append(AsciiArtTable.getTableBottom(longestName));

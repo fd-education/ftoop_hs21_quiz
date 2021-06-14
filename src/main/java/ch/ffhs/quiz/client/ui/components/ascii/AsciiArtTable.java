@@ -11,13 +11,13 @@ public class AsciiArtTable {
         return String.format(borderTemplate, new String(border));
     }
 
-    public static String getCellWithContent(int length, int rank, String name, int score){
+    public static String getCellBordersWithContent(int length, int rank, String name, int score){
         String cellTemplate = "     ║ %s ║ %s║ %s ║\n";
         char[] filler = new char[length + 5 - 1 - name.length()];
         Arrays.fill(filler, ' ');
 
-        String rankString = formatIntegerToFitInCell(rank);
-        String scoreString = formatIntegerToFitInCell(score);
+        String rankString = formatIntegerToFitInCol(rank);
+        String scoreString = formatIntegerToFitInCol(score);
         return String.format(cellTemplate, rankString, name + new String(filler), scoreString);
     }
 
@@ -29,7 +29,7 @@ public class AsciiArtTable {
         return String.format(borderTemplate, new String(border));
     }
 
-    private static String formatIntegerToFitInCell(int integer){
+    private static String formatIntegerToFitInCol(int integer){
         if(integer < 10){
             return integer + "  ";
         } else if(integer < 100){
