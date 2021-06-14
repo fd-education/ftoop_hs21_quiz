@@ -9,15 +9,16 @@ import ch.ffhs.quiz.messages.NameMessage;
 import ch.ffhs.quiz.messages.ReadyMessage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class InitializationStage extends Stage{
     
 
-    public InitializationStage(final Client client, final Connection con, final InputHandler inputHandler, final UserInterface ui){
-        this.client = client;
-        this.serverConnection = con;
-        this.inputHandler = inputHandler;
-        this.ui = ui;
+    public InitializationStage(final Client client, final Connection connection, final InputHandler inputHandler, final UserInterface ui){
+        this.client = Objects.requireNonNull(client, "client must not be null");;
+        this.serverConnection = Objects.requireNonNull(connection, "connection must not be null");
+        this.inputHandler = Objects.requireNonNull(inputHandler, "inputHandler must not be null");
+        this.ui = Objects.requireNonNull(ui, "ui must not be null");
     }
 
     @Override

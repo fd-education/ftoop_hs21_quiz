@@ -11,6 +11,7 @@ import ch.ffhs.quiz.messages.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.*;
 
 public class GameStage extends Stage{
@@ -20,11 +21,11 @@ public class GameStage extends Stage{
 
     private static final String RUNTIME_EX = "This exception must not occur, because inputs get checked.";
 
-    public GameStage(final Client client, final Connection con, final InputHandler inputHandler, final UserInterface ui){
-        this.inputHandler = inputHandler;
-        this.client = client;
-        this.serverConnection = con;
-        this.ui = ui;
+    public GameStage(final Client client, final Connection connection, final InputHandler inputHandler, final UserInterface ui){
+        this.client = Objects.requireNonNull(client, "client must not be null");;
+        this.serverConnection = Objects.requireNonNull(connection, "connection must not be null");
+        this.inputHandler = Objects.requireNonNull(inputHandler, "inputHandler must not be null");
+        this.ui = Objects.requireNonNull(ui, "ui must not be null");
     }
 
     @Override
@@ -108,6 +109,8 @@ public class GameStage extends Stage{
     public boolean wasLastRound(){return wasLastRound;}
 
     private int mapStringAnswerToInteger(final String answer){
+        if(answer.isBlank()) throw new IllegalArgumentException("answer must contain a letter");
+
         return switch (answer.toUpperCase()) {
             case "A" -> 0;
             case "B" -> 1;
@@ -117,6 +120,8 @@ public class GameStage extends Stage{
     }
 
     private void processFeedbackMessage(final FeedbackMessage feedback){
+        Objects.requireNonNull(feedback, "feedback must not be null");
+
         ui.proceed();
 
         if(feedback.getWinningPlayer() == null) ui.printNooneCorrect();
@@ -134,6 +139,8 @@ public class GameStage extends Stage{
     }
 
     private void processRoundSummaryMessage(final RoundSummaryMessage roundSummary){
+        Objects.requireNonNull(roundSummary, "roundSummary must not be null");
+
         AnsiTerminal.clearTerminal();
         ui.printScoreboard(roundSummary.getRankedPlayersList(), client.getPlayerName());
 
