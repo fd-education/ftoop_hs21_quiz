@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Everything" type="CompoundRunConfigurationType">
+    <toRun name="ClientController" type="Application" />
+    <toRun name="Game" type="Application" />
+    <method v="2" />
+  </configuration>
+</component>
