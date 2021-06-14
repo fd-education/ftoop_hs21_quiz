@@ -12,7 +12,6 @@ import ch.ffhs.quiz.messages.ScoreboardEntry;
 import java.util.List;
 
 import static ch.ffhs.quiz.client.ui.AnsiBuilder.Color.*;
-import static ch.ffhs.quiz.client.ui.AnsiBuilder.Decoration.*;
 
 public class UserInterface {
     private boolean proceed;
@@ -83,7 +82,7 @@ public class UserInterface {
         AnsiTerminal.saveCursorPos();
         AnsiTerminal.moveCursorDown(2);
         new AnsiBuilder(DynamicTextComponent.TIME_ALERT.getComponent(secondsLeft))
-                .setFont(RED, BOLD, true)
+                .setFont(RED, true)
                 .print();
         AnsiTerminal.restoreCursorPos();
     }
@@ -116,22 +115,22 @@ public class UserInterface {
 
     public void printPlayerHasWon(){
         AnsiTerminal.moveCursorDown(2);
-        new AnsiBuilder(StaticTextComponent.PLAYER_WON.getComponent()).setFont(GREEN, BOLD, true).print();
+        new AnsiBuilder(StaticTextComponent.PLAYER_WON.getComponent()).setFont(GREEN, true).print();
     }
 
     public void printPlayerOnlyWasCorrect(String winningPlayer){
         AnsiTerminal.moveCursorDown(2);
-        new AnsiBuilder(DynamicTextComponent.CORRECT_ANSWER.getComponent(winningPlayer)).setFont(YELLOW, BOLD, false).print();
+        new AnsiBuilder(DynamicTextComponent.CORRECT_ANSWER.getComponent(winningPlayer)).setFont(YELLOW, false).print();
     }
 
     public void printPlayerWasWrong(String winningPlayer){
         AnsiTerminal.moveCursorDown(2);
-        new AnsiBuilder(DynamicTextComponent.WRONG_ANSWER.getComponent(winningPlayer)).setFont(RED, BOLD, false).print();
+        new AnsiBuilder(DynamicTextComponent.WRONG_ANSWER.getComponent(winningPlayer)).setFont(RED, false).print();
     }
 
     public void printNooneCorrect(){
         AnsiTerminal.moveCursorDown(2);
-        new AnsiBuilder(StaticTextComponent.NO_PLAYER_CORRECT.getComponent()).setFont(RED, BOLD, false).print();
+        new AnsiBuilder(StaticTextComponent.NO_PLAYER_CORRECT.getComponent()).setFont(RED, false).print();
     }
 
     public void printScoreboard(List<ScoreboardEntry> scoreboardEntries, String name){
@@ -196,7 +195,7 @@ public class UserInterface {
         AnsiTerminal.moveCursorDown(2);
         AnsiTerminal.moveCursorRight(5);
         new AnsiBuilder(UserInterfaceUtils.splitPhrase(question, MAX_TEXT_LENGTH))
-                .setFont(BLUE, BOLD, true)
+                .setFont(BLUE, true)
                 .println();
 
         AnsiTerminal.moveCursorDown(1);
@@ -207,7 +206,7 @@ public class UserInterface {
 
             if(i == answerIndex){
                 new AnsiBuilder(UserInterfaceUtils.splitPhrase(answer, MAX_TEXT_LENGTH))
-                        .setFont(BLUE, BOLD, true)
+                        .setFont(BLUE, true)
                         .setBackground(YELLOW, true)
                         .println();
 
@@ -215,7 +214,7 @@ public class UserInterface {
             }
 
             new AnsiBuilder(UserInterfaceUtils.splitPhrase(answer, MAX_TEXT_LENGTH))
-                    .setFont(BLUE, BOLD, true)
+                    .setFont(BLUE, true)
                     .println();
         }
     }
@@ -224,7 +223,7 @@ public class UserInterface {
         AnsiTerminal.moveCursorDown(1);
 
         new AnsiBuilder(alert.getComponent(input))
-                .setFont(RED, BOLD, true)
+                .setFont(RED, true)
                 .print();
 
         AnsiTerminal.restoreCursorPos();

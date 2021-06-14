@@ -3,11 +3,11 @@ package ch.ffhs.quiz.client.ui;
 public class UserInterfaceUtils {
 
     public static void printWithDefaultStyle(String text){
-        new AnsiBuilder(text).setFont(AnsiBuilder.Color.BLUE, AnsiBuilder.Decoration.BOLD, true).print();
+        new AnsiBuilder(text).setFont(AnsiBuilder.Color.BLUE, false).print();
     }
 
     public static String createWithDefaultStyle(String text){
-        return new AnsiBuilder(text).setFont(AnsiBuilder.Color.BLUE, AnsiBuilder.Decoration.BOLD, true).create();
+        return new AnsiBuilder(text).setFont(AnsiBuilder.Color.BLUE, true).create();
     }
 
     public static void printLetterByLetter(String text, Delay delay){

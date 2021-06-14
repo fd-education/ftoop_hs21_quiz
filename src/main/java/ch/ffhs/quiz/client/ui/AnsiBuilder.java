@@ -3,49 +3,14 @@ package ch.ffhs.quiz.client.ui;
 /**
  * Class to work with text decorations and styles using ANSI
  */
-@SuppressWarnings("unused")
+// @SuppressWarnings("unused")
 public class AnsiBuilder {
     private int font;
     private int background;
-    private String decoration = "";
     private final String text;
 
-    public AnsiBuilder(String text) {
+    AnsiBuilder(String text) {
         this.text = text;
-    }
-
-    /**
-     * Set the font color according to the passed properties
-     * @param color for the font
-     * @param decoration which style the text must have
-     * @return AnsiBuilder instance
-     */
-    public AnsiBuilder setFont(Color color, Decoration decoration){
-        setFont(color, decoration, false);
-        return this;
-    }
-
-    /**
-     * Set the font color according to the passed properties
-     * @param color for the font
-     * @param decoration which style the text must have
-     * @param bright true if color must be bright, false otherwise
-     * @return AnsiBuilder instance
-     */
-    public AnsiBuilder setFont(Color color, Decoration decoration, boolean bright) {
-        setFont(color, bright);
-        this.decoration = decoration.getDecoration();
-
-        return this;
-    }
-
-    /**
-     * Set the font color according to the passed properties
-     * @param color for the font
-     * @return AnsiBuilder instance
-     */
-    public AnsiBuilder setFont(Color color){
-        return setFont(color, false);
     }
 
     /**
@@ -59,15 +24,6 @@ public class AnsiBuilder {
         if (!bright) this.font = Property.FONT.getProperty() + color.getColor();
 
         return this;
-    }
-
-    /**
-     * Set the background color according to the passed properties
-     * @param color for the background
-     * @return AnsiBuilder instance
-     */
-    public AnsiBuilder setBackground(Color color){
-        return setBackground(color, false);
     }
 
     /**
@@ -91,14 +47,12 @@ public class AnsiBuilder {
         String ANSI_ESCAPE = "\033[";
         String ANSI_POSTFIX = "m";
         String ANSI_RESET = "\033[0m";
+        String BOLD = "1;";
 
         StringBuilder sb = new StringBuilder();
-        sb.append(ANSI_ESCAPE);
+        sb.append(ANSI_ESCAPE).append(BOLD);
 
-        if (!this.decoration.isBlank()) sb.append(this.decoration);
-
-        if (this.font > 0) sb.append(";").append(this.font);
-
+        if (this.font > 0) sb.append(this.font);
         if (this.background > 0) sb.append(";").append(this.background);
 
         sb.append(ANSI_POSTFIX).append(this.text).append(ANSI_RESET);
@@ -116,24 +70,6 @@ public class AnsiBuilder {
     public void println(){
         String text = create();
         System.out.println(text);
-    }
-
-    /**
-     * Enum contains decoration numbers used in an ANSI String
-     */
-    public enum Decoration {
-        BOLD("1"),
-        UNDERLINE("4");
-
-        String decoration;
-
-        Decoration(String decoration) {
-            this.decoration = decoration;
-        }
-
-        public String getDecoration() {
-            return this.decoration;
-        }
     }
 
     /**
@@ -160,14 +96,10 @@ public class AnsiBuilder {
      * Enum contains color numbers used in an ANSI String
      */
     public enum Color {
-        BLACK(0),
         RED(1),
         GREEN(2),
         YELLOW(3),
-        BLUE(4),
-        MAGENTA(5),
-        CYAN(6),
-        WHITE(7);
+        BLUE(4);
 
         int color;
 
