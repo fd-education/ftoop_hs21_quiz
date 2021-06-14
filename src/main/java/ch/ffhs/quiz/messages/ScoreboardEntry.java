@@ -2,10 +2,19 @@ package ch.ffhs.quiz.messages;
 
 import java.util.Objects;
 
+/**
+ * A data transfer object that describes a single entry in a scoreboard.
+ */
 public class ScoreboardEntry {
     private final String playerName;
     private final int score;
 
+    /**
+     * Instantiates a new Scoreboard entry.
+     *
+     * @param playerName the name of the player
+     * @param score      the score of this player
+     */
     public ScoreboardEntry(String playerName, int score) {
         Objects.requireNonNull(playerName);
 
@@ -31,10 +40,20 @@ public class ScoreboardEntry {
         return result;
     }
 
+    /**
+     * Gets the name of the player.
+     *
+     * @return the player name
+     */
     public String getPlayerName() {
         return playerName;
     }
 
+    /**
+     * Gets the score of the player.
+     *
+     * @return the score
+     */
     public int getScore() {
         return score;
     }

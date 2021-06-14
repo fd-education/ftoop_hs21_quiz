@@ -1,7 +1,5 @@
 package ch.ffhs.quiz.questions;
 
-import java.util.*;
-
 public class AnswerImpl implements Answer {
     String answer;
     Boolean isCorrectAnswer;

@@ -4,7 +4,6 @@ import ch.ffhs.quiz.connectivity.Connection;
 import ch.ffhs.quiz.connectivity.impl.ConnectionImpl;
 import ch.ffhs.quiz.logger.LoggerUtils;
 import ch.ffhs.quiz.server.Server;
-import ch.ffhs.quiz.game.player.impl.*;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -13,9 +12,23 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+/**
+ * Helper class that generates players.
+ */
 public class PlayerFactory {
     private static final Logger logger = LoggerUtils.getLogger();
 
+    // To prevent an instantiation of this helper class
+    private PlayerFactory() {}
+
+    /**
+     * Connects a given amount of players by accepting connections on the given server.
+     * Incoming connections that give failures will be ignored.
+     *
+     * @param server      a running server
+     * @param playerCount the amount of players that should be connected
+     * @return a list of connected players the size of playerCount.
+     */
     public static List<Player> connectPlayers(Server server, int playerCount) {
         Objects.requireNonNull(server);
 
@@ -24,8 +37,8 @@ public class PlayerFactory {
             try {
                 Socket clientSocket = server.acceptConnection();
                 Connection connection = new ConnectionImpl(clientSocket.getOutputStream(), clientSocket.getInputStream());
-                PlayerData playerData = new PlayerDataImpl(i);
-                players.add(new PlayerImpl(playerData, connection));
+                PlayerData playerData = new PlayerData(i);
+                players.add(new Player(playerData, connection));
                 i++;
             } catch (IOException e) {
                 logger.warning("Player could not connect with error %s. Trying again...%n".formatted(e.getCause()));

@@ -1,9 +1,17 @@
 package ch.ffhs.quiz.messages;
 
+/**
+ * Contains the answer of a player.
+ */
 public class AnswerMessage extends Message {
 
     private final int chosenAnswer;
 
+    /**
+     * Instantiates a new Answer message.
+     *
+     * @param chosenAnswer the answer as chosen by the player
+     */
     public AnswerMessage(int chosenAnswer) {
         this.chosenAnswer = chosenAnswer;
     }
@@ -23,6 +31,11 @@ public class AnswerMessage extends Message {
         return chosenAnswer;
     }
 
+    /**
+     * Gets the chosen answer.
+     *
+     * @return the chosen answer
+     */
     public int getChosenAnswer() {
         return chosenAnswer;
     }

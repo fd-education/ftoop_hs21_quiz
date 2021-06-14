@@ -39,11 +39,11 @@ public class ConnectionImpl implements Connection {
     }
 
     @Override
-    public <T extends Message> T receive(Class<T> clazz) throws IOException {
-        Objects.requireNonNull(clazz);
+    public <T extends Message> T receive(Class<T> messageClass) throws IOException {
+        Objects.requireNonNull(messageClass);
         requireOpenConnection();
 
-        return MessageUtils.parse(reader.readLine(), clazz);
+        return MessageUtils.parse(reader.readLine(), messageClass);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ConnectionImpl implements Connection {
     }
 
     @Override
-    public void stop() throws IOException {
+    public void close() throws IOException {
         writer.close();
         reader.close();
         closed = true;

@@ -16,33 +16,33 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class StopPlayersStepTest {
+class DisconnectPlayersStepTest {
     @Mock
     private Player player1;
     @Mock
     private Player player2;
-    StopPlayersStep stopPlayersStep;
+    DisconnectPlayersStep disconnectPlayersStep;
 
     @BeforeEach
     void setUp() {
         Question question = mock(Question.class);
         GameContext gameContext = new GameContext(List.of(player1, player2), List.of(question));
-        stopPlayersStep = new StopPlayersStep(gameContext);
+        disconnectPlayersStep = new DisconnectPlayersStep(gameContext);
     }
 
     @Test
     void process_positive_simple() throws IOException {
-        stopPlayersStep.process();
+        disconnectPlayersStep.process();
 
-        verify(player1).stop();
-        verify(player2).stop();
+        verify(player1).disconnect();
+        verify(player2).disconnect();
     }
 
     @Test
     void process_negative_simple() throws IOException {
-        doThrow(IOException.class).when(player2).stop();
+        doThrow(IOException.class).when(player2).disconnect();
 
-        assertThrows(RuntimeException.class, () -> stopPlayersStep.process());
-        verify(player1).stop();
+        assertThrows(RuntimeException.class, () -> disconnectPlayersStep.process());
+        verify(player1).disconnect();
     }
 }

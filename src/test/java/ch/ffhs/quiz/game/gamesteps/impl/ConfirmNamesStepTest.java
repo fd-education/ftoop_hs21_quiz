@@ -2,6 +2,7 @@ package ch.ffhs.quiz.game.gamesteps.impl;
 
 import ch.ffhs.quiz.game.GameContext;
 import ch.ffhs.quiz.game.player.Player;
+import ch.ffhs.quiz.messages.ConfirmedNameMessage;
 import ch.ffhs.quiz.messages.NameMessage;
 import ch.ffhs.quiz.questions.Question;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,6 +33,8 @@ class ConfirmNamesStepTest {
 
     @Test
     void process_positive_simple() throws IOException {
+        when(player1.getName()).thenReturn("");
+        when(player2.getName()).thenReturn("");
         when(player1.receive(NameMessage.class)).thenReturn(new NameMessage("Name 1"));
         when(player2.receive(NameMessage.class)).thenReturn(new NameMessage("Name 2"));
         when(player1.hasMessage()).thenReturn(true);
@@ -39,16 +42,16 @@ class ConfirmNamesStepTest {
 
         confirmNameSteps.process();
 
-        NameMessage expectedNameMessage = new NameMessage("Name 1");
-        expectedNameMessage.setConfirmed(true);
+        NameMessage expectedNameMessage = new ConfirmedNameMessage("Name 1");
         verify(player1).send(expectedNameMessage);
-        expectedNameMessage = new NameMessage("Name 2");
-        expectedNameMessage.setConfirmed(true);
+        expectedNameMessage = new ConfirmedNameMessage("Name 2");
         verify(player2).send(expectedNameMessage);
     }
 
     @Test
     void process_positive_nameIsAlreadyTaken() throws InterruptedException, IOException {
+        when(player1.getName()).thenReturn("");
+        when(player2.getName()).thenReturn("");
         when(player2.receive(NameMessage.class)).thenReturn(new NameMessage("SameName"));
         TimeUnit.NANOSECONDS.sleep(2);
         when(player1.receive(NameMessage.class)).thenReturn(
@@ -60,15 +63,12 @@ class ConfirmNamesStepTest {
 
         confirmNameSteps.process();
 
-        NameMessage expectedNameMessage = new NameMessage("SameName");
-        expectedNameMessage.setConfirmed(true);
+        NameMessage expectedNameMessage = new ConfirmedNameMessage("SameName");
         verify(player2).send(expectedNameMessage);
 
         expectedNameMessage = new NameMessage("SameName");
-        expectedNameMessage.setConfirmed(false);
         verify(player1).send(expectedNameMessage);
-        expectedNameMessage = new NameMessage("OtherName");
-        expectedNameMessage.setConfirmed(true);
+        expectedNameMessage = new ConfirmedNameMessage("OtherName");
         verify(player1).send(expectedNameMessage);
     }
 }

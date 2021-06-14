@@ -62,15 +62,15 @@ class EvaluateResponsesStepTest {
 
     @RepeatedTest(10)
     void process_positive_raceCondition() throws InterruptedException {
-        roundContext.setPlayerAnswer(player1, new AnswerMessage(0));
+        roundContext.setPlayerAnswer(player2, new AnswerMessage(0));
         //needed otherwise timestamps are too close together
         TimeUnit.NANOSECONDS.sleep(1);
-        roundContext.setPlayerAnswer(player2, new AnswerMessage(0));
+        roundContext.setPlayerAnswer(player1, new AnswerMessage(0));
 
         evaluateResponsesStep.process();
 
-        assertEquals(player1, gameContext.getRoundContext().getWinningPlayer(), "Answer of Player 1 was earlier but did not win");
-        assertTrue(gameContext.getRoundContext().wasPlayerCorrect(player2), "Answer of Player 2 was later but won");
+        assertEquals(player2, gameContext.getRoundContext().getWinningPlayer(), "Answer of Player 2 was earlier but did not win");
+        assertTrue(gameContext.getRoundContext().wasPlayerCorrect(player1), "Answer of Player 1 was later but won");
     }
 
     @Test
