@@ -11,16 +11,16 @@ public class Scoreboard {
     List<ScoreboardEntry> rankedPlayers;
     List<ScoreboardEntry> topTenPlayers;
 
-    public Scoreboard(List<ScoreboardEntry> rankedPlayers){
+    public Scoreboard(final List<ScoreboardEntry> rankedPlayers){
         this.rankedPlayers = rankedPlayers;
         topTenPlayers = extractTopTenPlayers();
     }
 
-    public String getScoreboardForPlayer(String name){
+    public String getScoreboardForPlayer(final String name){
         return createScoreBoard(name);
     }
 
-    private String createScoreBoard(String name){
+    private String createScoreBoard(final String name){
         int longestName = getMaxNameLength(rankedPlayers);
         boolean playerContained = false;
         int rank = 0;
@@ -51,7 +51,7 @@ public class Scoreboard {
         return sb.toString();
     }
 
-    private int getIndexOfPlayer(String name){
+    private int getIndexOfPlayer(final String name){
         for(int i = 9; i<rankedPlayers.size(); i++){
             if(rankedPlayers.get(i).getPlayerName().equals(name)) return i;
         }
@@ -71,7 +71,7 @@ public class Scoreboard {
         return topTenPlayers;
     }
 
-    private static int getMaxNameLength(List<ScoreboardEntry> rankedPlayers){
+    private static int getMaxNameLength(final List<ScoreboardEntry> rankedPlayers){
         int longest = 0;
 
         for(ScoreboardEntry player: rankedPlayers){
@@ -83,7 +83,7 @@ public class Scoreboard {
     }
 
     // TODO: Rebuild client to use String.indent() instead of hardcoded white space !!!
-    private String getWhiteSpaceToCenter(int tableLength){
+    private String getWhiteSpaceToCenter(final int tableLength){
         int spaceToCenter = (105-tableLength)/2 - 1;
 
         char[] whiteSpaces = new char[spaceToCenter];

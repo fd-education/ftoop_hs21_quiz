@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class TerminationStage extends Stage {
 
-    public TerminationStage(Client client, Connection con, InputHandler inputHandler, UserInterface ui){
+    public TerminationStage(final Client client, final Connection con, final InputHandler inputHandler, final UserInterface ui){
         this.client = client;
         this.serverConnection = con;
         this.inputHandler = inputHandler;
@@ -37,6 +37,7 @@ public class TerminationStage extends Stage {
             client.closeConnection();
             serverConnection.stop();
         } catch(IOException ioEx){
+            // TODO: handle differently
             throw new RuntimeException("May not be thrown.");
         }
     }

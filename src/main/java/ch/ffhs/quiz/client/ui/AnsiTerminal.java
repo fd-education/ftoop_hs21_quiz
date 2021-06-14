@@ -7,21 +7,11 @@ public class AnsiTerminal {
     // ANSI Prefix String
     private static final String PREFIX = "\033[";
 
-    public AnsiTerminal(){}
-
-    /**
-     * Moves the cursor down a certain amount of lines
-     * @param lines number of lines to move the cursor
-     */
-    public static void moveCursorUp(int lines){
-        moveCursor(Direction.UP, lines);
-    }
-
     /**
      * Moves the cursor up a certain amount of lines
      * @param lines number of lines to move the cursor
      */
-    public static void moveCursorDown(int lines){
+    public static void moveCursorDown(final int lines){
         moveCursor(Direction.DOWN, lines);
     }
 
@@ -29,7 +19,7 @@ public class AnsiTerminal {
      * Moves the cursor to the left by a certain amount of chars
      * @param chars number of chars to move the cursor
      */
-    public static void moveCursorLeft(int chars){
+    public static void moveCursorLeft(final int chars){
         moveCursor(Direction.LEFT, chars);
     }
 
@@ -37,12 +27,12 @@ public class AnsiTerminal {
      * Moves the cursor to the right by a certain amount of chars
      * @param chars number of chars to move the cursor
      */
-    public static void moveCursorRight(int chars){
+    public static void moveCursorRight(final int chars){
         moveCursor(Direction.RIGHT, chars);
     }
 
     // move the cursor on the terminal in a specified direction by a specified number of chars/ lines
-    private static void moveCursor(Direction direction, int number){
+    private static void moveCursor(final Direction direction, final int number){
         System.out.printf("%s%s%s", PREFIX, number, direction.getDirection());
     }
 
@@ -51,7 +41,7 @@ public class AnsiTerminal {
      * @param line to place the cursor
      * @param column to place the cursor on the specified line
      */
-    public static void positionCursor(int line, int column){
+    public static void positionCursor(final int line, final int column){
         String ansi = String.format("%s%s;%sH", PREFIX, line ,column);
         System.out.print(ansi);
     }
@@ -98,7 +88,7 @@ public class AnsiTerminal {
      * Restores cursor to the current position.
      * @param number how many lines to clear
      */
-    public static void clearNumberOfLines(int number){
+    public static void clearNumberOfLines(final int number){
         saveCursorPos();
         for(int i = 0; i < number; i++){
             clearLine();
@@ -109,14 +99,13 @@ public class AnsiTerminal {
 
     // Available directions for cursor movements
     enum Direction{
-        UP("F"),
         DOWN("E"),
         RIGHT("C"),
         LEFT("D");
 
         public final String direction;
 
-        Direction(String direction){this.direction = direction;}
+        Direction(final String direction){this.direction = direction;}
 
         public String getDirection(){return direction;}
     }

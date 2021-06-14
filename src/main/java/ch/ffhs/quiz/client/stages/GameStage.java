@@ -20,7 +20,7 @@ public class GameStage extends Stage{
 
     private static final String RUNTIME_EX = "This exception must not occur, because inputs get checked.";
 
-    public GameStage(Client client, Connection con, InputHandler inputHandler, UserInterface ui){
+    public GameStage(final Client client, final Connection con, final InputHandler inputHandler, final UserInterface ui){
         this.inputHandler = inputHandler;
         this.client = client;
         this.serverConnection = con;
@@ -107,7 +107,7 @@ public class GameStage extends Stage{
 
     public boolean wasLastRound(){return wasLastRound;}
 
-    private int mapStringAnswerToInteger(String answer){
+    private int mapStringAnswerToInteger(final String answer){
         return switch (answer.toUpperCase()) {
             case "A" -> 0;
             case "B" -> 1;
@@ -116,7 +116,7 @@ public class GameStage extends Stage{
         };
     }
 
-    private void processFeedbackMessage(FeedbackMessage feedback){
+    private void processFeedbackMessage(final FeedbackMessage feedback){
         ui.proceed();
 
         if(feedback.getWinningPlayer() == null) ui.printNooneCorrect();
@@ -133,7 +133,7 @@ public class GameStage extends Stage{
         ui.sleepSave(10000);
     }
 
-    private void processRoundSummaryMessage(RoundSummaryMessage roundSummary){
+    private void processRoundSummaryMessage(final RoundSummaryMessage roundSummary){
         AnsiTerminal.clearTerminal();
         ui.printScoreboard(roundSummary.getRankedPlayersList(), client.getPlayerName());
 

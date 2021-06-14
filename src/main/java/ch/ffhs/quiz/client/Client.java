@@ -12,7 +12,7 @@ public class Client{
 
     private String playerName;
 
-    public Client(String host, int port) throws IOException{
+    public Client(final String host, final int port) throws IOException{
 
         this.client = new Socket(host, port);
 
@@ -30,7 +30,7 @@ public class Client{
 
     public OutputStream getOutput(){return out;}
 
-    public void setPlayerName(String name){
+    public void setPlayerName(final String name){
         this.playerName = name;
     }
 

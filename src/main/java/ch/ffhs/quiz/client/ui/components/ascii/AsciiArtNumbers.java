@@ -54,11 +54,11 @@ public enum AsciiArtNumbers implements StaticUIComponent {
 
     private final String ascii;
 
-    AsciiArtNumbers(String ascii){
+    AsciiArtNumbers(final String ascii){
         this.ascii = ascii;
     }
 
-    public static String getText(int index){
+    public static String getText(final int index){
         return AsciiArtNumbers.values()[index].getComponent();
     }
 

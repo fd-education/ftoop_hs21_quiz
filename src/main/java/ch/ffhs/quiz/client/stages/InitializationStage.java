@@ -13,7 +13,7 @@ import java.io.IOException;
 public class InitializationStage extends Stage{
     
 
-    public InitializationStage(Client client, Connection con, InputHandler inputHandler, UserInterface ui){
+    public InitializationStage(final Client client, final Connection con, final InputHandler inputHandler, final UserInterface ui){
         this.client = client;
         this.serverConnection = con;
         this.inputHandler = inputHandler;

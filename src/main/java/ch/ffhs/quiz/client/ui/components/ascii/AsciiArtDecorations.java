@@ -14,7 +14,7 @@ public enum AsciiArtDecorations implements StaticUIComponent {
 
     private final String ascii;
 
-    AsciiArtDecorations(String ascii){
+    AsciiArtDecorations(final String ascii){
         this.ascii = ascii;
     }
 

@@ -8,7 +8,7 @@ public class AnsiBuilder {
     private int background;
     private final String text;
 
-    public AnsiBuilder(String text) {
+    public AnsiBuilder(final String text) {
         this.text = text;
     }
 
@@ -18,7 +18,7 @@ public class AnsiBuilder {
      * @param bright true if color must be bright, false otherwise
      * @return AnsiBuilder instance
      */
-    public AnsiBuilder setFont(Color color, boolean bright) {
+    public AnsiBuilder setFont(final Color color, boolean bright) {
         if (bright) this.font = Property.FONT_BRIGHT.getProperty() + color.getColor();
         if (!bright) this.font = Property.FONT.getProperty() + color.getColor();
 
@@ -31,7 +31,7 @@ public class AnsiBuilder {
      * @param bright true if color must be bright, false otherwise
      * @return AnsiBuilder instance
      */
-    public AnsiBuilder setBackground(Color color, boolean bright) {
+    public AnsiBuilder setBackground(final Color color, boolean bright) {
         if (bright) this.background = Property.BACKGROUND_BRIGHT.getProperty() + color.getColor();
         if (!bright) this.background = Property.BACKGROUND.getProperty() + color.getColor();
 

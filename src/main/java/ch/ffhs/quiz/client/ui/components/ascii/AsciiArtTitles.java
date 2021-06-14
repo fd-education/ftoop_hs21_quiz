@@ -38,7 +38,7 @@ public enum AsciiArtTitles implements StaticUIComponent {
 
     private final String ascii;
 
-    AsciiArtTitles(String ascii){
+    AsciiArtTitles(final String ascii){
         this.ascii = ascii;
     }
 
