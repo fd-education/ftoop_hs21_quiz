@@ -3,7 +3,6 @@ package ch.ffhs.quiz.client.ui;
 /**
  * Class to work with text decorations and styles using ANSI
  */
-// @SuppressWarnings("unused")
 public class AnsiBuilder {
     private int font;
     private int background;
@@ -19,7 +18,7 @@ public class AnsiBuilder {
      * @param bright true if color must be bright, false otherwise
      * @return AnsiBuilder instance
      */
-    public AnsiBuilder setFont(Color color, boolean bright) {
+    AnsiBuilder setFont(Color color, boolean bright) {
         if (bright) this.font = Property.FONT_BRIGHT.getProperty() + color.getColor();
         if (!bright) this.font = Property.FONT.getProperty() + color.getColor();
 
@@ -32,7 +31,7 @@ public class AnsiBuilder {
      * @param bright true if color must be bright, false otherwise
      * @return AnsiBuilder instance
      */
-    public AnsiBuilder setBackground(Color color, boolean bright) {
+    AnsiBuilder setBackground(Color color, boolean bright) {
         if (bright) this.background = Property.BACKGROUND_BRIGHT.getProperty() + color.getColor();
         if (!bright) this.background = Property.BACKGROUND.getProperty() + color.getColor();
 
@@ -43,7 +42,7 @@ public class AnsiBuilder {
      * Creates the ANSI decorated text
      * @return String containing ANSI decorated text
      */
-    public String create() {
+    String create() {
         String ANSI_ESCAPE = "\033[";
         String ANSI_POSTFIX = "m";
         String ANSI_RESET = "\033[0m";
@@ -62,12 +61,12 @@ public class AnsiBuilder {
     /**
      * Prints the ANSI decorated text to the console
      */
-    public void print(){
+    void print(){
         String text = create();
         System.out.print(text);
     }
 
-    public void println(){
+    void println(){
         String text = create();
         System.out.println(text);
     }
@@ -75,7 +74,7 @@ public class AnsiBuilder {
     /**
      * Enum contains property numbers used in an ANSI String
      */
-    public enum Property {
+    enum Property {
         FONT(30),
         BACKGROUND(40),
         FONT_BRIGHT(90),
@@ -95,7 +94,7 @@ public class AnsiBuilder {
     /**
      * Enum contains color numbers used in an ANSI String
      */
-    public enum Color {
+    enum Color {
         RED(1),
         GREEN(2),
         YELLOW(3),
