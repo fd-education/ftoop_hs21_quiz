@@ -3,7 +3,14 @@ package ch.ffhs.quiz.questions;
 
 import java.io.*;
 import java.util.*;
+
+/**
+ * This utility class reads questions and answers from a given file and returns them as objects
+ */
 public class QuestionFactory {
+
+    // Prevents instantiation of this utility class
+    private QuestionFactory() {}
 
     public static void main(String[] args) {
         List<Question> quiz2019 = questionBuilder("fragenkataloge/fragenkatalog_2019.txt");
@@ -72,7 +79,7 @@ public class QuestionFactory {
     }
 
     /**
-     * Builds the Question and puts it in a list.
+     * Builds the questions in the given file and returns them in a list.
      *
      * @param filename the filename as string
      * @return the list

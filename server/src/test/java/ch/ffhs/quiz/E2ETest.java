@@ -34,7 +34,7 @@ class E2ETest {
                         NotifyGameStartsStep.class,
                         ConfirmNamesStep.class
                 )
-                .withMainSteps(
+                .withRoundSteps(
                         SendQuestionStep.class,
                         ReceiveResponsesStep.class,
                         EvaluateResponsesStep.class,

@@ -57,8 +57,8 @@ class GameTest {
     void builder_positive_simple() {
         gameBuilder
                 .withSetupSteps(setupSteps)
-                .withMainSteps(EvaluateResponsesStep.class)
-                .withTeardownSteps(teardownSteps);
+                .withTeardownSteps(teardownSteps)
+                .withRoundSteps(EvaluateResponsesStep.class);
 
         assertDoesNotThrow(gameBuilder::build);
     }
@@ -68,7 +68,7 @@ class GameTest {
         try (MockedConstruction<EvaluateResponsesStep> mocked = mockConstruction(EvaluateResponsesStep.class)){
             game = gameBuilder
                     .withSetupSteps(setupSteps)
-                    .withMainSteps(mainSteps)
+                    .withRoundSteps(mainSteps)
                     .withTeardownSteps(EvaluateResponsesStep.class)
                     .build();
             questions.add(question);
