@@ -4,6 +4,12 @@ public class AnswerImpl implements Answer {
     String answer;
     Boolean isCorrectAnswer;
 
+    /**
+     * Instantiates a new Answer.
+     *
+     * @param answer          the answer
+     * @param isCorrectAnswer tells us if it is the correct answer
+     */
     public AnswerImpl(String answer, boolean isCorrectAnswer) {
         this.answer = answer;
         this.isCorrectAnswer = isCorrectAnswer;

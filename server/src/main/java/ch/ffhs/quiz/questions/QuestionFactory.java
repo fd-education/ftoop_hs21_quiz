@@ -14,6 +14,7 @@ public class QuestionFactory {
         System.out.println(quiz2021);
     }
 
+    // Reads the given file and creates a hashmap with the question as the key and the answers as the value
     private static Map<String, List<String>> loadFromFile(String fileName) {
         String question = "";
         String answerA = "";
@@ -28,7 +29,6 @@ public class QuestionFactory {
                     String valueFirst = String.valueOf(line.charAt(0));
                     String valueLast = String.valueOf(line.charAt(line.length()-1));
                     boolean isQuestion = (valueLast.equals("?"));
-                    boolean isQuestionComplete = ((question.length()>1) && (answerA.length()>1) && (answerB.length()>1) && (answerC.length()>1));
 
                     // evaluate the question
                     if (valueLast.equals("?")) {
@@ -45,6 +45,8 @@ public class QuestionFactory {
                     if (valueFirst.equals("C") && !(isQuestion)) {
                         answerC = line;
                     }
+
+                    boolean isQuestionComplete = ((question.length()>1) && (answerA.length()>1) && (answerB.length()>1) && (answerC.length()>1));
 
                     if (isQuestionComplete) {
                         List<String> answers = new ArrayList<>(Arrays.asList("A", "B", "C"));
@@ -64,10 +66,17 @@ public class QuestionFactory {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            throw new RuntimeException("File %s could not be read".formatted(fileName));
         }
         return questions;
     }
 
+    /**
+     * Builds the Question and puts it in a list.
+     *
+     * @param filename the filename as string
+     * @return the list
+     */
     public static List<Question> questionBuilder(String filename) {
         Map<String, List<String>> quiz = loadFromFile(filename);
 
