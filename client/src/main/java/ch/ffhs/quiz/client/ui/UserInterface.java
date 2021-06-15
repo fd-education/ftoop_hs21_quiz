@@ -1,6 +1,5 @@
 package ch.ffhs.quiz.client.ui;
 
-
 import ch.ffhs.quiz.client.ui.components.Scoreboard;
 import ch.ffhs.quiz.client.ui.components.ascii.AsciiArtDecorations;
 import ch.ffhs.quiz.client.ui.components.ascii.AsciiArtNumbers;
@@ -13,11 +12,11 @@ import ch.ffhs.quiz.messages.ScoreboardEntry;
 import java.util.List;
 
 import static ch.ffhs.quiz.client.ui.AnsiBuilder.Color.*;
-import static ch.ffhs.quiz.client.ui.AnsiBuilder.Decoration.BOLD;
 
 public class UserInterface {
-    private boolean proceed;
+    private boolean proceed = true;
     private Thread waitingThread;
+
     private final static int MAX_TEXT_LENGTH = 95;
     private final static int FRAME_HEIGHT = 26;
     private final static int PADDING_BORDER_TITLE = 2;
@@ -28,13 +27,13 @@ public class UserInterface {
 
         frameContent(welcome);
 
-        String formattedExplanation = UserInterfaceUtils.createWithDefaultStyle(explanation.getText());
+        String formattedExplanation = UserInterfaceUtils.createWithDefaultStyle(explanation.getComponent());
 
-        // TODO: Change delay to be fast
+        // TODO change Delay to Fast
         UserInterfaceUtils.printLetterByLetter(formattedExplanation, UserInterfaceUtils.Delay.ZERO);
     }
 
-    public void alertInvalidName(String name){
+    public void alertInvalidName(final String name){
         alertInvalidInput(DynamicTextComponent.NAME_INVALID, name);
     }
 
@@ -42,14 +41,14 @@ public class UserInterface {
         askForInput(StaticTextComponent.ASK_FOR_NAME);
     }
 
-    public void alertNameReserved(String name){
+    public void alertNameReserved(final String name){
         alertInvalidInput(DynamicTextComponent.NAME_RESERVED, name);
     }
 
     public void welcomePlayerPersonally(String name){
-        AnsiTerminal.positionCursor(23, 0);
+        AnsiTerminal.positionCursor(22, 0);
         AnsiTerminal.clearNumberOfLines(4);
-        UserInterfaceUtils.printWithDefaultStyle(DynamicTextComponent.PERSONALIZED_WELCOME.getText(name));
+        UserInterfaceUtils.printWithDefaultStyle(DynamicTextComponent.PERSONALIZED_WELCOME.getComponent(name));
     }
 
     public void countdown(){
@@ -65,15 +64,15 @@ public class UserInterface {
         } catch(InterruptedException ignored){}
     }
 
-    public void printQuestion(String question, List<String> answers){
+    public void printQuestion(final String question, final List<String> answers){
         printQuestion(question, answers, -1);
     }
 
-    public void alertInvalidAnswer(String answer){
+    public void alertInvalidAnswer(final String answer){
         alertInvalidInput(DynamicTextComponent.ANSWER_INVALID, answer);
     }
 
-    public void markChosenAnswer(String question, List<String> answers, int chosenAnswer){
+    public void markChosenAnswer(final String question, List<String> answers, int chosenAnswer){
         printQuestion(question, answers, chosenAnswer);
     }
 
@@ -81,101 +80,130 @@ public class UserInterface {
         askForInput(StaticTextComponent.ASK_FOR_ANSWER);
     }
 
-    public void waiting(String reason){
-        waiting(reason, 0);
+    public void alertTime(final String secondsLeft){
+        AnsiTerminal.saveCursorPos();
+        AnsiTerminal.moveCursorDown(2);
+        new AnsiBuilder(DynamicTextComponent.TIME_ALERT.getComponent(secondsLeft))
+                .setFont(RED, true)
+                .print();
+        AnsiTerminal.restoreCursorPos();
     }
 
-    public void waiting(String reason, int duration){
+    public void sleepSave(final int duration){
+        try{
+            Thread.sleep(duration);
+        } catch(InterruptedException ignored){}
+    }
+
+    public void waiting(String reason){
+        if(waitingThread != null && waitingThread.isAlive()) return;
+        if(proceed) proceed = false;
+
         waitingThread = new Thread(() -> {
-            try {
-                Thread.sleep(duration);
+            AnsiTerminal.saveCursorPos();
+            AnsiTerminal.positionCursor(25, 32);
+            UserInterfaceUtils.printWithDefaultStyle(reason);
 
-                if (!proceed) {
-                    AnsiTerminal.positionCursor(25, 35);
-                    UserInterfaceUtils.printWithDefaultStyle(reason);
+            while (!proceed) {
+                UserInterfaceUtils.printLetterByLetter(UserInterfaceUtils.createWithDefaultStyle(" . . ."), UserInterfaceUtils.Delay.SLOW);
+                AnsiTerminal.moveCursorLeft(6);
+                AnsiTerminal.clearRemainingOfLine();
+            }
 
-                    while (!proceed) {
-                        UserInterfaceUtils.printLetterByLetter(UserInterfaceUtils.createWithDefaultStyle(" . . ."), UserInterfaceUtils.Delay.SLOW);
-                        AnsiTerminal.moveCursorLeft(6);
-                        AnsiTerminal.clearRemainingOfLine();
-                    }
-                }
-            }catch(InterruptedException ignored){}
+            AnsiTerminal.clearLine();
+            AnsiTerminal.restoreCursorPos();
         });
 
         waitingThread.start();
     }
 
     public void printPlayerHasWon(){
-        new AnsiBuilder(StaticTextComponent.PLAYER_WON.getText()).setFont(GREEN, BOLD, true).print();
+        AnsiTerminal.moveCursorDown(2);
+        new AnsiBuilder(StaticTextComponent.PLAYER_WON.getComponent()).setFont(GREEN, true).print();
     }
 
-    public void printPlayerOnlyWasCorrect(String winningPlayer){
-        new AnsiBuilder(DynamicTextComponent.CORRECT_ANSWER.getText(winningPlayer)).setFont(YELLOW, BOLD, false).print();
+    public void printPlayerOnlyWasCorrect(final String winningPlayer){
+        AnsiTerminal.moveCursorDown(2);
+        new AnsiBuilder(DynamicTextComponent.CORRECT_ANSWER.getComponent(winningPlayer)).setFont(YELLOW, false).print();
     }
 
-    public void printPlayerWasWrong(String winningPlayer){
-        new AnsiBuilder(DynamicTextComponent.WRONG_ANSWER.getText(winningPlayer)).setFont(RED, BOLD, false).print();
+    public void printPlayerWasWrong(final String winningPlayer){
+        AnsiTerminal.moveCursorDown(2);
+        new AnsiBuilder(DynamicTextComponent.WRONG_ANSWER.getComponent(winningPlayer)).setFont(RED, false).print();
     }
 
     public void printNooneCorrect(){
-        new AnsiBuilder(StaticTextComponent.NO_PLAYER_CORRECT.getText()).setFont(RED, BOLD, false).print();
+        AnsiTerminal.moveCursorDown(2);
+        new AnsiBuilder(StaticTextComponent.NO_PLAYER_CORRECT.getComponent()).setFont(RED, false).print();
     }
 
     public void printScoreboard(List<ScoreboardEntry> scoreboardEntries, String name){
-
         frameContent(AsciiArtTitles.SCORE);
 
+        AnsiTerminal.moveCursorDown(1);
         Scoreboard sb = new Scoreboard(scoreboardEntries);
         UserInterfaceUtils.printWithDefaultStyle(sb.getScoreboardForPlayer(name));
     }
 
+    public void printEnd(){
+        frameContent(null);
+        AnsiTerminal.moveCursorDown(6);
+        UserInterfaceUtils.printWithDefaultStyle(AsciiArtTitles.END.getComponent());
+
+        AnsiTerminal.moveCursorDown(2);
+        UserInterfaceUtils.printWithDefaultStyle(StaticTextComponent.THANKS.getComponent());
+
+        sleepSave(10000);
+        emptyTerminal();
+    }
+
     public UserInterface proceed(){
-        try{
-            proceed = true;
-            if(this.waitingThread != null) waitingThread.join();
-        } catch(InterruptedException ignored){}
+        proceed = true;
+        try {
+            if (this.waitingThread != null) waitingThread.join();
+        } catch(InterruptedException iEx){
+            waitingThread.interrupt();
+        }
 
         return this;
     }
 
-    public void await(){
-        proceed = false;
+    public boolean isWaiting(){
+        return !proceed;
     }
 
-    private static void emptyTerminal() {
+    private void emptyTerminal() {
         AnsiTerminal.clearTerminal();
-        AnsiTerminal.moveCursorDown(1);
     }
 
-    private static void frameContent(StaticUIComponent title){
+    private void frameContent(final StaticUIComponent title){
         emptyTerminal();
         StaticUIComponent topFrame = AsciiArtDecorations.TOP_LINE;
         StaticUIComponent bottomFrame = AsciiArtDecorations.BOTTOM_LINE;
 
-        UserInterfaceUtils.printWithDefaultStyle(topFrame.getText());
+        UserInterfaceUtils.printWithDefaultStyle(topFrame.getComponent());
 
         AnsiTerminal.saveCursorPos();
         AnsiTerminal.moveCursorDown(FRAME_HEIGHT);
-        UserInterfaceUtils.printWithDefaultStyle(bottomFrame.getText());
+        UserInterfaceUtils.printWithDefaultStyle(bottomFrame.getComponent());
 
         AnsiTerminal.restoreCursorPos();
         AnsiTerminal.moveCursorDown(1);
 
         if(title != null) {
-            UserInterfaceUtils.printWithDefaultStyle(title.getText());
+            UserInterfaceUtils.printWithDefaultStyle(title.getComponent());
             AnsiTerminal.moveCursorDown(PADDING_BORDER_TITLE);
         }
     }
 
-    private void printQuestion(String question, List<String> answers, int answerIndex){
+    private void printQuestion(final String question, final List<String> answers, final int answerIndex){
         StaticUIComponent title = AsciiArtTitles.QUESTION;
         frameContent(title);
 
         AnsiTerminal.moveCursorDown(2);
         AnsiTerminal.moveCursorRight(5);
         new AnsiBuilder(UserInterfaceUtils.splitPhrase(question, MAX_TEXT_LENGTH))
-                .setFont(BLUE, BOLD, true)
+                .setFont(BLUE, true)
                 .println();
 
         AnsiTerminal.moveCursorDown(1);
@@ -186,7 +214,7 @@ public class UserInterface {
 
             if(i == answerIndex){
                 new AnsiBuilder(UserInterfaceUtils.splitPhrase(answer, MAX_TEXT_LENGTH))
-                        .setFont(BLUE, BOLD, true)
+                        .setFont(BLUE, true)
                         .setBackground(YELLOW, true)
                         .println();
 
@@ -194,25 +222,25 @@ public class UserInterface {
             }
 
             new AnsiBuilder(UserInterfaceUtils.splitPhrase(answer, MAX_TEXT_LENGTH))
-                    .setFont(BLUE, BOLD, true)
+                    .setFont(BLUE, true)
                     .println();
         }
     }
 
-    private void alertInvalidInput(DynamicTextComponent alert, String input){
+    private void alertInvalidInput(final DynamicTextComponent alert, final String input){
         AnsiTerminal.moveCursorDown(1);
 
-        new AnsiBuilder(alert.getText(input))
-                .setFont(RED, BOLD, true)
+        new AnsiBuilder(alert.getComponent(input))
+                .setFont(RED, true)
                 .print();
 
         AnsiTerminal.restoreCursorPos();
         AnsiTerminal.clearRemainingOfLine();
     }
 
-    private void askForInput(StaticTextComponent ask){
+    private void askForInput(final StaticTextComponent ask){
         AnsiTerminal.moveCursorDown(2);
-        UserInterfaceUtils.printWithDefaultStyle(ask.getText());
+        UserInterfaceUtils.printWithDefaultStyle(ask.getComponent());
         AnsiTerminal.saveCursorPos();
     }
 }

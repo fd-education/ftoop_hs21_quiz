@@ -6,25 +6,20 @@ public enum AsciiArtDecorations implements StaticUIComponent {
     TOP_LINE("""
           ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════╗
           ╚███████████████████████████████████████████████████████████████████████████████████████████████████████╝
-          """, 2),
+          """),
     BOTTOM_LINE("""
           ╔███████████████████████████████████████████████████████████████████████████████████████████████████████╗
           ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════╝
-          """, 2);
+          """);
 
     private final String ascii;
-    private final int linesOfContent;
 
-    AsciiArtDecorations(String ascii, int linesOfContent){
+    AsciiArtDecorations(final String ascii){
         this.ascii = ascii;
-        this.linesOfContent = linesOfContent;
     }
 
-    public String getText(){
+    public String getComponent(){
         return ascii;
     }
 
-    public int getLinesOfContent() {
-        return linesOfContent;
-    }
 }
