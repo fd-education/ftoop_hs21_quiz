@@ -54,7 +54,6 @@ public class GameStage extends Stage{
             int answerIndex = awaitUserAnswer();
 
             AnsiTerminal.clearTerminal();
-            ui.await();
             ui.markChosenAnswer(question, answers, answerIndex);
             ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getComponent());
 

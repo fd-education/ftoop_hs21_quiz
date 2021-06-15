@@ -36,8 +36,8 @@ public class InitializationStage extends Stage{
         NameMessage nameMessage;
 
         try{
-            while(!serverConnection.receive(ReadyMessage.class).isReady()){
-                ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getComponent());
+            while(!serverConnection.hasMessage() || !serverConnection.receive(ReadyMessage.class).isReady()){
+                if(!ui.isWaiting()) ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getText());
             }
 
             ui.proceed().askForName();
@@ -62,7 +62,6 @@ public class InitializationStage extends Stage{
 
     @Override
     protected void terminateStage(){
-        ui.await();
-        ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getComponent());
+        ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getText());
     }
 }
