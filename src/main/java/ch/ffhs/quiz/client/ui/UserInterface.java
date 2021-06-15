@@ -47,7 +47,7 @@ public class UserInterface {
     }
 
     public void welcomePlayerPersonally(String name){
-        AnsiTerminal.positionCursor(23, 0);
+        AnsiTerminal.positionCursor(22, 0);
         AnsiTerminal.clearNumberOfLines(4);
         UserInterfaceUtils.printWithDefaultStyle(DynamicTextComponent.PERSONALIZED_WELCOME.getText(name));
     }
