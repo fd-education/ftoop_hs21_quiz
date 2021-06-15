@@ -11,6 +11,8 @@ import ch.ffhs.quiz.messages.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.*;
 
 public class GameStage extends Stage{
     private String question;
@@ -19,11 +21,11 @@ public class GameStage extends Stage{
 
     private static final String RUNTIME_EX = "This exception must not occur, because inputs get checked.";
 
-    public GameStage(Client client, Connection con, InputHandler inputHandler, UserInterface ui){
-        this.inputHandler = inputHandler;
-        this.client = client;
-        this.serverConnection = con;
-        this.ui = ui;
+    public GameStage(final Client client, final Connection connection, final InputHandler inputHandler, final UserInterface ui){
+        this.client = Objects.requireNonNull(client, "client must not be null");;
+        this.serverConnection = Objects.requireNonNull(connection, "connection must not be null");
+        this.inputHandler = Objects.requireNonNull(inputHandler, "inputHandler must not be null");
+        this.ui = Objects.requireNonNull(ui, "ui must not be null");
     }
 
     @Override
@@ -42,38 +44,46 @@ public class GameStage extends Stage{
         ui.proceed();
         AnsiTerminal.clearTerminal();
         ui.countdown();
-
         ui.printQuestion(question, answers);
-
         ui.askForAnswer();
     }
 
     @Override
     protected void handleConversation() {
         try{
-            String answer = inputHandler.getUserAnswer();
-            int answerIndex = mapStringAnswerToInteger(answer.toUpperCase());
+            int answerIndex = awaitUserAnswer();
 
             AnsiTerminal.clearTerminal();
-            ui.await();
             ui.markChosenAnswer(question, answers, answerIndex);
-            ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getText(), 3000000);
+            ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getComponent());
 
             serverConnection.send(new AnswerMessage(answerIndex));
 
             FeedbackMessage feedback = serverConnection.receive(FeedbackMessage.class);
             processFeedbackMessage(feedback);
 
-            // TODO REmove asap
+            // TODO Remove asap
             List<ScoreboardEntry> scores = new ArrayList<>(
-                    List.of(new ScoreboardEntry("Fabian", 50),
+                    List.of(new ScoreboardEntry("Adrian", 50),
+                            new ScoreboardEntry("Nicola", 200),
+                            new ScoreboardEntry("Sebastian", 150),
+                            new ScoreboardEntry("Alexander", 0),
+                            new ScoreboardEntry("Adrian", 50),
+                            new ScoreboardEntry("Nicola", 200),
+                            new ScoreboardEntry("Sebastian", 150),
+                            new ScoreboardEntry("Alexander", 0),
+                            new ScoreboardEntry("Adrian", 50),
+                            new ScoreboardEntry("Nicola", 200),
+                            new ScoreboardEntry("Sebastian", 150),
+                            new ScoreboardEntry("Alexander", 0),
+                            new ScoreboardEntry("Fabian", 50),
                             new ScoreboardEntry("Nicola", 200),
                             new ScoreboardEntry("Sebastian", 150),
                             new ScoreboardEntry("Alexander", 0)
                             )
             );
 
-            RoundSummaryMessage roundSummary = new RoundSummaryMessage(scores, false);
+            RoundSummaryMessage roundSummary = new RoundSummaryMessage(scores, true);
 
             //TODO uncomment -> correct line
             //RoundSummaryMessage roundSummary = serverConnection.receive(RoundSummaryMessage.class);
@@ -87,7 +97,8 @@ public class GameStage extends Stage{
     protected void terminateStage() {
         try{
             RoundSummaryMessage scoreboardMessage = serverConnection.receive(RoundSummaryMessage.class);
-            wasLastRound = scoreboardMessage.isLastRound();
+            // TODO delete hardcode and uncomment server response handling
+            wasLastRound = true;// scoreboardMessage.isLastRound();
         } catch(IOException ioEx){
             ioEx.printStackTrace();
             throw new RuntimeException(RUNTIME_EX, ioEx);
@@ -96,8 +107,10 @@ public class GameStage extends Stage{
 
     public boolean wasLastRound(){return wasLastRound;}
 
-    private int mapStringAnswerToInteger(String answer){
-        return switch (answer) {
+    private int mapStringAnswerToInteger(final String answer){
+        if(answer.isBlank()) throw new IllegalArgumentException("answer must contain a letter");
+
+        return switch (answer.toUpperCase()) {
             case "A" -> 0;
             case "B" -> 1;
             case "C" -> 2;
@@ -105,7 +118,11 @@ public class GameStage extends Stage{
         };
     }
 
-    private void processFeedbackMessage(FeedbackMessage feedback){
+    private void processFeedbackMessage(final FeedbackMessage feedback){
+        Objects.requireNonNull(feedback, "feedback must not be null");
+
+        ui.proceed();
+
         if(feedback.getWinningPlayer() == null) ui.printNooneCorrect();
 
         String winningPlayer = feedback.getWinningPlayer();
@@ -116,13 +133,55 @@ public class GameStage extends Stage{
         } else{
             ui.printPlayerWasWrong(winningPlayer);
         }
+
+        ui.sleepSave(10000);
     }
 
-    private void processRoundSummaryMessage(RoundSummaryMessage roundSummary){
+    private void processRoundSummaryMessage(final RoundSummaryMessage roundSummary){
+        Objects.requireNonNull(roundSummary, "roundSummary must not be null");
+
         AnsiTerminal.clearTerminal();
         ui.printScoreboard(roundSummary.getRankedPlayersList(), client.getPlayerName());
 
         this.wasLastRound = roundSummary.isLastRound();
-        ui.await();
+        ui.sleepSave(7500);
+    }
+
+    private int awaitUserAnswer(){
+        int answerIndex = -1;
+
+        ExecutorService es = Executors.newSingleThreadExecutor();
+        ScheduledExecutorService esSchedule = Executors.newSingleThreadScheduledExecutor();
+
+        Future<Integer> index = es.submit(() -> mapStringAnswerToInteger(inputHandler.getUserAnswer()));
+
+        esSchedule.schedule(() -> ui.alertTime("30"), 30, TimeUnit.SECONDS);
+        esSchedule.schedule(() -> ui.alertTime("15"), 45, TimeUnit.SECONDS);
+        esSchedule.schedule(() -> ui.alertTime("10"), 50, TimeUnit.SECONDS);
+        esSchedule.schedule(() -> ui.alertTime("5"), 55, TimeUnit.SECONDS);
+
+        try {
+           answerIndex = index.get(1, TimeUnit.MINUTES);
+        } catch(TimeoutException | InterruptedException | ExecutionException ignored){}
+
+        es.shutdown();
+        try{
+            if(!es.awaitTermination(800, TimeUnit.MILLISECONDS)){
+                es.shutdownNow();
+            }
+        } catch(InterruptedException iEx){
+            es.shutdownNow();
+        }
+
+        esSchedule.shutdown();
+        try{
+            if(!esSchedule.awaitTermination(800, TimeUnit.MILLISECONDS)){
+                esSchedule.shutdownNow();
+            }
+        } catch(InterruptedException iEx){
+            esSchedule.shutdownNow();
+        }
+
+        return answerIndex;
     }
 }
