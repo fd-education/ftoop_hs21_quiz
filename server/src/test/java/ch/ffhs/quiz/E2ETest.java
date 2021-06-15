@@ -45,7 +45,7 @@ class E2ETest {
                         DisconnectPlayersStep.class
                 ).build();
 
-        List<Question> questions = QuestionFactory.questionBuilder("fragenkataloge/fragenkatalog_2019.txt").subList(0, 2);
+        List<Question> questions = QuestionFactory.questionBuilder("testQuestions/test_question.txt").subList(0, 2);
 
         LoggerUtils.setGlobalLogLevel(Level.OFF);
         Server server = new Server(3141);
