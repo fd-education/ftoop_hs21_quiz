@@ -50,8 +50,9 @@ public class Server {
      * @return the connected socket
      * @throws IOException if an I/O Error occurs
      * @throws SocketTimeoutException if the given timeout has been consumed
+     * @throws IllegalStateException if the server was stopped
      */
-    public Socket acceptConnection(int timeout, TimeUnit timeUnit) throws IOException {
+    public Socket acceptConnection(int timeout, TimeUnit timeUnit) throws IOException, IllegalStateException {
         if (isStopped())
             throw new IllegalStateException("Could not accept Connection: Server was stopped.");
         try {
