@@ -36,7 +36,7 @@ public class TerminationStage extends Stage {
     protected void terminateStage() {
         try {
             client.closeConnection();
-            serverConnection.stop();
+            serverConnection.close();
         } catch(IOException ioEx){
             // TODO: handle differently
             throw new RuntimeException("May not be thrown.");
