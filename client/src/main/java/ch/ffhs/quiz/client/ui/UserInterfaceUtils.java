@@ -2,6 +2,8 @@ package ch.ffhs.quiz.client.ui;
 
 public class UserInterfaceUtils {
 
+    private UserInterfaceUtils(){}
+
     public static void printWithDefaultStyle(final String text){
         new AnsiBuilder(text).setFont(AnsiBuilder.Color.BLUE, false).print();
     }

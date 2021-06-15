@@ -7,6 +7,8 @@ public class AnsiTerminal {
     // ANSI Prefix String
     private static final String PREFIX = "\033[";
 
+    private AnsiTerminal(){}
+
     /**
      * Moves the cursor up a certain amount of lines
      * @param lines number of lines to move the cursor

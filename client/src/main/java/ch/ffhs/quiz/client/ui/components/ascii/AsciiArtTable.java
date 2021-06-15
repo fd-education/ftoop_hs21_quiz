@@ -6,6 +6,8 @@ import java.util.Map;
 
 public class AsciiArtTable {
 
+    private AsciiArtTable(){}
+
     public static String getTableTop(final int length){
         checkParams(new HashMap<>(Map.of("length", length)));
 
