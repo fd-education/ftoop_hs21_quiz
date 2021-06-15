@@ -5,6 +5,14 @@ import java.util.List;
 public class QuestionImpl implements Question {
     List<Answer> answers;
     String question;
+    Integer correctAnswer;
+
+    /**
+     * Instantiates a new Question.
+     *
+     * @param answers       the answers of the question
+     * @param question      the question
+     */
     public QuestionImpl(String question, List<Answer> answers) {
         this.answers = answers;
         this.question = question;
