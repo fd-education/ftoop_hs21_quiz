@@ -10,7 +10,7 @@ public enum AsciiArtNumbers implements StaticUIComponent {
                                                            ████╔╝██║
                                                            ╚██████╔╝
                                                             ╚═════╝
-            """, 6),
+            """),
     ONE("""
                                                               ██╗
                                                              ███║
@@ -18,7 +18,7 @@ public enum AsciiArtNumbers implements StaticUIComponent {
                                                               ██║
                                                               ██║
                                                               ╚═╝
-            """, 6),
+            """),
     TWO("""
                                                            ██████╗
                                                            ╚════██╗
@@ -26,7 +26,7 @@ public enum AsciiArtNumbers implements StaticUIComponent {
                                                            ██╔═══╝
                                                            ███████╗
                                                            ╚══════╝
-            """, 6),
+            """),
     THREE("""
                                                            ██████╗
                                                            ╚════██╗
@@ -34,7 +34,7 @@ public enum AsciiArtNumbers implements StaticUIComponent {
                                                             ╚═══██╗
                                                            ██████╔╝
                                                            ╚═════╝
-            """, 6),
+            """),
     FOUR("""
                                                            ██╗  ██╗
                                                            ██║  ██║
@@ -42,7 +42,7 @@ public enum AsciiArtNumbers implements StaticUIComponent {
                                                            ╚════██║
                                                                 ██║
                                                                 ╚═╝
-            """, 6),
+            """),
     FIVE("""
                                                            ███████╗
                                                            ██╔════╝
@@ -50,25 +50,19 @@ public enum AsciiArtNumbers implements StaticUIComponent {
                                                            ╚════██║
                                                            ███████║
                                                            ╚══════╝
-            """, 6);
+            """);
 
     private final String ascii;
-    private final int linesOfContent;
 
-    AsciiArtNumbers(String ascii, int linesOfContent){
+    AsciiArtNumbers(final String ascii){
         this.ascii = ascii;
-        this.linesOfContent =  linesOfContent;
     }
 
-    public static String getText(int index){
-        return AsciiArtNumbers.values()[index].getText();
+    public static String getText(final int index){
+        return AsciiArtNumbers.values()[index].getComponent();
     }
 
-    public String getText(){
+    public String getComponent(){
         return ascii;
-    }
-
-    public int getLinesOfContent(){
-        return linesOfContent;
     }
 }

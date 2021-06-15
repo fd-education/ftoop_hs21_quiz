@@ -1,20 +1,19 @@
 package ch.ffhs.quiz.game.gamesteps.impl;
 
-import ch.ffhs.quiz.messages.AnswerMessage;
-import ch.ffhs.quiz.questions.Question;
 import ch.ffhs.quiz.game.GameContext;
 import ch.ffhs.quiz.game.RoundContext;
 import ch.ffhs.quiz.game.player.Player;
+import ch.ffhs.quiz.messages.AnswerMessage;
+import ch.ffhs.quiz.questions.Question;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
@@ -49,8 +48,8 @@ class EvaluateResponsesStepTest {
 
     @Test
     void process_positive_simple() {
-        roundContext.setPlayerAnswer(player1, new AnswerMessage(0));
-        roundContext.setPlayerAnswer(player2, new AnswerMessage(1));
+        roundContext.setPlayerAnswer(player1, new AnswerMessage(0, Duration.ZERO));
+        roundContext.setPlayerAnswer(player2, new AnswerMessage(1, Duration.ZERO));
 
         evaluateResponsesStep.process();
 
@@ -59,23 +58,21 @@ class EvaluateResponsesStepTest {
         assertFalse(gameContext.getRoundContext().wasPlayerCorrect(player2));
     }
 
-    @RepeatedTest(10)
-    void process_positive_raceCondition() throws InterruptedException {
-        roundContext.setPlayerAnswer(player2, new AnswerMessage(0));
-        //needed otherwise timestamps are too close together
-        TimeUnit.NANOSECONDS.sleep(1);
-        roundContext.setPlayerAnswer(player1, new AnswerMessage(0));
+    @Test
+    void process_positive_twoCorrectAnswers()  {
+        roundContext.setPlayerAnswer(player1, new AnswerMessage(0, Duration.ofMillis(20)));
+        roundContext.setPlayerAnswer(player2, new AnswerMessage(0, Duration.ZERO));
 
         evaluateResponsesStep.process();
 
-        assertEquals(player2, gameContext.getRoundContext().getWinningPlayer(), "Answer of Player 2 was earlier but did not win");
-        assertTrue(gameContext.getRoundContext().wasPlayerCorrect(player1), "Answer of Player 1 was later but won");
+        assertEquals(player2, gameContext.getRoundContext().getWinningPlayer(), "Answer of Player 1 was earlier but did not win");
+        assertTrue(gameContext.getRoundContext().wasPlayerCorrect(player1), "Answer of Player 2 was later but won");
     }
 
     @Test
     void process_positive_noWinner() {
-        roundContext.setPlayerAnswer(player1, new AnswerMessage(1));
-        roundContext.setPlayerAnswer(player2, new AnswerMessage(2));
+        roundContext.setPlayerAnswer(player1, new AnswerMessage(1, Duration.ZERO));
+        roundContext.setPlayerAnswer(player2, new AnswerMessage(2, Duration.ZERO));
 
         evaluateResponsesStep.process();
 

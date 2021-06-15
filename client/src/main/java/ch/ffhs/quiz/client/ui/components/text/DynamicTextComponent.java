@@ -7,17 +7,19 @@ public enum DynamicTextComponent implements DynamicUIComponent {
     NAME_INVALID("     %s kann nicht verarbeitet werden. \n     Dein Name muss mehr als 3 Buchstaben enthalten."),
     PERSONALIZED_WELCOME("     Hallo %s!"),
 
+    TIME_ALERT("     ACHTUNG! WENIGER ALS %s SEKUNDEN VERBLEIBEN!"),
+
     ANSWER_INVALID("     %s kann keine Antwort sein. \n     Deine Antwort muss A, B oder C lauten."),
     CORRECT_ANSWER("     Schade. Deine Antwort war korrekt, aber %s war schneller"),
     WRONG_ANSWER("     Deine Antwort war falsch. %s hat gewonnen.");
 
-    private final String interaction;
+    private final String component;
 
-    DynamicTextComponent(String interaction){
-        this.interaction = interaction;
+    DynamicTextComponent(String component){
+        this.component = component;
     }
 
-    public String getText(String text){
-        return String.format(interaction, text);
+    public String getComponent(String complement){
+        return String.format(component, complement);
     }
 }

@@ -1,19 +1,23 @@
 package ch.ffhs.quiz.messages;
 
+import java.time.Duration;
+
 /**
  * Contains the answer of a player.
  */
 public class AnswerMessage extends Message {
 
     private final int chosenAnswer;
+    private final Duration answerTime;
 
     /**
      * Instantiates a new Answer message.
      *
      * @param chosenAnswer the answer as chosen by the player
      */
-    public AnswerMessage(int chosenAnswer) {
+    public AnswerMessage(int chosenAnswer, Duration answerTime) {
         this.chosenAnswer = chosenAnswer;
+        this.answerTime = answerTime;
     }
 
     @Override
@@ -39,4 +43,10 @@ public class AnswerMessage extends Message {
     public int getChosenAnswer() {
         return chosenAnswer;
     }
+
+    /**
+     * Gets the time the player needed to answer the question
+     * @return the time to answer
+     */
+    public Duration getAnswerTime(){return answerTime;}
 }

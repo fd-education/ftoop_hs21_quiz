@@ -1,28 +1,23 @@
 package ch.ffhs.quiz.client;
 
-import ch.ffhs.quiz.connectivity.impl.ConnectionImpl;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
 public class Client{
-    private Socket client;
-    private OutputStream out;
-    private InputStream in;
-    private final ConnectionImpl serverConnection;
+    private final Socket client;
+    private final OutputStream out;
+    private final InputStream in;
 
     private String playerName;
 
-    public Client(String host, int port) throws IOException{
+    public Client(final String host, final int port) throws IOException{
 
         this.client = new Socket(host, port);
 
         this.out = client.getOutputStream();
         this.in = client.getInputStream();
-
-        this.serverConnection = new ConnectionImpl(out, in);
     }
 
     public void closeConnection() throws IOException{
@@ -35,7 +30,7 @@ public class Client{
 
     public OutputStream getOutput(){return out;}
 
-    public void setPlayerName(String name){
+    public void setPlayerName(final String name){
         this.playerName = name;
     }
 

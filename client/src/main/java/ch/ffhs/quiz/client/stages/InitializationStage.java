@@ -9,20 +9,21 @@ import ch.ffhs.quiz.messages.NameMessage;
 import ch.ffhs.quiz.messages.ReadyMessage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class InitializationStage extends Stage{
     
 
-    public InitializationStage(Client client, Connection con, InputHandler inputHandler, UserInterface ui){
-        this.client = client;
-        this.serverConnection = con;
-        this.inputHandler = inputHandler;
-        this.ui = ui;
+    public InitializationStage(final Client client, final Connection connection, final InputHandler inputHandler, final UserInterface ui){
+        this.client = Objects.requireNonNull(client, "client must not be null");;
+        this.serverConnection = Objects.requireNonNull(connection, "connection must not be null");
+        this.inputHandler = Objects.requireNonNull(inputHandler, "inputHandler must not be null");
+        this.ui = Objects.requireNonNull(ui, "ui must not be null");
     }
 
     @Override
     protected void setupStage(){
-
+        // nothing to setup
     }
 
     @Override
@@ -32,36 +33,35 @@ public class InitializationStage extends Stage{
 
     @Override
     protected void handleConversation() {
-        NameMessage name;
+        NameMessage nameMessage;
 
         try{
-            while(!serverConnection.receive(ReadyMessage.class).isReady()){
-                ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getText());
+            while(!serverConnection.hasMessage() || !serverConnection.receive(ReadyMessage.class).isReady()){
+                if(!ui.isWaiting()) ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getComponent());
             }
 
             ui.proceed().askForName();
 
             do{
-                input = inputHandler.getUserName();
-                serverConnection.send(new NameMessage(input));
+                String name = inputHandler.getUserName();
+                serverConnection.send(new NameMessage(name));
 
-                name = serverConnection.receive(NameMessage.class);
+                nameMessage = serverConnection.receive(NameMessage.class);
 
-                if(!name.isConfirmed()) ui.alertNameReserved(name.getText());
-            } while(!name.isConfirmed());
+                if(!nameMessage.isConfirmed()) ui.alertNameReserved(nameMessage.getText());
+            } while(!nameMessage.isConfirmed());
 
         } catch(IOException ioEx){
             ioEx.printStackTrace();
             throw new RuntimeException("This exception must not occur, because inputs get checked.", ioEx);
         }
 
-        client.setPlayerName(name.getText());
-        ui.welcomePlayerPersonally(name.getText());
+        client.setPlayerName(nameMessage.getText());
+        ui.welcomePlayerPersonally(nameMessage.getText());
     }
 
     @Override
     protected void terminateStage(){
-        ui.await();
-        ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getText());
+        ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getComponent());
     }
 }

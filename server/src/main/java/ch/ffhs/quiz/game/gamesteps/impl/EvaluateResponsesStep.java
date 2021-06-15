@@ -6,6 +6,7 @@ import ch.ffhs.quiz.game.gamesteps.GameStep;
 import ch.ffhs.quiz.game.player.Player;
 import ch.ffhs.quiz.messages.AnswerMessage;
 
+import java.time.Duration;
 import java.time.Instant;
 
 /**
@@ -15,7 +16,7 @@ import java.time.Instant;
  */
 public class EvaluateResponsesStep extends GameStep {
     private final RoundContext roundContext;
-    private Instant earliestAnswerTimestamp = Instant.MAX;
+    private Duration shortestDuration = Duration.ofDays(Integer.MAX_VALUE);
     private Player winningPlayer;
 
     public EvaluateResponsesStep(GameContext gameContext) {
@@ -36,7 +37,7 @@ public class EvaluateResponsesStep extends GameStep {
         if (isAnswerCorrect(answer)) {
             roundContext.addCorrectPlayer(player);
             if (isEarliestAnswer(answer)) {
-                earliestAnswerTimestamp = answer.getTimeStamp();
+                shortestDuration = answer.getAnswerTime();
                 winningPlayer = player;
             }
         }
@@ -44,7 +45,7 @@ public class EvaluateResponsesStep extends GameStep {
 
     // Checks if the given answer was earlier than the current earliest answer
     private boolean isEarliestAnswer(AnswerMessage answer) {
-        return earliestAnswerTimestamp.isAfter(answer.getTimeStamp());
+        return shortestDuration.compareTo(answer.getAnswerTime()) > 0;
     }
 
     // Checks if the answer was correct

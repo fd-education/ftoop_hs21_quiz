@@ -19,15 +19,16 @@ public enum StaticTextComponent implements StaticUIComponent {
 
     ASK_FOR_ANSWER("     Tippe deine Antwort ein: "),
     PLAYER_WON("     Super! Du hast diese Runde gewonnen!"),
-    NO_PLAYER_CORRECT("     Niemand wusste die richtige Antwort.");
+    NO_PLAYER_CORRECT("     Niemand wusste die richtige Antwort."),
+    THANKS("                           Danke für die Teilnahme an diesem Spiel ! ~N.S.F.");
 
-    private final String interaction;
+    private final String component;
 
-    StaticTextComponent(String interaction){
-        this.interaction = interaction;
+    StaticTextComponent(String component){
+        this.component = component;
     }
 
-    public String getText(){
-        return interaction;
+    public String getComponent(){
+        return component;
     }
 }

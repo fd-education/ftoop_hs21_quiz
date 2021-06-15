@@ -2,15 +2,15 @@ package ch.ffhs.quiz.client.ui;
 
 public class UserInterfaceUtils {
 
-    public static void printWithDefaultStyle(String text){
-        new AnsiBuilder(text).setFont(AnsiBuilder.Color.BLUE, AnsiBuilder.Decoration.BOLD, true).print();
+    public static void printWithDefaultStyle(final String text){
+        new AnsiBuilder(text).setFont(AnsiBuilder.Color.BLUE, false).print();
     }
 
-    public static String createWithDefaultStyle(String text){
-        return new AnsiBuilder(text).setFont(AnsiBuilder.Color.BLUE, AnsiBuilder.Decoration.BOLD, true).create();
+    public static String createWithDefaultStyle(final String text){
+        return new AnsiBuilder(text).setFont(AnsiBuilder.Color.BLUE, true).create();
     }
 
-    public static void printLetterByLetter(String text, Delay delay){
+    public static void printLetterByLetter(final String text, Delay delay){
         char[] letters = text.toCharArray();
 
         for(char letter: letters){
@@ -23,7 +23,7 @@ public class UserInterfaceUtils {
         }
     }
 
-    public static String splitPhrase(String phrase, int lineLength){
+    public static String splitPhrase(final String phrase, final int lineLength){
         if(phrase.length() <= lineLength) return phrase;
 
         int lastSpaceIndex;
