@@ -5,14 +5,15 @@ import ch.ffhs.quiz.game.gamesteps.GameStepsHolder;
 import ch.ffhs.quiz.game.gamesteps.impl.*;
 import ch.ffhs.quiz.game.player.Player;
 import ch.ffhs.quiz.game.player.PlayerFactory;
-import ch.ffhs.quiz.questions.AnswerImpl;
 import ch.ffhs.quiz.questions.Question;
-import ch.ffhs.quiz.questions.QuestionImpl;
+import ch.ffhs.quiz.questions.QuestionFactory;
 import ch.ffhs.quiz.server.Server;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+
+import static java.lang.Integer.parseInt;
 
 public class Game {
     private final GameStepsHolder setupSteps;
@@ -30,6 +31,16 @@ public class Game {
     }
 
     public static void main(String[] args) throws IOException {
+        if (args.length == 0) {
+            System.err.println("No filepath for the questions was specified. Stopping...");
+            return;
+        }
+        String questionCatalogFilename = args[0];
+
+        int playerCount = parseInt(System.getProperty("playerCount", "2"));
+        int questionCount = parseInt(System.getProperty("questionCount", "5"));
+        int port = parseInt(System.getProperty("port", "3141"));
+
         Game game = Game.builder()
                 .withSetupSteps(
                         NotifyGameStartsStep.class,
@@ -46,23 +57,16 @@ public class Game {
                         DisconnectPlayersStep.class
                 ).build();
 
-        // TODO: Remove asap
-        Question question1 = new QuestionImpl("Question 1: wueidddd ddddddddddd dddd dddddddddddd ddddddddddddd dddddd ddddddddd dddddddd ddddddddd dddddddddd ddddddddddfguwz ecuzwvecuzgwu ezhcguwzhegcuzw eikujqghich", List.of(
-                new AnswerImpl("A: iuhefiuwebfiuwbefiuwbefiuwjbeivubweiujgbviwuegbvikjwbe", true),
-                new AnswerImpl("B: ewuhfiwuehfiuwgefiuwgeifvweiufgwiuehciwuebciuwhgeciuwh", false),
-                new AnswerImpl("C: wuebiwuehciuwehciuvwbeicugwieuchiwuevbciuwbeciuhweicub", false)
-        ));
+        List<Question> questions = QuestionFactory.questionBuilder(questionCatalogFilename);
+        if (questions.size() < questionCount) {
+            System.err.printf("%d questions wanted, but only %d found in %s. Stopping...", questionCount, questions.size(), questionCatalogFilename);
+            return;
+        }
+        questions = questions.subList(0, questionCount);
 
-        // TODO: Remove asap
-        Question question2 = new QuestionImpl("Question 2: Some other question that is probably very easy...", List.of(
-                new AnswerImpl("A: stupid answer one", false),
-                new AnswerImpl("B: rather strange, but correct one", true),
-                new AnswerImpl("C: most sensible, but wrong", false)
-        ));
-
-        Server server = new Server(3141);
-        List<Player> players = PlayerFactory.connectPlayers(server, 1);
-        game.play(players, List.of(question1, question2));
+        Server server = new Server(port);
+        List<Player> players = PlayerFactory.connectPlayers(server, playerCount);
+        game.play(players, questions);
     }
 
     public void play(List<Player> players, List<Question> questions) {
