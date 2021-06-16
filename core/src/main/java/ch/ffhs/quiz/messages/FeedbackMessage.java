@@ -9,6 +9,7 @@ public class FeedbackMessage extends Message {
     private final boolean wasCorrect;
     private final boolean wasFastest;
     private final String winningPlayer;
+    private final int correctAnswerNumber;
 
     /**
      * Instantiates a new Feedback message.
@@ -17,11 +18,12 @@ public class FeedbackMessage extends Message {
      * @param wasFastest    whether the player was the fastest to provide a correct answer.
      * @param winningPlayer the name of the winning player
      */
-    public FeedbackMessage(boolean wasCorrect, boolean wasFastest, String winningPlayer) {
+    public FeedbackMessage(boolean wasCorrect, boolean wasFastest, String winningPlayer, int correctAnswerNumber) {
         Objects.requireNonNull(winningPlayer);
         this.winningPlayer = winningPlayer;
         this.wasFastest = wasFastest;
         this.wasCorrect = wasCorrect;
+        this.correctAnswerNumber = correctAnswerNumber;
     }
 
     /**
@@ -69,5 +71,9 @@ public class FeedbackMessage extends Message {
         result = 31 * result + (wasFastest ? 1 : 0);
         result = 31 * result + winningPlayer.hashCode();
         return result;
+    }
+
+    public int getCorrectAnswerNumber() {
+        return correctAnswerNumber;
     }
 }
