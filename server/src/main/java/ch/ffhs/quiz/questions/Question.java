@@ -7,6 +7,8 @@ import java.util.List;
  */
 public interface Question {
 
+    int getCorrectAnswerNumber();
+
     /**
      * Checks if the given answer is correct.
      *
