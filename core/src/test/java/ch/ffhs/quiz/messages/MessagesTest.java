@@ -12,7 +12,7 @@ class MessagesTest {
     @Test
     void equals_positive_simple() {
         assertEquals(new AnswerMessage(0, Duration.ZERO), new AnswerMessage(0, Duration.ZERO));
-        assertEquals(new FailureMessage("test"), new FailureMessage("test"));
+        assertEquals(new MessageMock("test"), new MessageMock("test"));
         assertEquals(new NameMessage("test"), new NameMessage("test"));
         assertEquals(new QuestionMessage("question", List.of("answer")), new QuestionMessage("question", List.of("answer")));
         assertEquals(new ScoreboardEntry("name", 0), new ScoreboardEntry("name", 0));
