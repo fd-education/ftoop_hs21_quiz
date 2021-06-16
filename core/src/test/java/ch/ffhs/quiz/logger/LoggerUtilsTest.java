@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemErr;
-import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOut;
+import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOutNormalized;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LoggerUtilsTest {
@@ -33,7 +33,7 @@ class LoggerUtilsTest {
     @Test
     void logger_positive_logsCorrectly() throws Exception {
         String err = tapSystemErr((() -> logger.warning("errTest")));
-        String out = tapSystemOut((() -> logger.info("outTest")));
+        String out = tapSystemOutNormalized((() -> logger.info("outTest")));
 
         assertTrue(err.contains("errTest"));
         assertTrue(out.contains("outTest"));
@@ -41,11 +41,11 @@ class LoggerUtilsTest {
 
     @Test
     void setGlobalLogLevel_positive_simple() throws Exception {
-        String out1 = tapSystemOut((() -> logger.info("outTest")));
+        String out1 = tapSystemOutNormalized((() -> logger.info("outTest")));
         String err1 = tapSystemErr((() -> logger.warning("errTest")));
         LoggerUtils.setGlobalLogLevel(Level.WARNING);
         String err2 = tapSystemErr((() -> logger.warning("errTest")));
-        String out2 = tapSystemOut((() -> logger.info("outTest")));
+        String out2 = tapSystemOutNormalized((() -> logger.info("outTest")));
 
         assertFalse(out1.isEmpty());
         assertFalse(err1.isEmpty());
