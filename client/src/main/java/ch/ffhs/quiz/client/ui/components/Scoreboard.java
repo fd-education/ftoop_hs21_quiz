@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class Scoreboard {
-    List<ScoreboardEntry> rankedPlayers;
-    List<ScoreboardEntry> topTenPlayers;
+    private final List<ScoreboardEntry> rankedPlayers;
+    private final List<ScoreboardEntry> topTenPlayers;
 
     public Scoreboard(final List<ScoreboardEntry> rankedPlayers){
         this.rankedPlayers = Objects.requireNonNull(rankedPlayers, "rankedPlayers must not be null");
@@ -19,12 +19,12 @@ public class Scoreboard {
 
     public String getScoreboardForPlayer(final String name){
         if(name.isBlank()) throw new IllegalArgumentException("name must contain letters and not only whitespace");
+        if(!findPlayerInRankedList(name)) throw new IllegalArgumentException(name + " does not seem to be a player in this game");
 
         return createScoreBoard(name);
     }
 
     private String createScoreBoard(final String name){
-        if(name.isBlank()) throw new IllegalArgumentException("name must contain letters and not only whitespace");
 
         int longestName = getMaxNameLength(rankedPlayers);
         boolean playerContained = false;
@@ -57,12 +57,11 @@ public class Scoreboard {
     }
 
     private int getIndexOfPlayer(final String name){
-        if(name.isBlank()) throw new IllegalArgumentException("name must contain letters and not only whitespace");
-
-        for(int i = 9; i<rankedPlayers.size(); i++){
+        for(int i = 10; i<rankedPlayers.size(); i++){
             if(rankedPlayers.get(i).getPlayerName().equals(name)) return i;
         }
 
+        // may never get to this point, as players presence gets checked before
         return -1;
     }
 
@@ -99,5 +98,12 @@ public class Scoreboard {
         Arrays.fill(whiteSpaces, ' ');
 
         return new String(whiteSpaces);
+    }
+
+    private boolean findPlayerInRankedList(String name){
+        for(ScoreboardEntry entry: rankedPlayers){
+            if(entry.getPlayerName().equals(name)) return true;
+        }
+        return false;
     }
 }

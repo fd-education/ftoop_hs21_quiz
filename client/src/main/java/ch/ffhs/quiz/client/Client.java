@@ -22,13 +22,15 @@ public class Client{
 
     public void closeConnection() throws IOException{
         if(!client.isClosed()) client.close();
-        in.close();
-        out.close();
     }
 
-    public InputStream getInput(){return in;}
+    public boolean isConnectionClosed(){
+        return client.isClosed();
+    }
 
-    public OutputStream getOutput(){return out;}
+    public InputStream getInputStream(){return in;}
+
+    public OutputStream getOutputStream(){return out;}
 
     public void setPlayerName(final String name){
         this.playerName = name;

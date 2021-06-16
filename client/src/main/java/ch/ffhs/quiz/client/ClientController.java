@@ -15,7 +15,7 @@ public class ClientController{
     public static void main(String[] args) throws IOException{
 
         Client client = new Client("localhost", 3141);
-        Connection connection = new ConnectionImpl(client.getOutput(), client.getInput());
+        Connection connection = new ConnectionImpl(client.getOutputStream(), client.getInputStream());
         UserInterface ui = new UserInterface();
         new InitializationStage(client, connection, inputHandler, ui).process();
 

@@ -10,6 +10,9 @@ import ch.ffhs.quiz.client.ui.components.text.StaticTextComponent;
 import ch.ffhs.quiz.messages.ScoreboardEntry;
 
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static ch.ffhs.quiz.client.ui.AnsiBuilder.Color.*;
 
@@ -29,10 +32,10 @@ public class UserInterface {
 
         String formattedExplanation = UserInterfaceUtils.createWithDefaultStyle(explanation.getComponent());
 
-        // TODO change Delay to Fast
-        UserInterfaceUtils.printLetterByLetter(formattedExplanation, UserInterfaceUtils.Delay.ZERO);
+        UserInterfaceUtils.printLetterByLetter(formattedExplanation, UserInterfaceUtils.Delay.FAST);
     }
 
+    // no testing for param "name" as the method is supposed to return especially INVALID names to the user for correction
     public void alertInvalidName(final String name){
         alertInvalidInput(DynamicTextComponent.NAME_INVALID, name);
     }
@@ -42,10 +45,14 @@ public class UserInterface {
     }
 
     public void alertNameReserved(final String name){
+        if(name.isBlank()) throw new IllegalArgumentException("name must not be empty or consist of only whitespace");
+
         alertInvalidInput(DynamicTextComponent.NAME_RESERVED, name);
     }
 
     public void welcomePlayerPersonally(String name){
+        if(name.isBlank()) throw new IllegalArgumentException("name must not be empty or consist of only whitespace");
+
         AnsiTerminal.positionCursor(22, 0);
         AnsiTerminal.clearNumberOfLines(4);
         UserInterfaceUtils.printWithDefaultStyle(DynamicTextComponent.PERSONALIZED_WELCOME.getComponent(name));
@@ -73,6 +80,8 @@ public class UserInterface {
     }
 
     public void markChosenAnswer(final String question, List<String> answers, int chosenAnswer){
+        if(!List.of(0, 1, 2).contains(chosenAnswer)) throw new IllegalArgumentException("chosenAnswer must be 0, 1 or 2");
+
         printQuestion(question, answers, chosenAnswer);
     }
 
@@ -80,13 +89,22 @@ public class UserInterface {
         askForInput(StaticTextComponent.ASK_FOR_ANSWER);
     }
 
-    public void alertTime(final String secondsLeft){
-        AnsiTerminal.saveCursorPos();
-        AnsiTerminal.moveCursorDown(2);
-        new AnsiBuilder(DynamicTextComponent.TIME_ALERT.getComponent(secondsLeft))
-                .setFont(RED, true)
-                .print();
-        AnsiTerminal.restoreCursorPos();
+    public void alertTimeMinute(){
+        ScheduledExecutorService esSchedule = Executors.newSingleThreadScheduledExecutor();
+
+        esSchedule.schedule(() -> alertTime("30"), 30, TimeUnit.SECONDS);
+        esSchedule.schedule(() -> alertTime("15"), 45, TimeUnit.SECONDS);
+        esSchedule.schedule(() -> alertTime("10"), 50, TimeUnit.SECONDS);
+        esSchedule.schedule(() -> alertTime("5"), 55, TimeUnit.SECONDS);
+
+        esSchedule.shutdown();
+        try{
+            if(!esSchedule.awaitTermination(800, TimeUnit.MILLISECONDS)){
+                esSchedule.shutdownNow();
+            }
+        } catch(InterruptedException iEx){
+            esSchedule.shutdownNow();
+        }
     }
 
     public void sleepSave(final int duration){
@@ -124,7 +142,7 @@ public class UserInterface {
 
     public void printPlayerOnlyWasCorrect(final String winningPlayer){
         AnsiTerminal.moveCursorDown(2);
-        new AnsiBuilder(DynamicTextComponent.CORRECT_ANSWER.getComponent(winningPlayer)).setFont(YELLOW, false).print();
+        new AnsiBuilder(DynamicTextComponent.CORRECT_ANSWER_TOO_SLOW.getComponent(winningPlayer)).setFont(YELLOW, false).print();
     }
 
     public void printPlayerWasWrong(final String winningPlayer){
@@ -172,6 +190,15 @@ public class UserInterface {
         return !proceed;
     }
 
+    private void alertTime(final String secondsLeft){
+        AnsiTerminal.saveCursorPos();
+        AnsiTerminal.moveCursorDown(2);
+        new AnsiBuilder(DynamicTextComponent.TIME_ALERT.getComponent(secondsLeft))
+                .setFont(RED, true)
+                .print();
+        AnsiTerminal.restoreCursorPos();
+    }
+
     private void emptyTerminal() {
         AnsiTerminal.clearTerminal();
     }
@@ -201,8 +228,7 @@ public class UserInterface {
         frameContent(title);
 
         AnsiTerminal.moveCursorDown(2);
-        AnsiTerminal.moveCursorRight(5);
-        new AnsiBuilder(UserInterfaceUtils.splitPhrase(question, MAX_TEXT_LENGTH))
+        new AnsiBuilder(UserInterfaceUtils.splitPhraseAtSpace(question, MAX_TEXT_LENGTH))
                 .setFont(BLUE, true)
                 .println();
 
@@ -213,7 +239,7 @@ public class UserInterface {
             AnsiTerminal.moveCursorRight(5);
 
             if(i == answerIndex){
-                new AnsiBuilder(UserInterfaceUtils.splitPhrase(answer, MAX_TEXT_LENGTH))
+                new AnsiBuilder(UserInterfaceUtils.splitPhraseAtSpace(answer, MAX_TEXT_LENGTH))
                         .setFont(BLUE, true)
                         .setBackground(YELLOW, true)
                         .println();
@@ -221,7 +247,7 @@ public class UserInterface {
                 continue;
             }
 
-            new AnsiBuilder(UserInterfaceUtils.splitPhrase(answer, MAX_TEXT_LENGTH))
+            new AnsiBuilder(UserInterfaceUtils.splitPhraseAtSpace(answer, MAX_TEXT_LENGTH))
                     .setFont(BLUE, true)
                     .println();
         }

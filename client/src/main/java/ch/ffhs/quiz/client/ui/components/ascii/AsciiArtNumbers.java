@@ -59,6 +59,8 @@ public enum AsciiArtNumbers implements StaticUIComponent {
     }
 
     public static String getText(final int index){
+        if(index < 0 || index > 5) throw new IllegalArgumentException("AsciiArtNumbers can only return numbers between  0 and 5");
+
         return AsciiArtNumbers.values()[index].getComponent();
     }
 
