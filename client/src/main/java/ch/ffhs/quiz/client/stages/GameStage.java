@@ -18,6 +18,11 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The GameStage class orchestrates the whole game process.
+ * From asking the question, to await the answer, to send it to the server
+ * and to handle the response.
+ */
 public class GameStage extends Stage{
     private String question;
     private List<String> answers;
@@ -25,13 +30,22 @@ public class GameStage extends Stage{
 
     private static final String RUNTIME_EX = "This exception must not occur, because inputs get checked.";
 
+    /**
+     * Instantiates a new Game stage.
+     *
+     * @param client       the client
+     * @param connection   the connection
+     * @param inputHandler the input handler
+     * @param ui           the ui
+     */
     public GameStage(final Client client, final Connection connection, final InputHandler inputHandler, final UserInterface ui){
-        this.client = Objects.requireNonNull(client, "client must not be null");;
+        this.client = Objects.requireNonNull(client, "client must not be null");
         this.serverConnection = Objects.requireNonNull(connection, "connection must not be null");
         this.inputHandler = Objects.requireNonNull(inputHandler, "inputHandler must not be null");
         this.ui = Objects.requireNonNull(ui, "ui must not be null");
     }
 
+    // Receive the question and answers from the server, save them into variables for accessibility
     @Override
     protected void setupStage(){
         try {
@@ -43,6 +57,8 @@ public class GameStage extends Stage{
         }
     }
 
+    // Print a countdown from 5 to 0 and then print the question,
+    // along with a request for a user input
     @Override
     protected void createInitialUserInterface(){
         ui.proceed();
@@ -52,6 +68,8 @@ public class GameStage extends Stage{
         ui.askForAnswer();
     }
 
+    // Await the users answer, clip the time, hand the answer on to the server
+    // finally handle the servers feedback on the users answer
     @Override
     protected void handleConversation() {
         try{
@@ -74,6 +92,7 @@ public class GameStage extends Stage{
         }
     }
 
+    // Process the round summary, that gets sent by the server
     @Override
     protected void terminateStage() {
         try{
@@ -85,10 +104,15 @@ public class GameStage extends Stage{
         }
     }
 
+    /**
+     * Check if the currently processed round was the last one.
+     *
+     * @return true if it was the last round, false otherwise
+     */
     public boolean wasLastRound(){return wasLastRound;}
 
-
-
+    // Read all the information about the players and their result
+    // on the previous question to adapt the user interface
     private void processFeedbackMessage(final FeedbackMessage feedback){
         Objects.requireNonNull(feedback, "feedback must not be null");
 
@@ -108,6 +132,8 @@ public class GameStage extends Stage{
         ui.sleepSave(10000);
     }
 
+    // Read all the information about the scores of the players to create and print
+    // out a scoreboard
     private void processRoundSummaryMessage(final RoundSummaryMessage roundSummary){
         Objects.requireNonNull(roundSummary, "roundSummary must not be null");
 
