@@ -2,7 +2,13 @@ package ch.ffhs.quiz.client.ui.components.ascii;
 
 import ch.ffhs.quiz.client.ui.components.interfaces.StaticUIComponent;
 
+/**
+ * Enum for Ascii Art titles for different UI stages
+ */
 public enum AsciiArtTitles implements StaticUIComponent {
+    /**
+     * FACADE QUIZ main title.
+     */
     FACADE_QUIZ("""
                         ███████╗ █████╗  ██████╗ █████╗ ██████╗ ███████╗     ██████╗ ██╗   ██╗██╗███████╗
                         ██╔════╝██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔════╝    ██╔═══██╗██║   ██║██║╚══███╔╝
@@ -11,6 +17,9 @@ public enum AsciiArtTitles implements StaticUIComponent {
                         ██║     ██║  ██║╚██████╗██║  ██║██████╔╝███████╗    ╚██████╔╝╚██████╔╝██║███████╗
                         ╚═╝     ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═════╝ ╚══════╝     ╚══▀▀═╝  ╚═════╝ ╚═╝╚══════╝
             """),
+    /**
+     * QUESTION title.
+     */
     QUESTION("""
                                             ███████╗██████╗  █████╗  ██████╗ ███████╗
                                             ██╔════╝██╔══██╗██╔══██╗██╔════╝ ██╔════╝
@@ -19,6 +28,9 @@ public enum AsciiArtTitles implements StaticUIComponent {
                                             ██║     ██║  ██║██║  ██║╚██████╔╝███████╗
                                             ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝
             """),
+    /**
+     * SCORE title.
+     */
     SCORE("""
                                             ███████╗ ██████╗ ██████╗ ██████╗ ███████╗
                                             ██╔════╝██╔════╝██╔═══██╗██╔══██╗██╔════╝
@@ -27,6 +39,9 @@ public enum AsciiArtTitles implements StaticUIComponent {
                                             ███████║╚██████╗╚██████╔╝██║  ██║███████╗
                                             ╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝
             """),
+    /**
+     * ENDE title.
+     */
     END("""
                                                ███████╗███╗   ██╗██████╗ ███████╗
                                                ██╔════╝████╗  ██║██╔══██╗██╔════╝
@@ -42,6 +57,11 @@ public enum AsciiArtTitles implements StaticUIComponent {
         this.ascii = ascii;
     }
 
+    /**
+     * Get the string representation of the chosen component
+     *
+     * @return string component
+     */
     public String getComponent(){
         return ascii;
     }
