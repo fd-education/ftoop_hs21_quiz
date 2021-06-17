@@ -1,23 +1,16 @@
 package ch.ffhs.quiz.client.ui;
 
-import ch.ffhs.quiz.messages.QuestionMessage;
 import ch.ffhs.quiz.messages.ScoreboardEntry;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import ch.ffhs.quiz.messages.QuestionMessage;
 import org.mockito.*;
-
-import java.io.IOException;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
 import static com.github.stefanbirkner.systemlambda.SystemLambda.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
 
 class UserInterfaceTest {
     static UserInterface ui;

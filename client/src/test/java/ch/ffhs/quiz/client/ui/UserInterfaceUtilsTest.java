@@ -2,7 +2,6 @@ package ch.ffhs.quiz.client.ui;
 
 import org.junit.jupiter.api.Test;
 
-import static ch.ffhs.quiz.client.ui.AnsiTerminal.moveCursorRight;
 import static ch.ffhs.quiz.client.ui.UserInterfaceUtils.*;
 
 import static com.github.stefanbirkner.systemlambda.SystemLambda.*;
