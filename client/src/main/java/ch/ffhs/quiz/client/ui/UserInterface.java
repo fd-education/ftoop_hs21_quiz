@@ -107,7 +107,7 @@ public class UserInterface {
      * @param answers  the answers List
      */
     public void printQuestion(final String question, final List<String> answers){
-        printQuestion(question, answers, -1);
+        printQuestion(question, answers, -1, -1);
     }
 
     /**
@@ -136,7 +136,21 @@ public class UserInterface {
     public void markChosenAnswer(final String question, List<String> answers, int chosenAnswer){
         if(!List.of(0, 1, 2).contains(chosenAnswer)) throw new IllegalArgumentException("chosenAnswer must be 0, 1 or 2");
 
-        printQuestion(question, answers, chosenAnswer);
+        printQuestion(question, answers, chosenAnswer, -1);
+    }
+
+    /**
+     * Prints a new question screen with the chosen and correct answers marked with a different background
+     * @param question the question
+     * @param answers the answers
+     * @param chosenAnswer the chosen answer
+     * @param correctAnswer the correct answer
+     */
+    public void markCorrectAndChosenAnswer(final String question, List<String> answers, int chosenAnswer, int correctAnswer){
+        if(!List.of(0, 1, 2).contains(chosenAnswer)) throw new IllegalArgumentException("chosenAnswer must be 0, 1 or 2");
+        if(!List.of(0, 1, 2).contains(correctAnswer)) throw new IllegalArgumentException("correctAnswer must be 0, 1 or 2");
+
+        printQuestion(question, answers, chosenAnswer, correctAnswer);
     }
 
     /**
@@ -338,9 +352,9 @@ public class UserInterface {
         }
     }
 
-    // prints the question and its answers, if answerIndex matches one of the answer lists entries
+    // prints the question and its answers, if chosenAnswer matches one of the answer lists entries
     // mark the corresponding answer
-    private void printQuestion(final String question, final List<String> answers, final int answerIndex){
+    private void printQuestion(final String question, final List<String> answers, final int chosenAnswer, final int correctAnswer){
         StaticUIComponent title = AsciiArtTitles.QUESTION;
         frameContent(title);
 
@@ -354,23 +368,22 @@ public class UserInterface {
         AnsiTerminal.moveCursorDown(1);
 
         for(int i = 0; i<answers.size(); i++){
-            String answer = answers.get(i);
+            String answer = UserInterfaceUtils.splitPhraseAtSpace(answers.get(i), MAX_TEXT_LENGTH);
             AnsiTerminal.moveCursorRight(5);
 
             // if the current questions index matches the provided answer index, mark the corresponding answer and continue
-            if(i == answerIndex){
-                new AnsiBuilder(UserInterfaceUtils.splitPhraseAtSpace(answer, MAX_TEXT_LENGTH))
-                        .setFont(BLUE, true)
-                        .setBackground(YELLOW, true)
-                        .println();
+            if(i == chosenAnswer && i!=correctAnswer){
+                new AnsiBuilder(answer).setFont(BLUE, true).setBackground(YELLOW, true).println();
+                continue;
+            }
 
+            if(i == correctAnswer){
+                new AnsiBuilder(answer).setFont(BLUE, true).setBackground(GREEN, true).println();
                 continue;
             }
 
             // print the answer (cannot use default style, because println is required!)
-            new AnsiBuilder(UserInterfaceUtils.splitPhraseAtSpace(answer, MAX_TEXT_LENGTH))
-                    .setFont(BLUE, true)
-                    .println();
+            new AnsiBuilder(answer).setFont(BLUE, true).println();
         }
     }
 

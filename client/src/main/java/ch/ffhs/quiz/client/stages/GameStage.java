@@ -74,19 +74,19 @@ public class GameStage extends Stage{
     protected void handleConversation() {
         try{
             LocalDateTime before = LocalDateTime.now(ZoneId.systemDefault());
-            int answerIndex = inputHandler.awaitUserAnswer();
+            int chosenAnswer = inputHandler.awaitUserAnswer();
             LocalDateTime after = LocalDateTime.now(ZoneId.systemDefault());
             Duration answerTime = Duration.between(before, after);
 
             AnsiTerminal.clearTerminal();
-            if(answerIndex != -1) ui.markChosenAnswer(question, answers, answerIndex);
+            if(chosenAnswer != -1) ui.markChosenAnswer(question, answers, chosenAnswer);
             ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getComponent());
 
 
-            serverConnection.send(new AnswerMessage(answerIndex, answerTime));
+            serverConnection.send(new AnswerMessage(chosenAnswer, answerTime));
 
             FeedbackMessage feedback = serverConnection.receive(FeedbackMessage.class);
-            processFeedbackMessage(feedback);
+            processFeedbackMessage(feedback, chosenAnswer);
         } catch(IOException ioEx){
             throw new RuntimeException(RUNTIME_EX, ioEx);
         }
@@ -113,10 +113,11 @@ public class GameStage extends Stage{
 
     // Read all the information about the players and their result
     // on the previous question to adapt the user interface
-    private void processFeedbackMessage(final FeedbackMessage feedback){
+    private void processFeedbackMessage(final FeedbackMessage feedback, final int chosenAnswer){
         Objects.requireNonNull(feedback, "feedback must not be null");
 
         ui.proceed();
+        ui.markCorrectAndChosenAnswer(question, answers, chosenAnswer, feedback.getCorrectAnswerNumber());
 
         if(feedback.getWinningPlayer() == null) ui.printNooneCorrect();
 
