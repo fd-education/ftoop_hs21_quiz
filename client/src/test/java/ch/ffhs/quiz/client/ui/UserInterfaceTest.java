@@ -312,26 +312,6 @@ class UserInterfaceTest {
     }
 
     @Test
-    void alertTimeMinuteTest() throws Exception{
-//        String EXPECTED = "\u001B[s\u001B[2E\u001B[1;91m     ACHTUNG! WENIGER ALS 30 SEKUNDEN VERBLEIBEN!\u001B[0m\u001B[u";
-//
-//        String output = tapSystemOutNormalized(() -> {
-//            ui.alertTimeMinute();
-//            Thread.sleep(30000);
-//        });
-//
-//        assertEquals(EXPECTED, output);
-    }
-
-    @Test
-    void sleepSaveTest() {
-    }
-
-    @Test
-    void waiting() {
-    }
-
-    @Test
     void printPlayerHasWon() throws Exception {
         String EXPECTED = """
                 [2E[1;92m     Super! Du hast diese Runde gewonnen![0m""";
