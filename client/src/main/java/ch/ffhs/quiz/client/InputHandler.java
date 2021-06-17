@@ -16,16 +16,26 @@ public class InputHandler {
     private final static ArrayList<String> VALID_ANSWERS = new ArrayList<>(List.of("A", "B", "C"));
     private final UserInterface ui;
 
+    /**
+     * Instantiates a new Input handler.
+     * Injects user interface object to alert invalid inputs
+     */
     public InputHandler(){
         ui = new UserInterface();
     }
 
+    /**
+     * Await user answer and map it to an int for the serverside to work with.
+     *
+     * @return the index of the players answer
+     */
     public int awaitUserAnswer(){
         int answerIndex = -1;
 
         ExecutorService es = Executors.newSingleThreadExecutor();
         Future<Integer> index = es.submit(() -> mapStringAnswerToInteger(getUserAnswer()));
 
+        // alert the running time with a graphical ui output
         ui.alertTimeMinute();
 
         try {
@@ -62,7 +72,8 @@ public class InputHandler {
     /**
      * Ask for the user's name.
      * Anything longer than 2 characters is allowed.
-     * @return user's name
+     *
+     * @return user 's name
      */
     public String getUserName(){
         while(true){
@@ -85,8 +96,7 @@ public class InputHandler {
         }
     }
 
-
-
+    // Map an entered letter to the corresponding index
     private int mapStringAnswerToInteger(final String answer){
         if(answer.isBlank()) throw new IllegalArgumentException("answer must contain a letter");
 
@@ -94,6 +104,8 @@ public class InputHandler {
             case "A" -> 0;
             case "B" -> 1;
             case "C" -> 2;
+
+            // may never be reached, bc inputs may only be a, A, b, B, c, C
             default -> -1;
         };
     }

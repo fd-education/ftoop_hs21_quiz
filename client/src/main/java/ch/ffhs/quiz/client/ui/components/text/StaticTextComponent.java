@@ -2,6 +2,9 @@ package ch.ffhs.quiz.client.ui.components.text;
 
 import ch.ffhs.quiz.client.ui.components.interfaces.StaticUIComponent;
 
+/**
+ * Enum containing all the required, static text blocks for the user interface.
+ */
 public enum StaticTextComponent implements StaticUIComponent {
     EXPLANATION("""
                  Ein ganz normales Quiz... wie schwer kann das schon sein.
@@ -28,6 +31,9 @@ public enum StaticTextComponent implements StaticUIComponent {
         this.component = component;
     }
 
+    /**
+     * Get the required text component as a String
+     */
     public String getComponent(){
         return component;
     }
