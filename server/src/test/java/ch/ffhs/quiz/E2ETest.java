@@ -34,7 +34,7 @@ class E2ETest {
                         NotifyGameStartsStep.class,
                         ConfirmNamesStep.class
                 )
-                .withMainSteps(
+                .withRoundSteps(
                         SendQuestionStep.class,
                         ReceiveResponsesStep.class,
                         EvaluateResponsesStep.class,
@@ -45,7 +45,7 @@ class E2ETest {
                         DisconnectPlayersStep.class
                 ).build();
 
-        List<Question> questions = QuestionFactory.questionBuilder("fragenkataloge/fragenkatalog_2019.txt").subList(0, 2);
+        List<Question> questions = QuestionFactory.questionBuilder("testQuestions/test_questions_1.txt").subList(0, 2);
 
         LoggerUtils.setGlobalLogLevel(Level.OFF);
         Server server = new Server(3141);
@@ -59,12 +59,12 @@ class E2ETest {
         InputHandler inputHandler1 = mock(InputHandler.class);
         UserInterface userInterface1 = mock(UserInterface.class);
         Client client1 = new Client("localhost", 3141);
-        Connection con1 = new ConnectionImpl(client1.getOutput(), client1.getInput());
+        Connection con1 = new ConnectionImpl(client1.getOutputStream(), client1.getInputStream());
 
         InputHandler inputHandler2 = mock(InputHandler.class);
         UserInterface userInterface2 = mock(UserInterface.class);
         Client client2 = new Client("localhost", 3141);
-        Connection con2 = new ConnectionImpl(client2.getOutput(), client2.getInput());
+        Connection con2 = new ConnectionImpl(client2.getOutputStream(), client2.getInputStream());
 
         when(userInterface1.proceed()).thenReturn(userInterface1);
         when(inputHandler1.getUserName()).thenReturn("Nicola");
@@ -77,8 +77,8 @@ class E2ETest {
         final Runnable client1Runnable = () -> new GameStage(client1, con1, inputHandler1, userInterface1).process();
         final Runnable client2Runnable = () -> new GameStage(client2, con2, inputHandler2, userInterface2).process();
 
-        when(inputHandler1.getUserAnswer()).thenReturn("A");
-        when(inputHandler2.getUserAnswer()).thenReturn("B");
+        when(inputHandler1.awaitUserAnswer()).thenReturn(0);
+        when(inputHandler2.awaitUserAnswer()).thenReturn(1);
 
         Thread threadClient1 = new Thread(client1Runnable);
         Thread threadClient2 = new Thread(client2Runnable);
@@ -87,8 +87,8 @@ class E2ETest {
         threadClient1.join();
         threadClient2.join();
 
-        when(inputHandler1.getUserAnswer()).thenReturn("A");
-        when(inputHandler2.getUserAnswer()).thenReturn("B");
+        when(inputHandler1.awaitUserAnswer()).thenReturn(0);
+        when(inputHandler2.awaitUserAnswer()).thenReturn(1);
 
         threadClient1 = new Thread(client1Runnable);
         threadClient2 = new Thread(client2Runnable);

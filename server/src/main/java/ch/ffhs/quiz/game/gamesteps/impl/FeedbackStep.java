@@ -5,6 +5,10 @@ import ch.ffhs.quiz.game.RoundContext;
 import ch.ffhs.quiz.game.gamesteps.GameStep;
 import ch.ffhs.quiz.game.player.Player;
 import ch.ffhs.quiz.messages.FeedbackMessage;
+import ch.ffhs.quiz.questions.Answer;
+import ch.ffhs.quiz.questions.Question;
+
+import java.util.List;
 
 /**
  * Sends a feedback to every player.
@@ -14,9 +18,9 @@ import ch.ffhs.quiz.messages.FeedbackMessage;
 public class FeedbackStep extends GameStep {
 
     private final RoundContext roundContext;
-    Player winningPlayer;
-    String winningPlayerName;
-    boolean winningPlayerExists;
+    private Player winningPlayer;
+    private String winningPlayerName;
+    private boolean winningPlayerExists;
 
     public FeedbackStep(GameContext gameContext) {
         super(gameContext);
@@ -46,6 +50,6 @@ public class FeedbackStep extends GameStep {
             player.reward();
             isFastestPlayer = true;
         }
-        player.send(new FeedbackMessage(wasCorrect, isFastestPlayer, winningPlayerName));
+        player.send(new FeedbackMessage(wasCorrect, isFastestPlayer, winningPlayerName, roundContext.getQuestion().getCorrectAnswerNumber()));
     }
 }

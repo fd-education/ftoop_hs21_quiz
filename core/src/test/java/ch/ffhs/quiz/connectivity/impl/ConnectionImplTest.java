@@ -2,7 +2,7 @@ package ch.ffhs.quiz.connectivity.impl;
 
 import ch.ffhs.quiz.connectivity.Connection;
 import ch.ffhs.quiz.messages.AnswerMessage;
-import ch.ffhs.quiz.messages.FailureMessage;
+import ch.ffhs.quiz.messages.MessageMock;
 import ch.ffhs.quiz.messages.MessageUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,15 +27,15 @@ class ConnectionImplTest {
 
     @Test
     void receive_positive_simple() throws IOException {
-        inputStream = new ByteArrayInputStream(MessageUtils.serialize(new FailureMessage("test")).getBytes(StandardCharsets.UTF_8));
+        inputStream = new ByteArrayInputStream(MessageUtils.serialize(new MessageMock("test")).getBytes(StandardCharsets.UTF_8));
         connection = new ConnectionImpl(outputStream, inputStream);
 
-        assertEquals("test", connection.receive(FailureMessage.class).getText());
+        assertEquals("test", connection.receive(MessageMock.class).getText());
     }
 
     @Test
     void send_positive_simple()  {
-        connection.send(new FailureMessage("Test"));
+        connection.send(new MessageMock("Test"));
 
         assertTrue(outputStream.toString().contains("Test"));
     }
@@ -50,15 +50,15 @@ class ConnectionImplTest {
         connection = new ConnectionImpl(outputStream, inputStream);
         Connection connection2 = new ConnectionImpl(outputStream2, inputStream2);
 
-        final AnswerMessage answerMessage = new AnswerMessage(0, Duration.ofMillis(10));
-        final FailureMessage failureMessage = new FailureMessage("""
+        final AnswerMessage answerMessage = new AnswerMessage(0, Duration.ZERO);
+        final MessageMock message = new MessageMock("""
                 This is a very important test.
                 """);
-        connection.send(failureMessage);
+        connection.send(message);
         connection2.send(answerMessage);
 
         assertEquals(answerMessage, connection.receive(AnswerMessage.class));
-        assertEquals(failureMessage, connection2.receive(FailureMessage.class));
+        assertEquals(message, connection2.receive(MessageMock.class));
     }
 
     @Test
@@ -75,7 +75,7 @@ class ConnectionImplTest {
     void stop_positive_simple() throws IOException {
         connection.close();
 
-        assertThrows(IllegalStateException.class, () -> connection.send(new FailureMessage("Test")));
+        assertThrows(IllegalStateException.class, () -> connection.send(new MessageMock("Test")));
     }
 
     @Test

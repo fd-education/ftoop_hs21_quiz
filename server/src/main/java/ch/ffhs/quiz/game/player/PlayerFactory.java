@@ -32,18 +32,22 @@ public class PlayerFactory {
     public static List<Player> connectPlayers(Server server, int playerCount) {
         Objects.requireNonNull(server);
 
+        logger.info("Starting to connect %d players...".formatted(playerCount));
         List<Player> players = new ArrayList<>();
         for (int i = 0; i < playerCount;) {
             try {
+                logger.info("Connecting player %d".formatted(i));
                 Socket clientSocket = server.acceptConnection();
                 Connection connection = new ConnectionImpl(clientSocket.getOutputStream(), clientSocket.getInputStream());
                 PlayerData playerData = new PlayerData(i);
                 players.add(new Player(playerData, connection));
+                logger.info("Player %d connected!".formatted(i));
                 i++;
             } catch (IOException e) {
                 logger.warning("Player could not connect with error %s. Trying again...%n".formatted(e.getCause()));
             }
         }
+        logger.info("Successfully connected %d players!".formatted(playerCount));
         return players;
     }
 }

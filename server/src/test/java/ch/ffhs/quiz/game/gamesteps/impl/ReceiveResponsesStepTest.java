@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,8 +43,8 @@ class ReceiveResponsesStepTest {
 
     @Test
     void process_positive_simple() throws IOException {
-        when(player1.receive(AnswerMessage.class)).thenReturn(new AnswerMessage(0));
-        when(player2.receive(AnswerMessage.class)).thenReturn(new AnswerMessage(0));
+        when(player1.receive(AnswerMessage.class)).thenReturn(new AnswerMessage(0, Duration.ZERO));
+        when(player2.receive(AnswerMessage.class)).thenReturn(new AnswerMessage(0, Duration.ZERO));
 
         receiveResponsesStep.process();
 

@@ -11,12 +11,12 @@ class MessagesTest {
 
     @Test
     void equals_positive_simple() {
-        assertEquals(new AnswerMessage(0, Duration.ofMillis(10)), new AnswerMessage(0, Duration.ofMillis(10)));
-        assertEquals(new FailureMessage("test"), new FailureMessage("test"));
+        assertEquals(new AnswerMessage(0, Duration.ZERO), new AnswerMessage(0, Duration.ZERO));
+        assertEquals(new MessageMock("test"), new MessageMock("test"));
         assertEquals(new NameMessage("test"), new NameMessage("test"));
         assertEquals(new QuestionMessage("question", List.of("answer")), new QuestionMessage("question", List.of("answer")));
         assertEquals(new ScoreboardEntry("name", 0), new ScoreboardEntry("name", 0));
         assertEquals(new RoundSummaryMessage(List.of(new ScoreboardEntry("name", 0)), false), new RoundSummaryMessage(List.of(new ScoreboardEntry("name", 0)), false));
-        assertEquals(new FeedbackMessage(false, false, "name"), new FeedbackMessage(false, false, "name"));
+        assertEquals(new FeedbackMessage(false, false, "name", 0), new FeedbackMessage(false, false, "name", 0));
     }
 }

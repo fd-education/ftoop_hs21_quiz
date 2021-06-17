@@ -26,14 +26,16 @@ class FeedbackStepTest {
     Player player2;
     FeedbackStep feedbackStep;
     List<Question> questions;
+    @Mock
+    Question question;
 
 
     @BeforeEach
     void setUp() {
-        questions = new ArrayList<>();
-        questions.add(mock(Question.class));
+        questions = List.of(question);
         when(player1.getId()).thenReturn(0);
         when(player2.getId()).thenReturn(1);
+        when(question.getCorrectAnswerNumber()).thenReturn(0);
 //        when(player2.getName()).thenReturn("Player 2");
         gameContext = new GameContext(List.of(player1, player2), questions);
         gameContext.nextRound();
@@ -50,15 +52,15 @@ class FeedbackStepTest {
         feedbackStep.process();
 
         verify(player1).reward();
-        verify(player1).send(new FeedbackMessage(true, true, "Player 1"));
-        verify(player2).send(new FeedbackMessage(false, false, "Player 1"));
+        verify(player1).send(new FeedbackMessage(true, true, "Player 1", 0));
+        verify(player2).send(new FeedbackMessage(false, false, "Player 1", 0));
     }
 
     @Test
     void process_positive_noWinners() {
         feedbackStep.process();
 
-        final FeedbackMessage expectedMessage = new FeedbackMessage(false, false, "");
+        final FeedbackMessage expectedMessage = new FeedbackMessage(false, false, "", 0);
         verify(player1).send(expectedMessage);
         verify(player2).send(expectedMessage);
     }
@@ -71,7 +73,7 @@ class FeedbackStepTest {
 
         feedbackStep.process();
         verify(player1).reward();
-        verify(player1).send(new FeedbackMessage(true, true, "Player 1"));
-        verify(player2).send(new FeedbackMessage(true, false, "Player 1"));
+        verify(player1).send(new FeedbackMessage(true, true, "Player 1", 0));
+        verify(player2).send(new FeedbackMessage(true, false, "Player 1", 0));
     }
 }

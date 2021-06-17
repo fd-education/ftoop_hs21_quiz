@@ -8,6 +8,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -24,6 +25,7 @@ public class MessageUtils {
     private static Gson getGson() {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Instant.class, new InstantAdapter());
+        builder.registerTypeAdapter(Duration.class, new DurationAdapter());
 
         return builder.create();
     }
@@ -88,6 +90,38 @@ public class MessageUtils {
             }
             jsonReader.endObject();
             return Instant.ofEpochSecond(epochSecond, nano);
+        }
+    }
+
+    // This adapter is needed because a Duration object cannot be properly serialized by GSON
+    private static class DurationAdapter extends TypeAdapter<Duration> {
+        @Override
+        public void write(JsonWriter jsonWriter, Duration duration) throws IOException {
+            if (duration == null) {
+                jsonWriter.nullValue();
+                return;
+            }
+            jsonWriter.beginObject();
+            jsonWriter.name("seconds").value(duration.getSeconds());
+            jsonWriter.name("nanoseconds").value(duration.getNano());
+            jsonWriter.endObject();
+        }
+
+        @Override
+        public Duration read(JsonReader jsonReader) throws IOException {
+            jsonReader.beginObject();
+            int nano = 0;
+            long seconds = 0;
+            while (jsonReader.hasNext()) {
+                String name = jsonReader.nextName();
+                if (name.equals("seconds")) {
+                    seconds = jsonReader.nextLong();
+                } else if (name.equals("nanoseconds")) {
+                    nano = jsonReader.nextInt();
+                }
+            }
+            jsonReader.endObject();
+            return Duration.ofSeconds(seconds, nano);
         }
     }
 }
