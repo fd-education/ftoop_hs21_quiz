@@ -367,8 +367,10 @@ public class UserInterface {
                 continue;
             }
 
-            // print the answer in default style
-            UserInterfaceUtils.printWithDefaultStyle(UserInterfaceUtils.splitPhraseAtSpace(answer, MAX_TEXT_LENGTH));
+            // print the answer (cannot use default style, because println is required!)
+            new AnsiBuilder(UserInterfaceUtils.splitPhraseAtSpace(answer, MAX_TEXT_LENGTH))
+                    .setFont(BLUE, true)
+                    .println();
         }
     }
 
