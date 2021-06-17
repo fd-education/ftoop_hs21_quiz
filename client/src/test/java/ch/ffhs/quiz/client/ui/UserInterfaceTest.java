@@ -6,9 +6,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import ch.ffhs.quiz.messages.QuestionMessage;
-import org.mockito.Mock;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
+import org.mockito.*;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -18,16 +16,17 @@ import java.util.concurrent.*;
 
 import static com.github.stefanbirkner.systemlambda.SystemLambda.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 class UserInterfaceTest {
     static UserInterface ui;
     static String question;
     static List<String> answers;
-    static List<ScoreboardEntry> scoresLong, scoresShort;
+    static List<ScoreboardEntry> scoresLong;
+
+    @Mock
+    static ScheduledExecutorService scheduledExecutorService;
 
 
     @BeforeAll
@@ -320,11 +319,19 @@ class UserInterfaceTest {
     }
 
     @Test
-    void alertTimeMinuteTest() {
+    void alertTimeMinuteTest() throws Exception{
+//        String EXPECTED = "\u001B[s\u001B[2E\u001B[1;91m     ACHTUNG! WENIGER ALS 30 SEKUNDEN VERBLEIBEN!\u001B[0m\u001B[u";
+//
+//        String output = tapSystemOutNormalized(() -> {
+//            ui.alertTimeMinute();
+//            Thread.sleep(30000);
+//        });
+//
+//        assertEquals(EXPECTED, output);
     }
 
     @Test
-    void sleepSave() {
+    void sleepSaveTest() {
     }
 
     @Test

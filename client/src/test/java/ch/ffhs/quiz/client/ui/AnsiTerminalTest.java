@@ -76,7 +76,7 @@ class AnsiTerminalTest {
 
     @Test
     void moveCursorRightTest_Negative(){
-        String EXPECTED = "columns must be bigger than 0; use moveCursorLeft instead of negative offset";
+        String EXPECTED = "columns must be greater than 0; use moveCursorLeft instead of negative offset";
         assertThrows(IllegalArgumentException.class, () -> moveCursorRight(0));
         assertThrows(IllegalArgumentException.class, () -> moveCursorRight(-1));
 

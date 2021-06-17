@@ -190,7 +190,7 @@ public class UserInterface {
         return !proceed;
     }
 
-    private void alertTime(final String secondsLeft){
+    void alertTime(final String secondsLeft){
         AnsiTerminal.saveCursorPos();
         AnsiTerminal.moveCursorDown(2);
         new AnsiBuilder(DynamicTextComponent.TIME_ALERT.getComponent(secondsLeft))

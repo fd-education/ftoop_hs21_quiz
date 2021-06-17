@@ -1,5 +1,6 @@
 package ch.ffhs.quiz.client;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -32,5 +33,10 @@ class ClientTest {
         String NAME = "Player";
         client.setPlayerName(NAME);
         assertEquals(NAME, client.getPlayerName());
+    }
+
+    @AfterAll
+    static void teardown() throws IOException{
+        server.close();
     }
 }

@@ -23,7 +23,7 @@ public class InitializationStage extends Stage{
 
     @Override
     protected void setupStage(){
-        // nothing to setup
+        // nothing to setup initially
     }
 
     @Override
@@ -49,6 +49,7 @@ public class InitializationStage extends Stage{
                 nameMessage = serverConnection.receive(NameMessage.class);
 
                 if(!nameMessage.isConfirmed()) ui.alertNameReserved(nameMessage.getText());
+
             } while(!nameMessage.isConfirmed());
 
         } catch(IOException ioEx){

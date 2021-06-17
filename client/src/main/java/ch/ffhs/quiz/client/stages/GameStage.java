@@ -12,6 +12,9 @@ import ch.ffhs.quiz.messages.QuestionMessage;
 import ch.ffhs.quiz.messages.RoundSummaryMessage;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,13 +55,17 @@ public class GameStage extends Stage{
     @Override
     protected void handleConversation() {
         try{
+            LocalDateTime before = LocalDateTime.now(ZoneId.systemDefault());
             int answerIndex = inputHandler.awaitUserAnswer();
+            LocalDateTime after = LocalDateTime.now(ZoneId.systemDefault());
+            Duration answerTime = Duration.between(before, after);
 
             AnsiTerminal.clearTerminal();
             if(answerIndex != -1) ui.markChosenAnswer(question, answers, answerIndex);
             ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getComponent());
 
-            serverConnection.send(new AnswerMessage(answerIndex));
+
+            serverConnection.send(new AnswerMessage(answerIndex, answerTime));
 
             FeedbackMessage feedback = serverConnection.receive(FeedbackMessage.class);
             processFeedbackMessage(feedback);

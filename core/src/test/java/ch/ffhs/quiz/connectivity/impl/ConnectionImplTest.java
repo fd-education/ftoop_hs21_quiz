@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -49,7 +50,7 @@ class ConnectionImplTest {
         connection = new ConnectionImpl(outputStream, inputStream);
         Connection connection2 = new ConnectionImpl(outputStream2, inputStream2);
 
-        final AnswerMessage answerMessage = new AnswerMessage(0);
+        final AnswerMessage answerMessage = new AnswerMessage(0, Duration.ofMillis(10));
         final FailureMessage failureMessage = new FailureMessage("""
                 This is a very important test.
                 """);
