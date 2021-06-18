@@ -2,7 +2,13 @@ package ch.ffhs.quiz.client.ui.components.ascii;
 
 import ch.ffhs.quiz.client.ui.components.interfaces.StaticUIComponent;
 
+/**
+ * Enum for Ascii art numbers.
+ */
 public enum AsciiArtNumbers implements StaticUIComponent {
+    /**
+     * Ascii zero
+     */
     ZERO("""
                                                             ██████╗
                                                            ██╔═████╗
@@ -11,6 +17,9 @@ public enum AsciiArtNumbers implements StaticUIComponent {
                                                            ╚██████╔╝
                                                             ╚═════╝
             """),
+    /**
+     * Ascii one
+     */
     ONE("""
                                                               ██╗
                                                              ███║
@@ -19,6 +28,9 @@ public enum AsciiArtNumbers implements StaticUIComponent {
                                                               ██║
                                                               ╚═╝
             """),
+    /**
+     * Ascii two
+     */
     TWO("""
                                                            ██████╗
                                                            ╚════██╗
@@ -27,6 +39,9 @@ public enum AsciiArtNumbers implements StaticUIComponent {
                                                            ███████╗
                                                            ╚══════╝
             """),
+    /**
+     * Ascii three
+     */
     THREE("""
                                                            ██████╗
                                                            ╚════██╗
@@ -35,6 +50,9 @@ public enum AsciiArtNumbers implements StaticUIComponent {
                                                            ██████╔╝
                                                            ╚═════╝
             """),
+    /**
+     * Ascii four
+     */
     FOUR("""
                                                            ██╗  ██╗
                                                            ██║  ██║
@@ -43,6 +61,9 @@ public enum AsciiArtNumbers implements StaticUIComponent {
                                                                 ██║
                                                                 ╚═╝
             """),
+    /**
+     * Ascii five
+     */
     FIVE("""
                                                            ███████╗
                                                            ██╔════╝
@@ -58,10 +79,23 @@ public enum AsciiArtNumbers implements StaticUIComponent {
         this.ascii = ascii;
     }
 
+    /**
+     * Get the Ascii art number as a string,
+     * matching its numeric index
+     *
+     * @param index the index (the number to get)
+     * @return the Ascii number String
+     */
     public static String getText(final int index){
+        if(index < 0 || index > 5) throw new IllegalArgumentException("AsciiArtNumbers can only return numbers between  0 and 5");
+
         return AsciiArtNumbers.values()[index].getComponent();
     }
 
+    /**
+     * Get the component in a String representation
+     * @return component
+     */
     public String getComponent(){
         return ascii;
     }

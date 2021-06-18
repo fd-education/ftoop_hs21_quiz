@@ -25,12 +25,14 @@ class QuestionFactoryTest {
                 new AnswerImpl("B Kurt", false),
                 new AnswerImpl("C Henry", false)));
 
+        //noinspection SpellCheckingInspection
         List<Answer> answerList3 = new ArrayList<>(Arrays.asList(
                 new AnswerImpl("A Lausanne", false),
                 new AnswerImpl("B Zürich", false),
                 new AnswerImpl("C Bern", true)));
 
 
+        //noinspection SpellCheckingInspection
         List<Question> questionList = new ArrayList<>(Arrays.asList(
                 new QuestionImpl("Was ist die Wurzel von 4?", answerList1),
                 new QuestionImpl("Was ist die Hauptstadt der Schweiz?", answerList3),

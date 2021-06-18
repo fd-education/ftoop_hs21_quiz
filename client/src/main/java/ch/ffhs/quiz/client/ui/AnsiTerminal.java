@@ -7,12 +7,14 @@ public class AnsiTerminal {
     // ANSI Prefix String
     private static final String PREFIX = "\033[";
 
+    private AnsiTerminal(){}
+
     /**
      * Moves the cursor up a certain amount of lines
      * @param lines number of lines to move the cursor
      */
     public static void moveCursorDown(final int lines){
-        if(lines<=0) throw new IllegalArgumentException("lines must be bigger than 0");
+        if(lines<=0) throw new IllegalArgumentException("lines must be greater than 0");
 
         moveCursor(Direction.DOWN, lines);
     }
@@ -22,7 +24,7 @@ public class AnsiTerminal {
      * @param columns number of columns to move the cursor
      */
     public static void moveCursorLeft(final int columns){
-        if(columns<=0) throw new IllegalArgumentException("columns must be bigger than 0; use moveCursorRight instead of negative offset");
+        if(columns<=0) throw new IllegalArgumentException("columns must be greater than 0; use moveCursorRight instead of negative offset");
 
         moveCursor(Direction.LEFT, columns);
     }
@@ -32,7 +34,7 @@ public class AnsiTerminal {
      * @param columns number of columns to move the cursor
      */
     public static void moveCursorRight(final int columns){
-        if(columns<=0) throw new IllegalArgumentException("columns must be bigger than 0; use moveCursorLeft instead of negative offset");
+        if(columns<=0) throw new IllegalArgumentException("columns must be greater than 0; use moveCursorLeft instead of negative offset");
 
         moveCursor(Direction.RIGHT, columns);
     }

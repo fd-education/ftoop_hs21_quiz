@@ -13,9 +13,9 @@ public class QuestionFactory {
     private QuestionFactory() {}
 
     public static void main(String[] args) {
-        List<Question> quiz2019 = questionBuilder("fragenkataloge/fragenkatalog_2019.txt");
-        List<Question> quiz2020 = questionBuilder("fragenkataloge/fragenkatalog_2020.txt");
-        List<Question> quiz2021 = questionBuilder("fragenkataloge/fragenkatalog_2021.txt");
+        @SuppressWarnings("SpellCheckingInspection") List<Question> quiz2019 = questionBuilder("fragenkataloge/fragenkatalog_2019.txt");
+        @SuppressWarnings("SpellCheckingInspection") List<Question> quiz2020 = questionBuilder("fragenkataloge/fragenkatalog_2020.txt");
+        @SuppressWarnings("SpellCheckingInspection") List<Question> quiz2021 = questionBuilder("fragenkataloge/fragenkatalog_2021.txt");
         System.out.println(quiz2019);
         System.out.println(quiz2020);
         System.out.println(quiz2021);
