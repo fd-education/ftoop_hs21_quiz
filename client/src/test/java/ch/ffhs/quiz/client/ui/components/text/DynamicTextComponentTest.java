@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SuppressWarnings("SpellCheckingInspection")
 class DynamicTextComponentTest {
 
     @Test
@@ -49,7 +50,7 @@ class DynamicTextComponentTest {
     }
 
     // Test handling of empty string as complement
-    String EXCEPTION_MESSAGE = "complement must not be empty or consist of only whitespace";
+    final String EXCEPTION_MESSAGE = "complement must not be empty or consist of only whitespace";
 
     @Test
     void getComponent_EMPTY_STRING() {

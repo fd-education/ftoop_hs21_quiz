@@ -82,7 +82,6 @@ public class GameStage extends Stage{
             if(chosenAnswer != -1) ui.markChosenAnswer(question, answers, chosenAnswer);
             ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getComponent());
 
-
             serverConnection.send(new AnswerMessage(chosenAnswer, answerTime));
 
             FeedbackMessage feedback = serverConnection.receive(FeedbackMessage.class);
@@ -119,8 +118,16 @@ public class GameStage extends Stage{
         ui.proceed();
         ui.markCorrectAndChosenAnswer(question, answers, chosenAnswer, feedback.getCorrectAnswerNumber());
 
-        if(feedback.getWinningPlayer() == null) ui.printNooneCorrect();
+        if(feedback.getWinningPlayer().isBlank()){
+            ui.printNooneCorrect();
+        } else {
+            handleWinningInformation(feedback);
+        }
 
+        ui.sleepSave(3000);
+    }
+
+    private void handleWinningInformation(FeedbackMessage feedback){
         String winningPlayer = feedback.getWinningPlayer();
         if(feedback.wasCorrect() && feedback.wasFastest()){
             ui.printPlayerHasWon();
@@ -129,8 +136,6 @@ public class GameStage extends Stage{
         } else{
             ui.printPlayerWasWrong(winningPlayer);
         }
-
-        ui.sleepSave(10000);
     }
 
     // Read all the information about the scores of the players to create and print

@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class ScoreboardTest {
     static Scoreboard scoreboardLong, scoreboardShort;
     static List<ScoreboardEntry> scoresLong, scoresShort;
-    static Class<IllegalArgumentException> EXPECTED_EXCEPTION = IllegalArgumentException.class;
+    static final Class<IllegalArgumentException> EXPECTED_EXCEPTION = IllegalArgumentException.class;
 
     @BeforeAll
     static void setup(){

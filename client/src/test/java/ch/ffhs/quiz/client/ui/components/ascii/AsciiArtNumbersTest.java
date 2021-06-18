@@ -32,7 +32,7 @@ class AsciiArtNumbersTest {
     }
 
     @Test
-    void getTextByIndexTest_negative() throws Exception{
+    void getTextByIndexTest_negative() {
         assertThrows(IllegalArgumentException.class, () -> AsciiArtNumbers.getText(-1));
         assertThrows(IllegalArgumentException.class, () -> AsciiArtNumbers.getText(6));
 

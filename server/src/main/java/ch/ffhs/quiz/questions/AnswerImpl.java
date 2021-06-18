@@ -1,8 +1,8 @@
 package ch.ffhs.quiz.questions;
 
 public class AnswerImpl implements Answer {
-    String answer;
-    Boolean isCorrectAnswer;
+    final String answer;
+    final Boolean isCorrectAnswer;
 
     /**
      * Instantiates a new Answer.

@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static ch.ffhs.quiz.client.ui.AnsiTerminal.*;
 
 class AnsiTerminalTest {
-    String ANSI_PREFIX = "\033[";
+    final String ANSI_PREFIX = "\033[";
 
     @Test
     void moveCursorDownTest() throws Exception{
@@ -69,7 +69,7 @@ class AnsiTerminalTest {
     void moveCursorRightTest() throws Exception{
         String EXPECTED = ANSI_PREFIX + "4C";
 
-        String output = tapSystemOutNormalized(() -> {moveCursorRight(4);});
+        String output = tapSystemOutNormalized(() -> moveCursorRight(4));
 
         assertEquals(EXPECTED, output);
     }
@@ -97,7 +97,7 @@ class AnsiTerminalTest {
     void positionCursorTest() throws Exception {
         String EXPECTED = ANSI_PREFIX + "4;5H";
 
-        String output = tapSystemOutNormalized(() -> {positionCursor(4,5);});
+        String output = tapSystemOutNormalized(() -> positionCursor(4,5));
 
         assertEquals(EXPECTED, output);
     }
@@ -130,7 +130,7 @@ class AnsiTerminalTest {
     void saveCursorPosTest() throws Exception {
         String EXPECTED = ANSI_PREFIX + "s";
 
-        String output = tapSystemOutNormalized(() -> saveCursorPos());
+        String output = tapSystemOutNormalized(AnsiTerminal::saveCursorPos);
 
         assertEquals(EXPECTED, output);
     }
@@ -139,7 +139,7 @@ class AnsiTerminalTest {
     void restoreCursorPosTest() throws Exception {
         String EXPECTED = ANSI_PREFIX + "u";
 
-        String output = tapSystemOutNormalized(() -> restoreCursorPos());
+        String output = tapSystemOutNormalized(AnsiTerminal::restoreCursorPos);
 
         assertEquals(EXPECTED, output);
     }
@@ -148,7 +148,7 @@ class AnsiTerminalTest {
     void clearTerminalTest() throws Exception {
         String EXPECTED = ANSI_PREFIX + "H" + ANSI_PREFIX + "2J";
 
-        String output = tapSystemOutNormalized(() -> clearTerminal());
+        String output = tapSystemOutNormalized(AnsiTerminal::clearTerminal);
 
         assertEquals(EXPECTED, output);
     }
@@ -157,7 +157,7 @@ class AnsiTerminalTest {
     void clearLineTest() throws Exception {
         String EXPECTED = ANSI_PREFIX + "2K";
 
-        String output = tapSystemOutNormalized(() -> clearLine());
+        String output = tapSystemOutNormalized(AnsiTerminal::clearLine);
 
         assertEquals(EXPECTED, output);
     }
@@ -166,7 +166,7 @@ class AnsiTerminalTest {
     void clearRemainingOfLineTest() throws Exception {
         String EXPECTED = ANSI_PREFIX + "K";
 
-        String output = tapSystemOutNormalized(() -> clearRemainingOfLine());
+        String output = tapSystemOutNormalized(AnsiTerminal::clearRemainingOfLine);
 
         assertEquals(EXPECTED, output);
     }

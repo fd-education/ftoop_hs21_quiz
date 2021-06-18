@@ -5,6 +5,7 @@ import ch.ffhs.quiz.client.ui.components.interfaces.DynamicUIComponent;
 /**
  * Enum containing all the required, adaptable text blocks for the user interface.
  */
+@SuppressWarnings("SpellCheckingInspection")
 public enum DynamicTextComponent implements DynamicUIComponent {
     NAME_RESERVED("     %s ist bereits vergeben."),
     NAME_INVALID("     %s kann nicht verarbeitet werden. \n     Dein Name muss mehr als 3 Buchstaben enthalten."),

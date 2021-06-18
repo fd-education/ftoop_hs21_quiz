@@ -40,7 +40,7 @@ class AsciiArtTableTest {
     // AsciiArtTable has a helper method to check all params of every method.
     // Therefore we only test the error handling with one method (getCellBordersWithContent()),
     // that takes and checks all the params that the others require as well.
-    Class<IllegalArgumentException> EXPECTED_EXCEPTION = IllegalArgumentException.class;
+    final Class<IllegalArgumentException> EXPECTED_EXCEPTION = IllegalArgumentException.class;
 
     // Test for invalid cell lengths (<= 0)
     @Test

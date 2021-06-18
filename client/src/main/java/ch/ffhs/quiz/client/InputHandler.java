@@ -1,6 +1,7 @@
 package ch.ffhs.quiz.client;
 
 import ch.ffhs.quiz.client.ui.UserInterface;
+import ch.ffhs.quiz.client.ui.components.TimeAlertRunnable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,12 +37,18 @@ public class InputHandler {
         Future<Integer> index = es.submit(() -> mapStringAnswerToInteger(getUserAnswer()));
 
         // alert the running time with a graphical ui output
-        ui.alertTimeMinute();
+        ScheduledExecutorService esSchedule = Executors.newSingleThreadScheduledExecutor();
+        esSchedule.schedule(new TimeAlertRunnable(55),5L, TimeUnit.SECONDS);
+        esSchedule.schedule(new TimeAlertRunnable(50),10L, TimeUnit.SECONDS);
+        esSchedule.schedule(new TimeAlertRunnable(45),15L, TimeUnit.SECONDS);
+        esSchedule.schedule(new TimeAlertRunnable(40),20L, TimeUnit.SECONDS);
+
 
         try {
             answerIndex = index.get(1, TimeUnit.MINUTES);
         } catch(TimeoutException | InterruptedException | ExecutionException ignored){}
 
+        esSchedule.shutdownNow();
         es.shutdown();
         try{
             if(!es.awaitTermination(800, TimeUnit.MILLISECONDS)){

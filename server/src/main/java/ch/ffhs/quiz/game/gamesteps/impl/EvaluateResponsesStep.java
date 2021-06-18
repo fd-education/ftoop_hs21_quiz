@@ -7,7 +7,6 @@ import ch.ffhs.quiz.game.player.Player;
 import ch.ffhs.quiz.messages.AnswerMessage;
 
 import java.time.Duration;
-import java.time.Instant;
 
 /**
  * Evaluates the answer for every player.

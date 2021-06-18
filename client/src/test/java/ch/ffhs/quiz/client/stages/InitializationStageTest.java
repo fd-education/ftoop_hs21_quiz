@@ -8,12 +8,10 @@ import ch.ffhs.quiz.connectivity.impl.ConnectionImpl;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.mockito.internal.matchers.Null;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 
-import static com.github.stefanbirkner.systemlambda.SystemLambda.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InitializationStageTest {
