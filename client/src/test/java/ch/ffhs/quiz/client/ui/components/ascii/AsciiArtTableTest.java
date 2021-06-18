@@ -21,19 +21,19 @@ class AsciiArtTableTest {
 
     @Test
     void getCellBordersWithContentTest_RANK1_SCORE1() {
-        String EXPECTED_RANK1_SCORE1 = "     ║ 1   ║ Player     ║ 1   ║\n";
+        String EXPECTED_RANK1_SCORE1 = "     ║ 1.  ║ Player     ║ 1   ║\n";
         assertEquals(EXPECTED_RANK1_SCORE1, AsciiArtTable.getCellBordersWithContent(6, 1, "Player", 1));
     }
 
     @Test
     void getCellBordersWithContentTest_RANK10_SCORE10() {
-        String EXPECTED_RANK10_SCORE10 = "     ║ 10  ║ Player     ║ 10  ║\n";
+        String EXPECTED_RANK10_SCORE10 = "     ║ 10. ║ Player     ║ 10  ║\n";
         assertEquals(EXPECTED_RANK10_SCORE10, AsciiArtTable.getCellBordersWithContent(6, 10, "Player", 10));
     }
 
     @Test
     void getCellBordersWithContentTest_RANK10_SCORE100() {
-        String EXPECTED_RANK10_SCORE100 = "     ║ 10  ║ Player     ║ 100 ║\n";
+        String EXPECTED_RANK10_SCORE100 = "     ║ 10. ║ Player     ║ 100 ║\n";
         assertEquals(EXPECTED_RANK10_SCORE100, AsciiArtTable.getCellBordersWithContent(6, 10, "Player", 100));
     }
 

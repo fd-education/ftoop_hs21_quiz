@@ -44,13 +44,14 @@ public class AsciiArtTable {
     public static String getCellBordersWithContent(final int length, final int rank, final String name, final int score){
         checkParams(new HashMap<>(Map.of("length", length, "rank", rank, "name", name, "score", score)));
 
-        String cellTemplate = "     ║ %s ║%s║ %s ║\n";
+        String cellTemplate = "     ║ %s║%s║ %s ║\n";
         char[] filler = new char[length + TABLE_PADDING - name.length()];
         Arrays.fill(filler, ' ');
 
-        String rankString = formatNumberToFitInCol(rank);
-        String scoreString = formatNumberToFitInCol(score);
+        String rankString = String.format("%s.%s", rank, fillWhitespace(rank));
+        String scoreString = String.format("%s%s", score, fillWhitespace(score));
         String nameString = String.format(" %s%s", name, new String(filler));
+
         return String.format(cellTemplate, rankString, nameString, scoreString);
     }
 
@@ -73,13 +74,13 @@ public class AsciiArtTable {
 
     // format the given number to line up in the same column
     // and to take up even space (fill with whitespace)
-    private static String formatNumberToFitInCol(final int number){
+    private static String fillWhitespace(final int number){
         if(number < 10){
-            return number + "  ";
+            return "  ";
         } else if(number < 100){
-            return number + " ";
+            return " ";
         } else{
-            return String.valueOf(number);
+            return "";
         }
     }
 
