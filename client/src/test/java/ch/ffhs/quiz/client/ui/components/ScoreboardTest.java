@@ -54,16 +54,16 @@ class ScoreboardTest {
     void getScoreboardForPlayer_LONG_PLAYERON() {
         String EXPECTED = """
                 ╔═════╦══════════════╦═════╗
-                ║ 1   ║ Player1      ║ 950 ║
-                ║ 2   ║ Player2      ║ 900 ║
-                ║ 3   ║ Player3      ║ 800 ║
-                ║ 4   ║ Player4      ║ 700 ║
-                ║ 5   ║ Player5      ║ 600 ║
-                ║ 6   ║ Player6      ║ 500 ║
-                ║ 7   ║ Player7      ║ 400 ║
-                ║ 8   ║ Player8      ║ 300 ║
-                ║ 9   ║ Player9      ║ 200 ║
-                ║ 10  ║ Player10     ║ 100 ║
+                ║ 1.  ║ Player1      ║ 950 ║
+                ║ 2.  ║ Player2      ║ 900 ║
+                ║ 3.  ║ Player3      ║ 800 ║
+                ║ 4.  ║ Player4      ║ 700 ║
+                ║ 5.  ║ Player5      ║ 600 ║
+                ║ 6.  ║ Player6      ║ 500 ║
+                ║ 7.  ║ Player7      ║ 400 ║
+                ║ 8.  ║ Player8      ║ 300 ║
+                ║ 9.  ║ Player9      ║ 200 ║
+                ║ 10. ║ Player10     ║ 100 ║
                 ╚═════╩══════════════╩═════╝
                  """;
 
@@ -74,17 +74,17 @@ class ScoreboardTest {
     void getScoreboardForPlayer_LONG_PLAYEROFF() {
         String EXPECTED = """
                 ╔═════╦══════════════╦═════╗
-                ║ 1   ║ Player1      ║ 950 ║
-                ║ 2   ║ Player2      ║ 900 ║
-                ║ 3   ║ Player3      ║ 800 ║
-                ║ 4   ║ Player4      ║ 700 ║
-                ║ 5   ║ Player5      ║ 600 ║
-                ║ 6   ║ Player6      ║ 500 ║
-                ║ 7   ║ Player7      ║ 400 ║
-                ║ 8   ║ Player8      ║ 300 ║
-                ║ 9   ║ Player9      ║ 200 ║
-                ║ 10  ║ Player10     ║ 100 ║
-                ║ 15  ║ Player15     ║ 50  ║
+                ║ 1.  ║ Player1      ║ 950 ║
+                ║ 2.  ║ Player2      ║ 900 ║
+                ║ 3.  ║ Player3      ║ 800 ║
+                ║ 4.  ║ Player4      ║ 700 ║
+                ║ 5.  ║ Player5      ║ 600 ║
+                ║ 6.  ║ Player6      ║ 500 ║
+                ║ 7.  ║ Player7      ║ 400 ║
+                ║ 8.  ║ Player8      ║ 300 ║
+                ║ 9.  ║ Player9      ║ 200 ║
+                ║ 10. ║ Player10     ║ 100 ║
+                ║ 15. ║ Player15     ║ 50  ║
                 ╚═════╩══════════════╩═════╝
                 """;
 
@@ -95,12 +95,12 @@ class ScoreboardTest {
     void getScoreboardForPlayer_SHORT() {
         String EXPECTED = """
                 ╔═════╦═════════════╦═════╗
-                ║ 1   ║ Player1     ║ 950 ║
-                ║ 2   ║ Player2     ║ 900 ║
-                ║ 3   ║ Player3     ║ 800 ║
-                ║ 4   ║ Player4     ║ 700 ║
-                ║ 5   ║ Player5     ║ 600 ║
-                ║ 6   ║ Player6     ║ 500 ║
+                ║ 1.  ║ Player1     ║ 950 ║
+                ║ 2.  ║ Player2     ║ 900 ║
+                ║ 3.  ║ Player3     ║ 800 ║
+                ║ 4.  ║ Player4     ║ 700 ║
+                ║ 5.  ║ Player5     ║ 600 ║
+                ║ 6.  ║ Player6     ║ 500 ║
                 ╚═════╩═════════════╩═════╝
                 """;
 

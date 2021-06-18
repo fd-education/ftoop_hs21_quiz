@@ -354,7 +354,7 @@ public class UserInterface {
         }
     }
 
-    // prints a red alert with the corresponding text to the terminal
+    // prints a red alert with the corresponding text to the terminal, then delete the causing input
     private void alertInvalidInput(final DynamicTextComponent alert, final String input){
         AnsiTerminal.moveCursorDown(1);
 
@@ -363,7 +363,9 @@ public class UserInterface {
                 .print();
 
         AnsiTerminal.restoreCursorPos();
+        AnsiTerminal.moveCursorLeft(input.length());
         AnsiTerminal.clearRemainingOfLine();
+        AnsiTerminal.moveCursorRight(1);
     }
 
     // ask the player for a specified input

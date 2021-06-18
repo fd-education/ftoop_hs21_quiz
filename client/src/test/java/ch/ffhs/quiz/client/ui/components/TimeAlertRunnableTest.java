@@ -29,7 +29,8 @@ class TimeAlertRunnableTest {
 
     @Test
     void runTest() throws Exception{
-        String EXPECTED = "\u001B[s\u001B[3E\u001B[1;91m     ACHTUNG! WENIGER ALS 50 SEKUNDEN VERBLEIBEN!\u001B[0m\u001B[u";
+        String EXPECTED = """
+                \u001B[s\u001B[5E\u001B[1;91m     ACHTUNG! WENIGER ALS 50 SEKUNDEN VERBLEIBEN!\u001B[0m\u001B[u""";
 
         TimeAlertRunnable alert = new TimeAlertRunnable(50);
 

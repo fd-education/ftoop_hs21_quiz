@@ -78,9 +78,11 @@ public class GameStage extends Stage{
             LocalDateTime after = LocalDateTime.now(ZoneId.systemDefault());
             Duration answerTime = Duration.between(before, after);
 
-            AnsiTerminal.clearTerminal();
-            if(chosenAnswer != -1) ui.markChosenAnswer(question, answers, chosenAnswer);
-            ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getComponent());
+            if(chosenAnswer != -1){
+                AnsiTerminal.clearTerminal();
+                ui.markChosenAnswer(question, answers, chosenAnswer);
+                ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getComponent());
+            }
 
             serverConnection.send(new AnswerMessage(chosenAnswer, answerTime));
 

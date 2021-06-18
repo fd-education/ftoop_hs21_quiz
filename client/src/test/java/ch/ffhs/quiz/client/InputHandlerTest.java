@@ -67,8 +67,9 @@ public class InputHandlerTest {
 
         // provide a valid input to avoid looping for 60"
         String input2 = "A";
-        String EXPECTED = "\u001B[1E\u001B[1;91m     ab kann keine Antwort sein. \n" +
-                "     Deine Antwort muss A, B oder C lauten.\u001B[0m\u001B[u\u001B[K";
+        String EXPECTED = """
+                [1E[1;91m     ab kann keine Antwort sein.\s
+                     Deine Antwort muss A, B oder C lauten.[0m[u[2D[K[1C""";
 
         withTextFromSystemIn(input1, input2)
                 .execute(() -> {
