@@ -81,7 +81,7 @@ class UserInterfaceTest {
     void alertInvalidNameTest() throws Exception{
         String EXPECTED = """
                 [1E[1;91m     ___ kann nicht verarbeitet werden.\s
-                     Dein Name muss mehr als 3 Buchstaben enthalten.[0m[u[K""";
+                     Dein Name muss mehr als 3 Buchstaben enthalten.[0m[u[3D[K[1C""";
 
         String output = tapSystemOutNormalized(()->ui.alertInvalidName("___"));
         assertEquals(EXPECTED, output);
@@ -99,7 +99,7 @@ class UserInterfaceTest {
     @Test
     void alertNameReservedTest() throws Exception {
         String EXPECTED = """
-                [1E[1;91m     Player1 ist bereits vergeben.[0m[u[K""";
+                [1E[1;91m     Player1 ist bereits vergeben.[0m[u[7D[K[1C""";
 
         String output = tapSystemOutNormalized(()->ui.alertNameReserved("Player1"));
         assertEquals(EXPECTED, output);
@@ -250,7 +250,7 @@ class UserInterfaceTest {
     void alertInvalidAnswerTest() throws Exception {
         String EXPECTED = """
                 [1E[1;91m     x kann keine Antwort sein.\s
-                     Deine Antwort muss A, B oder C lauten.[0m[u[K""";
+                     Deine Antwort muss A, B oder C lauten.[0m[u[1D[K[1C""";
 
         String terminalOutput = tapSystemOutNormalized(()->ui.alertInvalidAnswer("x"));
         assertEquals(EXPECTED, terminalOutput);
@@ -424,17 +424,17 @@ class UserInterfaceTest {
                                                 ███████║╚██████╗╚██████╔╝██║  ██║███████╗
                                                 ╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝
                 [0m[2E[1E[1;34m                                       ╔═════╦══════════════╦═════╗
-                                                       ║ 1   ║ Player1      ║ 950 ║
-                                                       ║ 2   ║ Player2      ║ 900 ║
-                                                       ║ 3   ║ Player3      ║ 800 ║
-                                                       ║ 4   ║ Player4      ║ 700 ║
-                                                       ║ 5   ║ Player5      ║ 600 ║
-                                                       ║ 6   ║ Player6      ║ 500 ║
-                                                       ║ 7   ║ Player7      ║ 400 ║
-                                                       ║ 8   ║ Player8      ║ 300 ║
-                                                       ║ 9   ║ Player9      ║ 200 ║
-                                                       ║ 10  ║ Player10     ║ 100 ║
-                                                       ║ 12  ║ Player12     ║ 80  ║
+                                                       ║ 1.  ║ Player1      ║ 950 ║
+                                                       ║ 2.  ║ Player2      ║ 900 ║
+                                                       ║ 3.  ║ Player3      ║ 800 ║
+                                                       ║ 4.  ║ Player4      ║ 700 ║
+                                                       ║ 5.  ║ Player5      ║ 600 ║
+                                                       ║ 6.  ║ Player6      ║ 500 ║
+                                                       ║ 7.  ║ Player7      ║ 400 ║
+                                                       ║ 8.  ║ Player8      ║ 300 ║
+                                                       ║ 9.  ║ Player9      ║ 200 ║
+                                                       ║ 10. ║ Player10     ║ 100 ║
+                                                       ║ 12. ║ Player12     ║ 80  ║
                                                        ╚═════╩══════════════╩═════╝
                 [0m""";
 

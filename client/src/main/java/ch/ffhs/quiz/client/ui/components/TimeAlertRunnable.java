@@ -28,7 +28,7 @@ public class TimeAlertRunnable implements Runnable{
     @Override
     public void run(){
         AnsiTerminal.saveCursorPos();
-        AnsiTerminal.moveCursorDown(3);
+        AnsiTerminal.moveCursorDown(5);
         new AnsiBuilder(alertMessage)
                 .setFont(RED, true)
                 .print();

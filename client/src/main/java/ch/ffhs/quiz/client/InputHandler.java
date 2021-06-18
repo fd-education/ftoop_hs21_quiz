@@ -38,10 +38,10 @@ public class InputHandler {
 
         // alert the running time with a graphical ui output
         ScheduledExecutorService esSchedule = Executors.newSingleThreadScheduledExecutor();
-        esSchedule.schedule(new TimeAlertRunnable(55),5L, TimeUnit.SECONDS);
-        esSchedule.schedule(new TimeAlertRunnable(50),10L, TimeUnit.SECONDS);
-        esSchedule.schedule(new TimeAlertRunnable(45),15L, TimeUnit.SECONDS);
-        esSchedule.schedule(new TimeAlertRunnable(40),20L, TimeUnit.SECONDS);
+        esSchedule.schedule(new TimeAlertRunnable(30),30L, TimeUnit.SECONDS);
+        esSchedule.schedule(new TimeAlertRunnable(15),45L, TimeUnit.SECONDS);
+        esSchedule.schedule(new TimeAlertRunnable(10),50L, TimeUnit.SECONDS);
+        esSchedule.schedule(new TimeAlertRunnable(5),55L, TimeUnit.SECONDS);
 
 
         try {
