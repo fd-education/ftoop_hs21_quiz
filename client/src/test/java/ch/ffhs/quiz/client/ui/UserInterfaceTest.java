@@ -18,9 +18,6 @@ class UserInterfaceTest {
     static List<String> answers;
     static List<ScoreboardEntry> scoresLong;
 
-    @Mock
-    static ScheduledExecutorService scheduledExecutorService;
-
 
     @BeforeAll
     static void setup(){
@@ -239,7 +236,7 @@ class UserInterfaceTest {
                                                 ██╔══╝  ██╔══██╗██╔══██║██║   ██║██╔══╝
                                                 ██║     ██║  ██║██║  ██║╚██████╔╝███████╗
                                                 ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝
-                [0m[2E[2E[1;94mQuestion 2: Some other question that is probably very easy...[0m
+                [0m[2E[2E[5C[1;94mQuestion 2: Some other question that is probably very easy...[0m
                 [1E[5C[1;94mA: stupid answer one[0m
                 [5C[1;94mB: rather strange, but correct one[0m
                 [5C[1;94mC: most sensible, but wrong[0m
@@ -272,7 +269,7 @@ class UserInterfaceTest {
                                                 ██╔══╝  ██╔══██╗██╔══██║██║   ██║██╔══╝
                                                 ██║     ██║  ██║██║  ██║╚██████╔╝███████╗
                                                 ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝
-                [0m[2E[2E[1;94mQuestion 2: Some other question that is probably very easy...[0m
+                [0m[2E[2E[5C[1;94mQuestion 2: Some other question that is probably very easy...[0m
                 [1E[5C[1;94mA: stupid answer one[0m
                 [5C[1;94;103mB: rather strange, but correct one[0m
                 [5C[1;94mC: most sensible, but wrong[0m
@@ -315,7 +312,7 @@ class UserInterfaceTest {
                                                 ██╔══╝  ██╔══██╗██╔══██║██║   ██║██╔══╝
                                                 ██║     ██║  ██║██║  ██║╚██████╔╝███████╗
                                                 ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝
-                [0m[2E[2E[1;94mQuestion 2: Some other question that is probably very easy...[0m
+                [0m[2E[2E[5C[1;94mQuestion 2: Some other question that is probably very easy...[0m
                 [1E[5C[1;94mA: stupid answer one[0m
                 [5C[1;94;103mB: rather strange, but correct one[0m
                 [5C[1;94;102mC: most sensible, but wrong[0m
@@ -338,7 +335,7 @@ class UserInterfaceTest {
                                                 ██╔══╝  ██╔══██╗██╔══██║██║   ██║██╔══╝
                                                 ██║     ██║  ██║██║  ██║╚██████╔╝███████╗
                                                 ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝
-                [0m[2E[2E[1;94mQuestion 2: Some other question that is probably very easy...[0m
+                [0m[2E[2E[5C[1;94mQuestion 2: Some other question that is probably very easy...[0m
                 [1E[5C[1;94mA: stupid answer one[0m
                 [5C[1;94;102mB: rather strange, but correct one[0m
                 [5C[1;94mC: most sensible, but wrong[0m

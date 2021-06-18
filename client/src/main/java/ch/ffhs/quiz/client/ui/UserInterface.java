@@ -10,9 +10,6 @@ import ch.ffhs.quiz.client.ui.components.text.StaticTextComponent;
 import ch.ffhs.quiz.messages.ScoreboardEntry;
 
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import static ch.ffhs.quiz.client.ui.AnsiBuilder.Color.*;
 
@@ -20,7 +17,8 @@ import static ch.ffhs.quiz.client.ui.AnsiBuilder.Color.*;
  * Class to create all the different user interface surfaces.
  */
 public class UserInterface {
-        private boolean proceed = true;
+
+    private boolean proceed = true;
     private Thread waitingThread;
 
     private final static int MAX_TEXT_LENGTH = 95;
@@ -147,31 +145,10 @@ public class UserInterface {
      * @param correctAnswer the correct answer
      */
     public void markCorrectAndChosenAnswer(final String question, List<String> answers, int chosenAnswer, int correctAnswer){
-        if(!List.of(0, 1, 2).contains(chosenAnswer)) throw new IllegalArgumentException("chosenAnswer must be 0, 1 or 2");
+        if(!List.of(-1, 0, 1, 2).contains(chosenAnswer)) throw new IllegalArgumentException("chosenAnswer must be 0, 1 or 2");
         if(!List.of(0, 1, 2).contains(correctAnswer)) throw new IllegalArgumentException("correctAnswer must be 0, 1 or 2");
 
         printQuestion(question, answers, chosenAnswer, correctAnswer);
-    }
-
-    /**
-     * Prints alerts at 30, 15, 10 and 5 seconds to inform the player about the running clock
-     */
-    public void alertTimeMinute(){
-        ScheduledExecutorService esSchedule = Executors.newSingleThreadScheduledExecutor();
-
-        esSchedule.schedule(() -> alertTime("30"), 30, TimeUnit.SECONDS);
-        esSchedule.schedule(() -> alertTime("15"), 45, TimeUnit.SECONDS);
-        esSchedule.schedule(() -> alertTime("10"), 50, TimeUnit.SECONDS);
-        esSchedule.schedule(() -> alertTime("5"), 55, TimeUnit.SECONDS);
-
-        esSchedule.shutdown();
-        try{
-            if(!esSchedule.awaitTermination(800, TimeUnit.MILLISECONDS)){
-                esSchedule.shutdownNow();
-            }
-        } catch(InterruptedException iEx){
-            esSchedule.shutdownNow();
-        }
     }
 
     /**
@@ -306,17 +283,6 @@ public class UserInterface {
         return !proceed;
     }
 
-    // print an alert to inform the player that only the specified amount of seconds
-    // remains
-    private void alertTime(final String secondsLeft){
-        AnsiTerminal.saveCursorPos();
-        AnsiTerminal.moveCursorDown(2);
-        new AnsiBuilder(DynamicTextComponent.TIME_ALERT.getComponent(secondsLeft))
-                .setFont(RED, true)
-                .print();
-        AnsiTerminal.restoreCursorPos();
-    }
-
     // clear the whole terminal
     private void emptyTerminal() {
         AnsiTerminal.clearTerminal();
@@ -360,6 +326,7 @@ public class UserInterface {
 
         // print the question 2 lines below the position of the title
         AnsiTerminal.moveCursorDown(2);
+        AnsiTerminal.moveCursorRight(5);
         new AnsiBuilder(UserInterfaceUtils.splitPhraseAtSpace(question, MAX_TEXT_LENGTH))
                 .setFont(BLUE, true)
                 .println();
