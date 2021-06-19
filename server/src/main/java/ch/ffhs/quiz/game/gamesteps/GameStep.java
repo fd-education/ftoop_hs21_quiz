@@ -21,7 +21,7 @@ public abstract class GameStep {
      */
     public GameStep(GameContext gameContext) {
         this.gameContext = gameContext;
-        this.logger = LoggerUtils.getLogger();
+        this.logger = LoggerUtils.getConsoleLogger();
     }
 
     /**
