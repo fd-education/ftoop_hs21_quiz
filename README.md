@@ -1,4 +1,9 @@
 # FTOOP Projekt "Quiz"
+## Setup
+For a proper user interface, use PowerShell to run the clients and run this command: 
+
+`Set-ItemProperty HKCU:\Console VirtualTerminalLevel -Type DWORD 1`
+
 ## Usage
 Compile the project: `mvn clean package`
 
