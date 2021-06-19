@@ -180,7 +180,7 @@ public class UserInterface {
             UserInterfaceUtils.printWithDefaultStyle(reason);
 
             while (!proceed) {
-                UserInterfaceUtils.printLetterByLetter(UserInterfaceUtils.createWithDefaultStyle(" . . ."), UserInterfaceUtils.Delay.SLOW);
+                UserInterfaceUtils.printLetterByLetter(UserInterfaceUtils.createWithDefaultStyle(" . . ."), UserInterfaceUtils.Delay.FAST);
                 AnsiTerminal.moveCursorLeft(6);
                 AnsiTerminal.clearRemainingOfLine();
             }
