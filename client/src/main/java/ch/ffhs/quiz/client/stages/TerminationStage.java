@@ -43,6 +43,7 @@ public class TerminationStage extends Stage {
     // Thank the player for his/ her participation
     @Override
     protected void createInitialUserInterface() {
+        logger.info("Said goodbye to the player.");
         ui.printEnd();
     }
 
@@ -56,8 +57,10 @@ public class TerminationStage extends Stage {
         try {
             client.closeConnection();
             serverConnection.close();
+
+            logger.info("All connections closed...\n\n");
         } catch(IOException ioEx){
-            logger.warning("IOException: Closing of connections failed. \n" + ioEx.getMessage());
+            logger.warning("IOException: Closing of connections failed. \n" + ioEx.getMessage() + "\n\n");
             ui.printErrorScreen();
             System.exit(-1);
         }

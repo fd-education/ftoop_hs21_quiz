@@ -74,6 +74,7 @@ public class GameStage extends Stage{
         ui.countdown();
         ui.printQuestion(question, answers);
         ui.askForAnswer();
+        logger.info("Print question and answers, ask for user to answer.");
     }
 
     // Await the users answer, clip the time, hand the answer on to the server
@@ -81,18 +82,23 @@ public class GameStage extends Stage{
     @Override
     protected void handleConversation() {
         try{
+
             LocalDateTime before = LocalDateTime.now(ZoneId.systemDefault());
+            logger.info("Awaiting user answer...");
             int chosenAnswer = inputHandler.awaitUserAnswer();
+
             LocalDateTime after = LocalDateTime.now(ZoneId.systemDefault());
             Duration answerTime = Duration.between(before, after);
 
+            logger.info("Answer received, highlighting: " + chosenAnswer);
             AnsiTerminal.clearTerminal();
             if(chosenAnswer != -1) ui.markChosenAnswer(question, answers, chosenAnswer);
             ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getComponent());
 
             serverConnection.send(new AnswerMessage(chosenAnswer, answerTime));
-
+            logger.info("Sent answer message. Waiting for feedback ... ");
             FeedbackMessage feedback = serverConnection.receive(FeedbackMessage.class);
+
             processFeedbackMessage(feedback, chosenAnswer);
         } catch(IOException ioEx){
             logger.warning("IOException: Receiving feedback from server failed. \n" + ioEx.getMessage());
@@ -105,8 +111,11 @@ public class GameStage extends Stage{
     @Override
     protected void terminateStage() {
         try{
+            logger.info("Waiting for round summary ... ");
             RoundSummaryMessage roundSummary = serverConnection.receive(RoundSummaryMessage.class);
             processRoundSummaryMessage(roundSummary);
+
+            logger.info("Waiting for next round to start/ game to end ...");
         } catch(IOException ioEx){
             logger.warning("IOException: Receiving round summary from server failed. \n" + ioEx.getMessage());
             ui.printErrorScreen();
@@ -126,6 +135,8 @@ public class GameStage extends Stage{
     private void processFeedbackMessage(final FeedbackMessage feedback, final int chosenAnswer){
         Objects.requireNonNull(feedback, "feedback must not be null");
 
+        logger.info("Feedback received. Now processing...");
+
         ui.proceed();
         ui.markCorrectAndChosenAnswer(question, answers, chosenAnswer, feedback.getCorrectAnswerNumber());
 
@@ -135,6 +146,7 @@ public class GameStage extends Stage{
             handleWinningInformation(feedback);
         }
 
+        logger.info("Gave feedback to the user.");
         ui.sleepSave(3000);
     }
 
@@ -156,6 +168,7 @@ public class GameStage extends Stage{
 
         AnsiTerminal.clearTerminal();
         ui.printScoreboard(roundSummary.getRankedPlayersList(), client.getPlayerName());
+        logger.info("Printed Scoreboard of round summary.");
 
         this.wasLastRound = roundSummary.isLastRound();
         ui.sleepSave(7500);
