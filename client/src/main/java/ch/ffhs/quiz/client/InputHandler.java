@@ -6,6 +6,7 @@ import ch.ffhs.quiz.client.ui.components.TimeAlertRunnable;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
@@ -95,7 +96,7 @@ public class InputHandler {
     // Get and return a user input.
     private String getInputLine(){
         try{
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
             return reader.readLine();
         } catch (IOException ex) {
             ex.printStackTrace();

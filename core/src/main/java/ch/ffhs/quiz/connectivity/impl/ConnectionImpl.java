@@ -5,6 +5,7 @@ import ch.ffhs.quiz.messages.Message;
 import ch.ffhs.quiz.messages.MessageUtils;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class ConnectionImpl implements Connection {
@@ -16,8 +17,8 @@ public class ConnectionImpl implements Connection {
         Objects.requireNonNull(outputStream);
         Objects.requireNonNull(inputStream);
 
-        PrintWriter writer = new PrintWriter(outputStream, true);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        PrintWriter writer = new PrintWriter(outputStream, true, StandardCharsets.UTF_8);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 
         this.writer = writer;
         this.reader = reader;
