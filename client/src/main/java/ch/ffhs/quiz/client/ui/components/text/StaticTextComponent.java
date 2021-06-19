@@ -5,6 +5,7 @@ import ch.ffhs.quiz.client.ui.components.interfaces.StaticUIComponent;
 /**
  * Enum containing all the required, static text blocks for the user interface.
  */
+@SuppressWarnings("SpellCheckingInspection")
 public enum StaticTextComponent implements StaticUIComponent {
     EXPLANATION("""
                  Ein ganz normales Quiz... wie schwer kann das schon sein.
@@ -23,7 +24,14 @@ public enum StaticTextComponent implements StaticUIComponent {
     ASK_FOR_ANSWER("     Tippe deine Antwort ein: "),
     PLAYER_WON("     Super! Du hast diese Runde gewonnen!"),
     NO_PLAYER_CORRECT("     Niemand wusste die richtige Antwort."),
-    THANKS("                           Danke für die Teilnahme an diesem Spiel ! ~N.S.F.");
+    THANKS("                           Danke für die Teilnahme an diesem Spiel ! ~N.S.F."),
+
+    ERROR("""
+                                                Ups! Etwas ist schief gelaufen :(
+                                                     Das Spiel wird beendet.
+                                      
+                                  Untersuche bitte das Log-File unter "temp/FacadeQuiz/<datum>.log
+            """);
 
     private final String component;
 
