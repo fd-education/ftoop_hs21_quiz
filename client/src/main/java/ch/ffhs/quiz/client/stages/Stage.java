@@ -5,6 +5,8 @@ import ch.ffhs.quiz.client.InputHandler;
 import ch.ffhs.quiz.client.ui.UserInterface;
 import ch.ffhs.quiz.connectivity.Connection;
 
+import java.util.logging.Logger;
+
 /**
  * Abstract class to unify the game processing stages.
  */
@@ -25,6 +27,10 @@ public abstract class Stage {
      * The user interface.
      */
     protected UserInterface ui;
+    /**
+     * The logger
+     */
+    protected Logger logger;
 
     /**
      * Phase for general logic that must be executed before the stage can be processed
