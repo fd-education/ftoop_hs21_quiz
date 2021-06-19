@@ -29,8 +29,6 @@ public class GameStage extends Stage{
     private List<String> answers;
     private boolean wasLastRound;
 
-    private static final String RUNTIME_EX = "This exception must not occur, because inputs get checked.";
-
     /**
      * Instantiates a new Game stage.
      *
@@ -52,16 +50,18 @@ public class GameStage extends Stage{
         try{
             logger = LoggerUtils.getUnnamedFileLogger();
         } catch(IOException ioException){
-            logger = LoggerUtils.getConsoleLogger();
-            throw new RuntimeException("Could not instantiate the file logger. Using console logger instead.");
+            throw new RuntimeException("Could not instantiate the file logger. " + ioException.getMessage());
         }
 
         try {
             QuestionMessage questionMessage = serverConnection.receive(QuestionMessage.class);
             question = questionMessage.getQuestion();
             answers = questionMessage.getAnswers();
+            logger.info("Received question and answers from server.");
         } catch(IOException ioEx){
-            throw new RuntimeException(RUNTIME_EX, ioEx);
+            logger.warning("IOException: Receiving questions and answers from server failed: " + ioEx.getMessage());
+            ui.printErrorScreen();
+            System.exit(-1);
         }
     }
 
@@ -95,8 +95,9 @@ public class GameStage extends Stage{
             FeedbackMessage feedback = serverConnection.receive(FeedbackMessage.class);
             processFeedbackMessage(feedback, chosenAnswer);
         } catch(IOException ioEx){
-            logger.warning("");
-            throw new RuntimeException(RUNTIME_EX, ioEx);
+            logger.warning("IOException: Receiving feedback from server failed. \n" + ioEx.getMessage());
+            ui.printErrorScreen();
+            System.exit(-1);
         }
     }
 
@@ -107,8 +108,9 @@ public class GameStage extends Stage{
             RoundSummaryMessage roundSummary = serverConnection.receive(RoundSummaryMessage.class);
             processRoundSummaryMessage(roundSummary);
         } catch(IOException ioEx){
-            ioEx.printStackTrace();
-            throw new RuntimeException(RUNTIME_EX, ioEx);
+            logger.warning("IOException: Receiving round summary from server failed. \n" + ioEx.getMessage());
+            ui.printErrorScreen();
+            System.exit(-1);
         }
     }
 

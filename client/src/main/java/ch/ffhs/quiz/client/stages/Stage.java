@@ -5,6 +5,7 @@ import ch.ffhs.quiz.client.InputHandler;
 import ch.ffhs.quiz.client.ui.UserInterface;
 import ch.ffhs.quiz.connectivity.Connection;
 
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 /**
@@ -56,9 +57,15 @@ public abstract class Stage {
      * Execute all the four phases of a stage in a predefined order
      */
     public final void process(){
-        setupStage();
-        createInitialUserInterface();
-        handleConversation();
-        terminateStage();
+        try {
+            setupStage();
+            createInitialUserInterface();
+            handleConversation();
+            terminateStage();
+        } catch(Exception ex){
+            logger.warning("Exception thrown during game process: " + ex.getMessage() + "\n" + Arrays.toString(ex.getStackTrace()));
+            ui.printErrorScreen();
+            System.exit(-1);
+        }
     }
 }

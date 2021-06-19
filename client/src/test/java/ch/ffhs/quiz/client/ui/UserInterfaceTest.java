@@ -477,8 +477,9 @@ class UserInterfaceTest {
                 [0m[4E[1;31m                                    Ups! Etwas ist schief gelaufen :(
                                                          Das Spiel wird beendet.
                                 
-                                      Untersuche bitte das Log-File unter "temp/FacadeQuiz/<datum>.log
-                [0m""";
+                                 Untersuche bitte das Log-File unter "C:Windows/temp/FacadeQuiz/<datum>.log
+                                              (Für Linux/ MAC: /var/tmp/FacadeQuiz/<datum>.log)
+                [0m[H[2J""";
 
         String terminalOutput = tapSystemOutNormalized(()->ui.printErrorScreen());
         assertEquals(EXPECTED, terminalOutput);

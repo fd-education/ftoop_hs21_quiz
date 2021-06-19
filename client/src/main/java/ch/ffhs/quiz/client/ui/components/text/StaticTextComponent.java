@@ -30,7 +30,8 @@ public enum StaticTextComponent implements StaticUIComponent {
                                                 Ups! Etwas ist schief gelaufen :(
                                                      Das Spiel wird beendet.
                                       
-                                  Untersuche bitte das Log-File unter "temp/FacadeQuiz/<datum>.log
+                             Untersuche bitte das Log-File unter "C:Windows/temp/FacadeQuiz/<datum>.log
+                                          (Für Linux/ MAC: /var/tmp/FacadeQuiz/<datum>.log)
             """);
 
     private final String component;
