@@ -47,7 +47,7 @@ public class LoggerUtils {
     public static Logger getUnnamedFileLogger() throws IOException{
         Class<?> callingClass = StackWalker.getInstance(RETAIN_CLASS_REFERENCE).getCallerClass();
         final Logger logger = Logger.getLogger(callingClass.getName());
-        return configureLogger(logger, "");
+        return configureFileLogger(logger, "");
     }
 
     /**
@@ -63,14 +63,14 @@ public class LoggerUtils {
         Class<?> callingClass = StackWalker.getInstance(RETAIN_CLASS_REFERENCE).getCallerClass();
         final Logger logger = Logger.getLogger(callingClass.getName());
 
-        return configureLogger(logger, fileName);
+        return configureFileLogger(logger, fileName);
     }
 
     /**
      * Get a logger that logs to a FacadeQuiz.log file in the system specific log directory
      * @return logger
      */
-    private static Logger configureLogger(Logger logger, String fileName) throws IOException{
+    private static Logger configureFileLogger(Logger logger, String fileName) throws IOException{
 
         logger.setUseParentHandlers(false);
 
