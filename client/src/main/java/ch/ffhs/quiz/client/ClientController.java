@@ -39,7 +39,8 @@ public class ClientController{
         try{
             controlGame(host, port);
         } catch(IOException ioEx){
-            System.err.printf("Game could not be started. Stopping... \n%s", ioEx.getMessage());
+            System.err.println("\nGame could not be started. Make sure the server is running...");
+            return;
         }
 
         Runtime.getRuntime().removeShutdownHook(shutdownHook);
