@@ -1,11 +1,13 @@
 package ch.ffhs.quiz.client.ui;
 
+import ch.ffhs.quiz.client.ui.components.interfaces.InterruptableUIComponent;
+
 import java.util.Objects;
 
 /**
  * Utility class for the user interface
  */
-public class UserInterfaceUtils {
+public class UserInterfaceUtils extends InterruptableUIComponent {
 
     private UserInterfaceUtils(){}
 
@@ -35,7 +37,8 @@ public class UserInterfaceUtils {
     }
 
     /**
-     * Print a provided text to the terminal letter by letter
+     * Print a provided text to the terminal letter by letter.
+     * Method stops if stopExecution is called!
      *
      * @param text  the text
      * @param delay the delay (FAST, SLOW)
@@ -51,6 +54,9 @@ public class UserInterfaceUtils {
             try {
                 System.out.print(letter);
                 Thread.sleep(delay.getDuration());
+
+                if(stop) return;
+
             } catch(InterruptedException iEx){
                 Thread.currentThread().interrupt();
             }
