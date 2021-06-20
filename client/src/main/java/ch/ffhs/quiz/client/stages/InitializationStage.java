@@ -66,6 +66,7 @@ public class InitializationStage extends Stage{
 
     }
 
+    // Wait for the server to signal that it's ready to process information
     private void waitUntilServerReady(){
         try {
             // wait for the servers response, along with a graphical output
@@ -80,6 +81,7 @@ public class InitializationStage extends Stage{
         }
     }
 
+    // Ask for the players name and the servers verification for it
     private String getAndVerifyUserName(){
         NameMessage nameMessage;
 

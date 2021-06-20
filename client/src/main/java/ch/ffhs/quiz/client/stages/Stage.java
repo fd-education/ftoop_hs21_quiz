@@ -34,6 +34,7 @@ public abstract class Stage {
      */
     protected static final Logger logger = LoggerUtils.getUnnamedFileLogger();
 
+
     /**
      * Phase for general logic that must be executed before the stage can be processed
      */
@@ -53,7 +54,6 @@ public abstract class Stage {
      * Phase for general logic that must be executed after the stage was processed
      */
     protected void terminateStage(){}
-
 
 
     /**

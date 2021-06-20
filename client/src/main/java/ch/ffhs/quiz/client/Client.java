@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Objects;
 
 /**
  * The Client Socket that is used to connect to the game server.
@@ -23,6 +24,10 @@ public class Client{
      * @throws IOException if an in-/output error occurs
      */
     public Client(final String host, final int port) throws IOException{
+        Objects.requireNonNull(host, "host must not be null");
+        if(host.isBlank()) throw new IllegalArgumentException("host must not be empty or consist of only whitespace");
+        if(port < 0) throw new IllegalArgumentException("port must be greater than zero");
+
 
         this.client = new Socket(host, port);
 
@@ -68,6 +73,9 @@ public class Client{
      * @param name the name
      */
     public void setPlayerName(final String name){
+        Objects.requireNonNull(name, "name must not be null");
+        if(name.isBlank()) throw new IllegalArgumentException("name must not be empty or consist of only whitespace");
+
         this.playerName = name;
     }
 

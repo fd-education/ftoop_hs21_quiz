@@ -74,25 +74,26 @@ public class GameStage extends Stage{
     // finally handle the servers feedback on the users answer
     @Override
     protected void handleConversation() {
+
+        LocalDateTime before = LocalDateTime.now(ZoneId.systemDefault());
+        logger.info("Awaiting user answer...");
+        int chosenAnswer = inputHandler.awaitUserAnswer();
+
+        LocalDateTime after = LocalDateTime.now(ZoneId.systemDefault());
+        Duration answerTime = Duration.between(before, after);
+
+        logger.info("Answer received, highlighting: " + chosenAnswer);
+        AnsiTerminal.clearTerminal();
+        if(chosenAnswer != -1) ui.markChosenAnswer(question, answers, chosenAnswer);
+        ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getComponent());
+
+        serverConnection.send(new AnswerMessage(chosenAnswer, answerTime));
+        logger.info("Sent answer message. Waiting for feedback ... ");
+
         try{
-
-            LocalDateTime before = LocalDateTime.now(ZoneId.systemDefault());
-            logger.info("Awaiting user answer...");
-            int chosenAnswer = inputHandler.awaitUserAnswer();
-
-            LocalDateTime after = LocalDateTime.now(ZoneId.systemDefault());
-            Duration answerTime = Duration.between(before, after);
-
-            logger.info("Answer received, highlighting: " + chosenAnswer);
-            AnsiTerminal.clearTerminal();
-            if(chosenAnswer != -1) ui.markChosenAnswer(question, answers, chosenAnswer);
-            ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getComponent());
-
-            serverConnection.send(new AnswerMessage(chosenAnswer, answerTime));
-            logger.info("Sent answer message. Waiting for feedback ... ");
             FeedbackMessage feedback = serverConnection.receive(FeedbackMessage.class);
-
             processFeedbackMessage(feedback, chosenAnswer);
+
         } catch(IOException ioEx){
             logger.warning("IOException: Receiving feedback from server failed. \n" + ioEx.getMessage());
             ui.printErrorScreen();
@@ -126,7 +127,6 @@ public class GameStage extends Stage{
     // Read all the information about the players and their result
     // on the previous question to adapt the user interface
     private void processFeedbackMessage(final FeedbackMessage feedback, final int chosenAnswer){
-        Objects.requireNonNull(feedback, "feedback must not be null");
 
         logger.info("Feedback received. Now processing...");
 
@@ -143,7 +143,9 @@ public class GameStage extends Stage{
         ui.sleepSave(3000);
     }
 
+    // Process information about winning players and print feedback
     private void handleWinningInformation(FeedbackMessage feedback){
+
         String winningPlayer = feedback.getWinningPlayer();
         if(feedback.wasCorrect() && feedback.wasFastest()){
             ui.printPlayerHasWon();
@@ -157,7 +159,6 @@ public class GameStage extends Stage{
     // Read all the information about the scores of the players to create and print
     // out a scoreboard
     private void processRoundSummaryMessage(final RoundSummaryMessage roundSummary){
-        Objects.requireNonNull(roundSummary, "roundSummary must not be null");
 
         AnsiTerminal.clearTerminal();
         ui.printScoreboard(roundSummary.getRankedPlayersList(), client.getPlayerName());

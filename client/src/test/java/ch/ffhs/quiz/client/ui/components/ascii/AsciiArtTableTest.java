@@ -1,6 +1,7 @@
 package ch.ffhs.quiz.client.ui.components.ascii;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.matchers.Null;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -91,7 +92,7 @@ class AsciiArtTableTest {
     void getCellBordersWithContent_INVALID_NAME(){
         String EXPECTED_NAME_MESSAGE = "name must not be empty or whitespace only";
 
-        assertThrows(EXPECTED_EXCEPTION, () -> AsciiArtTable.getCellBordersWithContent(1, -1, "", 1));
+        assertThrows(EXPECTED_EXCEPTION, () -> AsciiArtTable.getCellBordersWithContent(1, 1, "", 1));
 
         try{
             AsciiArtTable.getCellBordersWithContent(1, 1, "", 1);
@@ -99,12 +100,21 @@ class AsciiArtTableTest {
             assertEquals(EXPECTED_NAME_MESSAGE, iAEx.getMessage());
         }
 
-        assertThrows(EXPECTED_EXCEPTION, () -> AsciiArtTable.getCellBordersWithContent(1, -1, "   ", 1));
+        assertThrows(EXPECTED_EXCEPTION, () -> AsciiArtTable.getCellBordersWithContent(1, 1, "   ", 1));
 
         try{
             AsciiArtTable.getCellBordersWithContent(1, 1, "  ", 1);
         } catch(IllegalArgumentException iAEx){
             assertEquals(EXPECTED_NAME_MESSAGE, iAEx.getMessage());
+        }
+
+        String EXPECTED_NAMENULL_MESSAGE = "name must not be null";
+        assertThrows(NullPointerException.class, () -> AsciiArtTable.getCellBordersWithContent(1, -1, null, 1));
+
+        try{
+            AsciiArtTable.getCellBordersWithContent(1, 1, null, 1);
+        } catch(NullPointerException npe){
+            assertEquals(EXPECTED_NAMENULL_MESSAGE, npe.getMessage());
         }
     }
 
