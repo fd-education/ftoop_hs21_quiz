@@ -9,6 +9,8 @@ import ch.ffhs.quiz.connectivity.impl.ConnectionImpl;
 
 import java.io.IOException;
 
+import static java.lang.Integer.parseInt;
+
 /**
  * Class initializes all the required objects for the clientside to run.
  * Orchestrates the stages to run in the predefined order.
@@ -17,8 +19,20 @@ public class ClientController{
     private static final InputHandler inputHandler = new InputHandler();
 
     public static void main(String[] args) throws IOException{
+        String host = System.getProperty("host", "localhost");
+        int port = parseInt(System.getProperty("port", "3141"));
 
-        Client client = new Client("localhost", 3141);
+        if(host == null || host.isBlank()){
+            System.err.printf("Host %s not valid. Stopping...", host);
+            return;
+        }
+
+        if(port < 0 || port > 65535) {
+            System.err.printf("Port %d out of valid range. Stopping...", port);
+            return;
+        }
+
+        Client client = new Client(host, port);
         Connection connection = new ConnectionImpl(client.getOutputStream(), client.getInputStream());
         UserInterface ui = new UserInterface();
 
