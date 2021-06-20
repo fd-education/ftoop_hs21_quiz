@@ -61,7 +61,7 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>libs/</classpathPrefix>
                             <mainClass>
-                                ch.ffhs.quiz.game.Game
+                                ch.ffhs.quiz.game.QuestionGameServer
                             </mainClass>
                         </manifest>
                     </archive>

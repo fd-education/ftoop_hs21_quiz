@@ -2,18 +2,11 @@ package ch.ffhs.quiz.game;
 
 import ch.ffhs.quiz.game.gamesteps.GameStep;
 import ch.ffhs.quiz.game.gamesteps.GameStepsHolder;
-import ch.ffhs.quiz.game.gamesteps.impl.*;
 import ch.ffhs.quiz.game.player.Player;
-import ch.ffhs.quiz.game.player.PlayerFactory;
 import ch.ffhs.quiz.questions.Question;
-import ch.ffhs.quiz.questions.QuestionFactory;
-import ch.ffhs.quiz.server.Server;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-
-import static java.lang.Integer.parseInt;
 
 /**
  * The game class is used to define what steps are played in a game and to then actually play the game.
@@ -45,44 +38,6 @@ public class Game {
         return new GameBuilder();
     }
 
-    public static void main(String[] args) throws IOException {
-        if (args.length == 0) {
-            System.err.println("No filepath for the questions was specified. Stopping...");
-            return;
-        }
-        String questionCatalogFilename = args[0];
-
-        int playerCount = parseInt(System.getProperty("playerCount", "2"));
-        int questionCount = parseInt(System.getProperty("questionCount", "5"));
-        int port = parseInt(System.getProperty("port", "3141"));
-
-        Game game = Game.builder()
-                .withSetupSteps(
-                        NotifyGameStartsStep.class,
-                        ConfirmNamesStep.class
-                )
-                .withRoundSteps(
-                        SendQuestionStep.class,
-                        ReceiveResponsesStep.class,
-                        EvaluateResponsesStep.class,
-                        FeedbackStep.class,
-                        RoundSummaryStep.class
-                )
-                .withTeardownSteps(
-                        DisconnectPlayersStep.class
-                ).build();
-
-        List<Question> questions = QuestionFactory.questionBuilder(questionCatalogFilename);
-        if (questions.size() < questionCount) {
-            System.err.printf("%d questions wanted, but only %d found in %s. Stopping...", questionCount, questions.size(), questionCatalogFilename);
-            return;
-        }
-        questions = questions.subList(0, questionCount);
-
-        Server server = new Server(port);
-        List<Player> players = PlayerFactory.connectPlayers(server, playerCount);
-        game.play(players, questions);
-    }
 
     /**
      * Play the game with the given players and questions.<br>
