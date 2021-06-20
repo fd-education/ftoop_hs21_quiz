@@ -1,0 +1,19 @@
+# Frage 1
+Wie ist der Vorname von Einstein?
+A* Albert
+B Kurt
+C Henry
+
+# Frage 2
+Was ist die Wurzel von 4?
+A 3
+B* 2
+C 1
+
+# Frage 3
+Was ist die Hauptstadt der Schweiz?
+A Lausanne
+B Lausanne
+C* Lausanne
+
+
