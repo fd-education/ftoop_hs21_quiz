@@ -287,32 +287,6 @@ public class UserInterface {
     }
 
     /**
-     * Print an error screen.
-     */
-    public void printErrorScreen(){
-        // clear the terminal
-        emptyTerminal();
-
-        // print the top frame part
-        new AnsiBuilder(AsciiArtDecorations.TOP_LINE.getComponent()).setFont(RED, false).print();
-
-        // save the cursor position right below the top frame, move down by the specified
-        // screen height and print the bottom frame part
-        AnsiTerminal.saveCursorPos();
-        AnsiTerminal.moveCursorDown(FRAME_HEIGHT);
-        new AnsiBuilder(AsciiArtDecorations.BOTTOM_LINE.getComponent()).setFont(RED, false).print();
-
-        // restore the saved cursor position and move one line down from there
-        AnsiTerminal.restoreCursorPos();
-        AnsiTerminal.moveCursorDown(6);
-
-        new AnsiBuilder(AsciiArtTitles.ERROR.getComponent()).setFont(RED, false).print();
-        AnsiTerminal.moveCursorDown(PADDING_BORDER_TITLE + 2);
-
-        new AnsiBuilder(StaticTextComponent.ERROR.getComponent()).setFont(RED, false).print();
-    }
-
-    /**
      * Proceed user interface. Can be used to chain other methods.
      * Ends the waiting of the user interface.
      *
