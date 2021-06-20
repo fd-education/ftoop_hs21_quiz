@@ -4,6 +4,7 @@ import ch.ffhs.quiz.client.ui.components.Scoreboard;
 import ch.ffhs.quiz.client.ui.components.ascii.AsciiArtDecorations;
 import ch.ffhs.quiz.client.ui.components.ascii.AsciiArtNumbers;
 import ch.ffhs.quiz.client.ui.components.ascii.AsciiArtTitles;
+import ch.ffhs.quiz.client.ui.components.interfaces.InterruptableUIComponent;
 import ch.ffhs.quiz.client.ui.components.interfaces.StaticUIComponent;
 import ch.ffhs.quiz.client.ui.components.text.DynamicTextComponent;
 import ch.ffhs.quiz.client.ui.components.text.StaticTextComponent;
@@ -16,7 +17,7 @@ import static ch.ffhs.quiz.client.ui.AnsiBuilder.Color.*;
 /**
  * Class to create all the different user interface surfaces.
  */
-public class UserInterface {
+public class UserInterface extends InterruptableUIComponent {
 
     private boolean proceed = true;
     private Thread waitingThread;
@@ -93,6 +94,7 @@ public class UserInterface {
                 frameContent(null);
                 AnsiTerminal.moveCursorDown(9);
                 UserInterfaceUtils.printWithDefaultStyle(AsciiArtNumbers.getText(i));
+                if(stop) return;
                 Thread.sleep(1000);
             }
         } catch(InterruptedException ignored){}
@@ -180,6 +182,7 @@ public class UserInterface {
             UserInterfaceUtils.printWithDefaultStyle(reason);
 
             while (!proceed) {
+                if(stop) return;
                 UserInterfaceUtils.printLetterByLetter(UserInterfaceUtils.createWithDefaultStyle(" . . ."), UserInterfaceUtils.Delay.FAST);
                 AnsiTerminal.moveCursorLeft(6);
                 AnsiTerminal.clearRemainingOfLine();
@@ -301,6 +304,15 @@ public class UserInterface {
         }
 
         return this;
+    }
+
+    /**
+     * Stops all UserInterface activities.
+     * Also interrupts UserInterfaceUtils via abstract super class
+     * InterruptableUIComponent
+     */
+    public void stopExecution(){
+        super.stopExecution();
     }
 
     /**
