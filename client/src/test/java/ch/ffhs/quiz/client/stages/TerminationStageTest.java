@@ -6,6 +6,7 @@ import ch.ffhs.quiz.client.ui.UserInterface;
 import ch.ffhs.quiz.connectivity.Connection;
 import ch.ffhs.quiz.connectivity.impl.ConnectionImpl;
 
+import ch.ffhs.quiz.logger.LoggerUtils;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,6 +15,7 @@ import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 class TerminationStageTest {
@@ -45,8 +47,14 @@ class TerminationStageTest {
 
         terminateStageMockedArguments = new TerminationStage(mockClient, mockConnection, mockInputHandler, mockUi);
         mockTermStage = mock(TerminationStage.class);
+
+        LoggerUtils.setGlobalLogLevel(Level.OFF);
     }
 
+    @BeforeEach()
+    void resetMocks(){
+        reset(mockClient, mockConnection, mockInputHandler, mockUi, mockLogger, mockTermStage);
+    }
 
     @AfterAll
     static void teardown() throws IOException {

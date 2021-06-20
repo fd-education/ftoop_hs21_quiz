@@ -166,6 +166,4 @@ public class GameStage extends Stage{
         this.wasLastRound = roundSummary.isLastRound();
         ui.sleepSave(4000);
     }
-
-
 }
