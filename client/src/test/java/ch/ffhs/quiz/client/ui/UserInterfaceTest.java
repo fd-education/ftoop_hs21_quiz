@@ -89,8 +89,8 @@ class UserInterfaceTest {
     @Test
     void alertInvalidNameCharactersTest() throws Exception{
         String EXPECTED = """
-                [1E[1;91m    ___ kann nicht verarbeitet werden.\s
-                    Nur Zeichen von A-z, Zahlen und Bindestriche sind erlaubt.[0m[u[K""";
+                [1E[1;91m     ___ kann nicht verarbeitet werden.\s
+                     Nur Zeichen von A-z, Zahlen und Bindestriche sind erlaubt.[0m[u[K""";
 
         String output = tapSystemOutNormalized(()->ui.alertInvalidNameCharacters("___"));
         assertEquals(EXPECTED, output);

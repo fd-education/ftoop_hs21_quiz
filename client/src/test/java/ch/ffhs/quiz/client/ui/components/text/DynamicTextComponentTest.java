@@ -22,8 +22,8 @@ class DynamicTextComponentTest {
     @Test
     void getComponent_NAME_CHARS_INVALID() {
         String EXPECTED = """
-                \s   %*{ kann nicht verarbeitet werden.\s
-                    Nur Zeichen von A-z, Zahlen und Bindestriche sind erlaubt.""";
+                \s    %*{ kann nicht verarbeitet werden.\s
+                     Nur Zeichen von A-z, Zahlen und Bindestriche sind erlaubt.""";
         assertEquals(EXPECTED, DynamicTextComponent.NAME_CHARS_INVALID.getComponent("%*{"));
     }
 
