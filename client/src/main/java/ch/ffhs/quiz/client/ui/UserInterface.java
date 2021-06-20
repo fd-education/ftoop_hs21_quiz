@@ -4,6 +4,7 @@ import ch.ffhs.quiz.client.ui.components.Scoreboard;
 import ch.ffhs.quiz.client.ui.components.ascii.AsciiArtDecorations;
 import ch.ffhs.quiz.client.ui.components.ascii.AsciiArtNumbers;
 import ch.ffhs.quiz.client.ui.components.ascii.AsciiArtTitles;
+import ch.ffhs.quiz.client.ui.components.interfaces.DynamicUIComponent;
 import ch.ffhs.quiz.client.ui.components.interfaces.InterruptableUIComponent;
 import ch.ffhs.quiz.client.ui.components.interfaces.StaticUIComponent;
 import ch.ffhs.quiz.client.ui.components.text.DynamicTextComponent;
@@ -433,7 +434,7 @@ public class UserInterface extends InterruptableUIComponent {
     }
 
     // prints a red alert with the corresponding text to the terminal
-    private void alertInvalidInput(final DynamicTextComponent alert, final String input){
+    private void alertInvalidInput(final DynamicUIComponent alert, final String input){
         AnsiTerminal.moveCursorDown(1);
 
         new AnsiBuilder(alert.getComponent(input))
