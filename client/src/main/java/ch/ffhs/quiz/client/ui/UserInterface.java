@@ -50,15 +50,23 @@ public class UserInterface extends InterruptableUIComponent {
     }
 
     /**
-     * Print a red alert on the console, if the name input was invalid.
+     * Print a red alert on the console, if the name input was not long enough.
      *
      * @param name the name that is invalid
      */
     // no testing for param "name" as the method is supposed to return especially INVALID names to the user for correction
-    public void alertInvalidName(final String name){
-        alertInvalidInput(DynamicTextComponent.NAME_INVALID, name);
+    public void alertInvalidNameLength(final String name){
+        alertInvalidInput(DynamicTextComponent.NAME_LENGTH_INVALID, name);
     }
 
+
+    /**
+     * Print a red alert on the console, if the name input had unsupported characters.
+     * @param name the name that is invalid
+     */
+    public void alertInvalidNameCharacters(String name) {
+        alertInvalidInput(DynamicTextComponent.NAME_CHARS_INVALID, name);
+    }
 
     /**
      * Print a red alert on the console, if the name input is reserved (= used by another player).

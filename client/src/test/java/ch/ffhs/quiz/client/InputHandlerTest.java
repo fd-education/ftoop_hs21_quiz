@@ -8,37 +8,70 @@ import static com.github.stefanbirkner.systemlambda.SystemLambda.withTextFromSys
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class InputHandlerTest {
-     private static InputHandler inputHandler;
+    private static InputHandler inputHandler;
 
     @BeforeAll
-    static void setup(){
+    static void setup() {
         inputHandler = new InputHandler();
     }
 
     @Test
-    void validateNameTestNegative() throws Exception{
-        String EXPECTED_TEXT = "Your name must contain at least three characters.";
-        try {
-            // Input too short, NullPointerException ignored
-            String input1 = "ab";
-            withTextFromSystemIn(input1)
-                    .execute(() -> {
-                            String text = tapSystemOutNormalized(() -> inputHandler.getUserName());
-                            assertEquals(EXPECTED_TEXT, text);
+    void validateNameTest_negative_shortNamesNotAccepted() throws Exception {
+        String EXPECTED_TEXT = """
+                [1E[1;91m     ab kann nicht verarbeitet werden.\s
+                     Dein Name muss mindestens 3 Buchstaben enthalten.[0m[u[K""";
+        String input1 = "ab";
+        withTextFromSystemIn(input1)
+                .execute(() -> {
+                    String text = tapSystemOutNormalized(() -> {
+                        try {
+                            inputHandler.getUserName();
+                        } catch (NullPointerException nullPointerException) {
+                            assertEquals("read name must not be null", nullPointerException.getMessage());
+                        }
                     });
+                    System.out.println(text);
+                    assertEquals(EXPECTED_TEXT, text);
+                });
 
-            // No input, NullPointerException ignored
-            String input2 = "";
-            withTextFromSystemIn(input2)
-                    .execute(() -> {
-                        String text = tapSystemOutNormalized(() -> inputHandler.getUserName());
-                        assertEquals(EXPECTED_TEXT, text);
+        String EXPECTED_TEXT2 = """
+                [1E[1;91m      kann nicht verarbeitet werden.\s
+                     Dein Name muss mindestens 3 Buchstaben enthalten.[0m[u[K""";
+        String input2 = "";
+        withTextFromSystemIn(input2)
+                .execute(() -> {
+                    String text = tapSystemOutNormalized(() -> {
+                        try {
+                            inputHandler.getUserName();
+                        } catch (NullPointerException nullPointerException) {
+                            assertEquals("read name must not be null", nullPointerException.getMessage());
+                        }
                     });
-        } catch(NullPointerException ignored){}
+                    assertEquals(EXPECTED_TEXT2, text);
+                });
     }
 
     @Test
-    void validateNameTestPositive() throws Exception{
+    void validateNameTest_negative_unsupportedCharacters() throws Exception {
+        String EXPECTED_TEXT = """
+                [1E[1;91m    %�{ kann nicht verarbeitet werden.\s
+                    Nur Zeichen von A-z, Zahlen und Bindestriche sind erlaubt.[0m[u[K""";
+        String input1 = "%è{";
+        withTextFromSystemIn(input1)
+                .execute(() -> {
+                    String text = tapSystemOutNormalized(() -> {
+                        try {
+                            inputHandler.getUserName();
+                        } catch (NullPointerException nullPointerException) {
+                            assertEquals("read name must not be null", nullPointerException.getMessage());
+                        }
+                    });
+                    assertEquals(EXPECTED_TEXT, text);
+                });
+    }
+
+    @Test
+    void validateNameTestPositive() throws Exception {
         try {
             String input1 = "1-a";
             withTextFromSystemIn(input1)
@@ -46,11 +79,12 @@ public class InputHandlerTest {
                         String text = inputHandler.getUserName();
                         assertEquals(input1, text);
                     });
-        } catch(NullPointerException ignored){}
+        } catch (NullPointerException ignored) {
+        }
     }
 
     @Test
-    void validateAnswerTestPositive() throws Exception{
+    void validateAnswerTestPositive() throws Exception {
         String input1 = "A";
         int EXPECTED = 0;
         withTextFromSystemIn(input1)
@@ -61,7 +95,7 @@ public class InputHandlerTest {
     }
 
     @Test
-    void validateAnswerTestNegative() throws Exception{
+    void validateAnswerTestNegative() throws Exception {
         // invalid input to test behaviour on
         String input1 = "ab";
 

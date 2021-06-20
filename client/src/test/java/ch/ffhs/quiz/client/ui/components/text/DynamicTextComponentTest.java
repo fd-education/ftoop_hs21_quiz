@@ -14,9 +14,17 @@ class DynamicTextComponentTest {
     }
 
     @Test
-    void getComponent_NAME_INVALID() {
-        String EXPECTED = "     Me kann nicht verarbeitet werden. \n     Dein Name muss mehr als 3 Buchstaben enthalten.";
-        assertEquals(EXPECTED, DynamicTextComponent.NAME_INVALID.getComponent("Me"));
+    void getComponent_NAME_LENGTH_INVALID() {
+        String EXPECTED = "     Me kann nicht verarbeitet werden. \n     Dein Name muss mindestens 3 Buchstaben enthalten.";
+        assertEquals(EXPECTED, DynamicTextComponent.NAME_LENGTH_INVALID.getComponent("Me"));
+    }
+
+    @Test
+    void getComponent_NAME_CHARS_INVALID() {
+        String EXPECTED = """
+                \s   %*{ kann nicht verarbeitet werden.\s
+                    Nur Zeichen von A-z, Zahlen und Bindestriche sind erlaubt.""";
+        assertEquals(EXPECTED, DynamicTextComponent.NAME_CHARS_INVALID.getComponent("%*{"));
     }
 
     @Test

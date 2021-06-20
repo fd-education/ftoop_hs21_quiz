@@ -6,9 +6,9 @@ import ch.ffhs.quiz.client.ui.components.TimeAlertRunnable;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.*;
 
 /**
@@ -86,17 +86,27 @@ public class InputHandler {
     public String getUserName(){
         while(true){
             String name = getInputLine();
+            Objects.requireNonNull(name, "read name must not be null");
 
-            if(validateName(name))  return name;
-
-            ui.alertInvalidName(name);
+            if(!validateNameLength(name)) {
+                ui.alertInvalidNameLength(name);
+            } else if (!validateNameCharacters(name)) {
+                ui.alertInvalidNameCharacters(name);
+            }
+            else {
+                return name;
+            }
         }
+    }
+
+    private boolean validateNameCharacters(String name) {
+        return name.matches("[-A-z0-9]+");
     }
 
     // Get and return a user input.
     private String getInputLine(){
         try{
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             return reader.readLine();
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -118,7 +128,7 @@ public class InputHandler {
     }
 
     // Validate user's name (must be longer than 2 chars)
-    private boolean validateName(final String name){
+    private boolean validateNameLength(final String name){
         return !name.isBlank() && name.length() > 2;
     }
 
