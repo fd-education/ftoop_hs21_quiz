@@ -13,7 +13,7 @@ C 1
 # Frage 3
 Was ist die Hauptstadt der Schweiz?
 A Lausanne
-B Zürich
-C* Bern
+B Lausanne
+C* Lausanne
 
 
