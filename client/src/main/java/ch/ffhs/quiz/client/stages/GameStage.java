@@ -171,7 +171,7 @@ public class GameStage extends Stage{
         logger.info("Printed Scoreboard of round summary.");
 
         this.wasLastRound = roundSummary.isLastRound();
-        ui.sleepSave(7500);
+        ui.sleepSave(4000);
     }
 
 
