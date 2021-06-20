@@ -4,6 +4,7 @@ import ch.ffhs.quiz.client.Client;
 import ch.ffhs.quiz.client.InputHandler;
 import ch.ffhs.quiz.client.ui.UserInterface;
 import ch.ffhs.quiz.connectivity.Connection;
+import ch.ffhs.quiz.logger.LoggerUtils;
 
 import java.util.Arrays;
 import java.util.logging.Logger;
@@ -29,11 +30,6 @@ public abstract class Stage {
      */
     protected UserInterface ui;
     /**
-     * The logger
-     */
-    protected Logger logger;
-
-    /**
      * Phase for general logic that must be executed before the stage can be processed
      */
     protected abstract void setupStage();
@@ -53,10 +49,12 @@ public abstract class Stage {
      */
     protected abstract void terminateStage();
 
+    protected static final Logger logger = LoggerUtils.getUnnamedFileLogger();
+
     /**
      * Execute all the four phases of a stage in a predefined order
      */
-    public final void process(){
+    public final void process() {
         try {
             setupStage();
             createInitialUserInterface();

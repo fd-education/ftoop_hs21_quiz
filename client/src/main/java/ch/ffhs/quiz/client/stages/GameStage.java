@@ -6,7 +6,6 @@ import ch.ffhs.quiz.client.ui.AnsiTerminal;
 import ch.ffhs.quiz.client.ui.UserInterface;
 import ch.ffhs.quiz.client.ui.components.text.StaticTextComponent;
 import ch.ffhs.quiz.connectivity.Connection;
-import ch.ffhs.quiz.logger.LoggerUtils;
 import ch.ffhs.quiz.messages.AnswerMessage;
 import ch.ffhs.quiz.messages.FeedbackMessage;
 import ch.ffhs.quiz.messages.QuestionMessage;
@@ -47,12 +46,6 @@ public class GameStage extends Stage{
     // Receive the question and answers from the server, save them into variables for accessibility
     @Override
     protected void setupStage(){
-        try{
-            logger = LoggerUtils.getUnnamedFileLogger();
-        } catch(IOException ioException){
-            throw new RuntimeException("Could not instantiate the file logger. " + ioException.getMessage());
-        }
-
         try {
             QuestionMessage questionMessage = serverConnection.receive(QuestionMessage.class);
             question = questionMessage.getQuestion();

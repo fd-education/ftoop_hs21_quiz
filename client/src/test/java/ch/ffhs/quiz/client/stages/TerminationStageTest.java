@@ -5,14 +5,12 @@ import ch.ffhs.quiz.client.InputHandler;
 import ch.ffhs.quiz.client.ui.UserInterface;
 import ch.ffhs.quiz.connectivity.Connection;
 import ch.ffhs.quiz.connectivity.impl.ConnectionImpl;
-import ch.ffhs.quiz.logger.LoggerUtils;
 
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import static com.github.stefanbirkner.systemlambda.SystemLambda.*;
 import static org.mockito.Mockito.*;
-import org.mockito.MockedStatic;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -96,27 +94,6 @@ class TerminationStageTest {
             new TerminationStage(client, serverConnection, inputHandler, null);
         } catch(NullPointerException NPE){
             assertEquals("ui must not be null", NPE.getMessage());
-        }
-    }
-
-    @Test
-    void setupStageTest_positive(){
-        terminationStage.setupStage();
-
-        assertInstanceOf(Logger.class, terminationStage.logger);
-    }
-
-    @Test
-    void setupStageTest_negative(){
-        try(MockedStatic<LoggerUtils> mockLoggerUtils = mockStatic(LoggerUtils.class)){
-            mockLoggerUtils.when(LoggerUtils::getUnnamedFileLogger).thenThrow(IOException.class);
-            assertThrows(RuntimeException.class, () -> terminateStageMockedArguments.setupStage());
-
-            try{
-                terminateStageMockedArguments.setupStage();
-            }catch(RuntimeException rtEx){
-                assertEquals("Could not instantiate the file logger. null", rtEx.getMessage());
-            }
         }
     }
 

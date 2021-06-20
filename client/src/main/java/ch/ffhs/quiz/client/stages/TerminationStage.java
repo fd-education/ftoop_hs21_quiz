@@ -4,7 +4,6 @@ import ch.ffhs.quiz.client.Client;
 import ch.ffhs.quiz.client.InputHandler;
 import ch.ffhs.quiz.client.ui.UserInterface;
 import ch.ffhs.quiz.connectivity.Connection;
-import ch.ffhs.quiz.logger.LoggerUtils;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -14,7 +13,6 @@ import java.util.Objects;
  * after the real game has ended.
  */
 public class TerminationStage extends Stage {
-
     /**
      * Instantiates a new Termination stage.
      *
@@ -33,11 +31,6 @@ public class TerminationStage extends Stage {
     // Nothing to set up in the termination stage
     @Override
     protected void setupStage() {
-        try{
-            logger = LoggerUtils.getUnnamedFileLogger();
-        } catch(IOException ioException){
-            throw new RuntimeException("Could not instantiate the file logger. " + ioException.getMessage());
-        }
     }
 
     // Thank the player for his/ her participation

@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.logging.*;
 
 import static java.lang.StackWalker.Option.RETAIN_CLASS_REFERENCE;
@@ -42,9 +43,8 @@ public class LoggerUtils {
      * occurs !
      *
      * @return logger
-     * @throws IOException if a parent directory does not exist
      */
-    public static Logger getUnnamedFileLogger() throws IOException{
+    public static Logger getUnnamedFileLogger(){
         Class<?> callingClass = StackWalker.getInstance(RETAIN_CLASS_REFERENCE).getCallerClass();
         final Logger logger = Logger.getLogger(callingClass.getName());
         return configureFileLogger(logger, "");
@@ -57,9 +57,8 @@ public class LoggerUtils {
      *
      * @param fileName the desired file name
      * @return logger
-     * @throws IOException if a parent directory does not exist
      */
-    public static Logger getNamedFileLogger(String fileName) throws IOException{
+    public static Logger getNamedFileLogger(String fileName){
         Class<?> callingClass = StackWalker.getInstance(RETAIN_CLASS_REFERENCE).getCallerClass();
         final Logger logger = Logger.getLogger(callingClass.getName());
 
@@ -70,14 +69,19 @@ public class LoggerUtils {
      * Get a logger that logs to a FacadeQuiz.log file in the system specific log directory
      * @return logger
      */
-    private static Logger configureFileLogger(Logger logger, String fileName) throws IOException{
+    private static Logger configureFileLogger(Logger logger, String fileName){
 
         logger.setUseParentHandlers(false);
 
         String postfix = fileName.isBlank()? getDateString() : fileName;
 
         // Only add a handler when no handler is defined yet
-        if (logger.getHandlers().length == 0) {
+        for(Handler handler: logger.getHandlers()){
+            handler.close();
+            handler.flush();
+        }
+
+        try {
             String logLocation = getLogFileLocation(postfix).toString();
 
             if (logLocation.isBlank()) {
@@ -87,6 +91,8 @@ public class LoggerUtils {
                 fileHandler.setFormatter(new SimpleFormatter());
                 logger.addHandler(fileHandler);
             }
+        } catch(IOException ioException){
+            throw new RuntimeException("Could not create file logger. " + Arrays.toString(ioException.getStackTrace()));
         }
 
         return logger;

@@ -5,20 +5,17 @@ import ch.ffhs.quiz.client.InputHandler;
 import ch.ffhs.quiz.client.ui.UserInterface;
 import ch.ffhs.quiz.client.ui.components.text.StaticTextComponent;
 import ch.ffhs.quiz.connectivity.Connection;
-import ch.ffhs.quiz.logger.LoggerUtils;
 import ch.ffhs.quiz.messages.NameMessage;
 import ch.ffhs.quiz.messages.ReadyMessage;
 
 import java.io.IOException;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 /**
  * The InitializationStage handles all the steps that need to be done
  * before the game can start.
  */
 public class InitializationStage extends Stage{
-
 
     /**
      * Instantiates a new Initialization stage.
@@ -38,11 +35,6 @@ public class InitializationStage extends Stage{
     // There's nothing to set up in the initial phase
     @Override
     protected void setupStage(){
-        try{
-            logger = LoggerUtils.getUnnamedFileLogger();
-        } catch(IOException ioException){
-            throw new RuntimeException("Could not instantiate the file logger. " + ioException.getMessage());
-        }
     }
 
     // Create the Welcome screen along with an explanation of the quiz
