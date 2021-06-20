@@ -18,9 +18,11 @@ import static java.lang.Integer.parseInt;
  */
 public class ClientController{
     private static final InputHandler inputHandler = new InputHandler();
+    private static Thread shutdownHook;
 
+    private ClientController(){}
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args){
         String host = System.getProperty("host", "localhost");
         int port = parseInt(System.getProperty("port", "3141"));
 
@@ -34,30 +36,18 @@ public class ClientController{
             return;
         }
 
-        Client client = new Client(host, port);
-        Connection connection = new ConnectionImpl(client.getOutputStream(), client.getInputStream());
-        UserInterface ui = new UserInterface();
+        try{
+            controlGame(host, port);
+        } catch(IOException ioEx){
+            System.err.printf("Game could not be started. Stopping... \n%s", ioEx.getMessage());
+        }
 
-        addShutdownHook(client, connection, inputHandler, ui);
-
-        // First do all the things specified in the InitializationStage
-        new InitializationStage(client, connection, inputHandler, ui).process();
-
-        // Then loop through the GameStage until the last round went through
-        GameStage gStage;
-        do{
-            gStage = new GameStage(client, connection, inputHandler, ui);
-            gStage.process();
-        } while(!gStage.wasLastRound());
-
-        // Finally terminate the game from clientside
-        new TerminationStage(client, connection, inputHandler, ui).process();
+        Runtime.getRuntime().removeShutdownHook(shutdownHook);
     }
 
-    // adds a shutdown hook to catch system.exit() and ctrl+c in a clean fashion
-    private static void addShutdownHook(final Client client, final Connection connection, final InputHandler inputHandler, final UserInterface ui){
-        Runtime.getRuntime().addShutdownHook(new Thread(()-> {
-
+    // returns a shutdown hook to catch system.exit() and ctrl+c in a clean fashion
+    public static Thread createShutdownHook(final Client client, final Connection connection, final InputHandler inputHandler, final UserInterface ui){
+        return new Thread(() -> {
             // stop any currently running ui component (only the dynamic ones)
             ui.stopExecution();
 
@@ -71,6 +61,30 @@ public class ClientController{
             // clear the terminal and start the ordinary termination process
             AnsiTerminal.clearTerminal();
             new TerminationStage(client, connection, inputHandler, ui).process();
-        }));
+        });
+    }
+
+    private static void controlGame(String host, int port) throws IOException{
+
+        Client client = new Client(host, port);
+        Connection connection = new ConnectionImpl(client.getOutputStream(), client.getInputStream());
+        UserInterface ui = new UserInterface();
+
+        shutdownHook = createShutdownHook(client, connection, inputHandler, ui);
+
+        Runtime.getRuntime().addShutdownHook(shutdownHook);
+
+        // First do all the things specified in the InitializationStage
+        new InitializationStage(client, connection, inputHandler, ui).process();
+
+        // Then loop through the GameStage until the last round went through
+        GameStage gStage;
+        do{
+            gStage = new GameStage(client, connection, inputHandler, ui);
+            gStage.process();
+        } while(!gStage.wasLastRound());
+
+        // Finally terminate the game from clientside
+        new TerminationStage(client, connection, inputHandler, ui).process();
     }
 }
