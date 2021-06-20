@@ -4,10 +4,8 @@ import ch.ffhs.quiz.messages.ScoreboardEntry;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import org.mockito.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
 
 import static com.github.stefanbirkner.systemlambda.SystemLambda.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -78,12 +76,22 @@ class UserInterfaceTest {
     }
 
     @Test
-    void alertInvalidNameTest() throws Exception{
+    void alertInvalidNameLengthTest() throws Exception{
         String EXPECTED = """
-                [1E[1;91m     ___ kann nicht verarbeitet werden.\s
-                     Dein Name muss mehr als 3 Buchstaben enthalten.[0m[u[K""";
+                [1E[1;91m     aaa kann nicht verarbeitet werden.\s
+                     Dein Name muss mindestens 3 Buchstaben enthalten.[0m[u[K""";
 
-        String output = tapSystemOutNormalized(()->ui.alertInvalidName("___"));
+        String output = tapSystemOutNormalized(()->ui.alertInvalidNameLength("aaa"));
+        assertEquals(EXPECTED, output);
+    }
+
+    @Test
+    void alertInvalidNameCharactersTest() throws Exception{
+        String EXPECTED = """
+                [1E[1;91m    ___ kann nicht verarbeitet werden.\s
+                    Nur Zeichen von A-z, Zahlen und Bindestriche sind erlaubt.[0m[u[K""";
+
+        String output = tapSystemOutNormalized(()->ui.alertInvalidNameCharacters("___"));
         assertEquals(EXPECTED, output);
     }
 
