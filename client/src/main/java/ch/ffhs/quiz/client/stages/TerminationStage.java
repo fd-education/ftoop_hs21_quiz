@@ -43,8 +43,8 @@ public class TerminationStage extends Stage {
     // Thank the player for his/ her participation
     @Override
     protected void createInitialUserInterface() {
-        logger.info("Said goodbye to the player.");
         ui.printEnd();
+        logger.info("Said goodbye to the player.");
     }
 
     // No conversation in this stage
