@@ -46,6 +46,17 @@ For example, to play with 4 players, use:
 `java -jar -DplayerCount=4 server/target/server-1.0.jar fragenkataloge/fragenkatalog_2019.txt`
 
 Use playerCount to configure the amount of players, questionCount for the amount of questions and thus rounds and port to change the port the server uses. 
+
+## Configuration of the Client
+Per default, the client uses the following configuration:
+- Host "localhost"
+- Port 3141
+
+To configure these values for your needs, use the java -D commandline option.
+Use the following pattern:
+
+`java -jar -Dhost="<host>" -Dport=<port> client/target/client-1.0.jar`
+
 ## Maintainers
 Planned and written with <3 by
 

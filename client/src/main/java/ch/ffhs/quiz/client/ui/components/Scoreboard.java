@@ -35,6 +35,7 @@ public class Scoreboard {
      * @return the scoreboard string
      */
     public String getScoreboardForPlayer(final String name){
+        Objects.requireNonNull(name, "name must not be null");
         if(name.isBlank()) throw new IllegalArgumentException("name must contain letters and not only whitespace");
 
         //check if the passed name is a player at all
@@ -109,7 +110,6 @@ public class Scoreboard {
 
     // find the longest name in a list and return its length
     private int getMaxNameLength(final List<ScoreboardEntry> rankedPlayers){
-        Objects.requireNonNull(rankedPlayers, "rankedPlayers must not be null");
 
         int longest = 0;
 

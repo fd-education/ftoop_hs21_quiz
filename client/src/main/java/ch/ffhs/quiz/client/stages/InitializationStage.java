@@ -32,11 +32,6 @@ public class InitializationStage extends Stage{
         this.ui = Objects.requireNonNull(ui, "ui must not be null");
     }
 
-    // There's nothing to set up in the initial phase
-    @Override
-    protected void setupStage(){
-    }
-
     // Create the Welcome screen along with an explanation of the quiz
     @Override
     protected void createInitialUserInterface(){
@@ -48,8 +43,31 @@ public class InitializationStage extends Stage{
     // handle the verification of the name
     @Override
     protected void handleConversation() {
-        NameMessage nameMessage = null;
+        waitUntilServerReady();
 
+        // ask for the players name
+        ui.proceed().askForName();
+        logger.info("Asking user for name.");
+
+        String username = getAndVerifyUserName();
+
+        // tell the client socket its players name and welcome the player personally
+        client.setPlayerName(username);
+        ui.welcomePlayerPersonally(username);
+        logger.info(String.format("\"%s\" is confirmed. Welcoming player personally.", username));
+    }
+
+    // terminate the initialization stage by waiting for the game stage to start
+    @Override
+    protected void terminateStage(){
+        // put the ui in a waiting state until it gets revoked by the game stage
+        logger.info("Waiting for the game to start...");
+        ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getComponent());
+
+    }
+
+    // Wait for the server to signal that it's ready to process information
+    private void waitUntilServerReady(){
         try {
             // wait for the servers response, along with a graphical output
             logger.info("Waiting for server response to continue.");
@@ -58,13 +76,13 @@ public class InitializationStage extends Stage{
             }
         } catch(IOException ioEx) {
             logger.warning("IOException: Receiving ready message from server failed. \n" + ioEx.getMessage());
-            ui.printErrorScreen();
-            System.exit(-1);
+            printErrorAndQuit();
         }
+    }
 
-        // ask for the players name
-        ui.proceed().askForName();
-        logger.info("Asking user for name.");
+    // Ask for the players name and the servers verification for it
+    private String getAndVerifyUserName(){
+        NameMessage nameMessage;
 
         try{
             do{
@@ -80,27 +98,16 @@ public class InitializationStage extends Stage{
                     logger.info(String.format("\"%s\" is reserved. Retry ...", name));
                 }
 
-              // repeat if the name is already reserved for another player
+                // repeat if the name is already reserved for another player
             } while(!nameMessage.isConfirmed());
+
+            return nameMessage.getText();
 
         } catch(IOException ioEx){
             logger.warning("IOException: Receiving name confirmation failed. \n" + ioEx.getMessage());
-            ui.printErrorScreen();
-            System.exit(-1);
+            printErrorAndQuit();
         }
 
-        // tell the client socket its players name and welcome the player personally
-        client.setPlayerName(nameMessage.getText());
-        ui.welcomePlayerPersonally(nameMessage.getText());
-        logger.info(String.format("\"%s\" is confirmed. Welcoming player personally.", nameMessage.getText()));
-    }
-
-    // terminate the initialization stage by waiting for the game stage to start
-    @Override
-    protected void terminateStage(){
-        // put the ui in a waiting state until it gets revoked by the game stage
-        logger.info("Waiting for the game to start...");
-        ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getComponent());
-
+        return "";
     }
 }

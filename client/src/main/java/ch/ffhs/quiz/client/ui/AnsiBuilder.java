@@ -11,6 +11,7 @@ public class AnsiBuilder {
     private final String text;
 
     public AnsiBuilder(final String text) {
+        Objects.requireNonNull(text, "text must not be null");
         if(text.isBlank()) throw new IllegalArgumentException("text must contain letters and not be only whitespace");
         this.text = text;
     }

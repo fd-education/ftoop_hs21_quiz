@@ -54,8 +54,8 @@ public class InputHandlerTest {
     @Test
     void validateNameTest_negative_unsupportedCharacters() throws Exception {
         String EXPECTED_TEXT = """
-                [1E[1;91m    %�{ kann nicht verarbeitet werden.\s
-                    Nur Zeichen von A-z, Zahlen und Bindestriche sind erlaubt.[0m[u[K""";
+                [1E[1;91m     %�{ kann nicht verarbeitet werden.\s
+                     Nur Zeichen von A-z, Zahlen und Bindestriche sind erlaubt.[0m[u[K""";
         String input1 = "%è{";
         withTextFromSystemIn(input1)
                 .execute(() -> {

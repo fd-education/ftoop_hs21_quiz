@@ -22,8 +22,8 @@ class DynamicTextComponentTest {
     @Test
     void getComponent_NAME_CHARS_INVALID() {
         String EXPECTED = """
-                \s   %*{ kann nicht verarbeitet werden.\s
-                    Nur Zeichen von A-z, Zahlen und Bindestriche sind erlaubt.""";
+                \s    %*{ kann nicht verarbeitet werden.\s
+                     Nur Zeichen von A-z, Zahlen und Bindestriche sind erlaubt.""";
         assertEquals(EXPECTED, DynamicTextComponent.NAME_CHARS_INVALID.getComponent("%*{"));
     }
 
@@ -79,6 +79,18 @@ class DynamicTextComponentTest {
             DynamicTextComponent.ANSWER_INVALID.getComponent("  ");
         } catch(IllegalArgumentException iAEx){
             assertEquals(EXCEPTION_MESSAGE, iAEx.getMessage());
+        }
+    }
+
+    @Test
+    void getComponent_NULL_STRING() {
+        assertThrows(NullPointerException.class, () -> DynamicTextComponent.WRONG_ANSWER.getComponent(null));
+        String EXCEPTION_MESSAGE_NULL_STRING = "complement must not be null";
+
+        try{
+            DynamicTextComponent.ANSWER_INVALID.getComponent(null);
+        } catch(NullPointerException npe){
+            assertEquals(EXCEPTION_MESSAGE_NULL_STRING, npe.getMessage());
         }
     }
 }

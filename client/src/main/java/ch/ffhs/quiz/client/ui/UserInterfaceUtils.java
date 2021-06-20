@@ -1,11 +1,13 @@
 package ch.ffhs.quiz.client.ui;
 
+import ch.ffhs.quiz.client.ui.components.interfaces.InterruptableUIComponent;
+
 import java.util.Objects;
 
 /**
  * Utility class for the user interface
  */
-public class UserInterfaceUtils {
+public class UserInterfaceUtils extends InterruptableUIComponent {
 
     private UserInterfaceUtils(){}
 
@@ -15,6 +17,7 @@ public class UserInterfaceUtils {
      * @param text the text
      */
     public static void printWithDefaultStyle(final String text){
+        Objects.requireNonNull(text, "text must not be null");
         if(text.isBlank()) throw new IllegalArgumentException("text must not be empty or whitespace only");
 
         new AnsiBuilder(text).setFont(AnsiBuilder.Color.BLUE, false).print();
@@ -27,18 +30,21 @@ public class UserInterfaceUtils {
      * @return the styled string
      */
     public static String createWithDefaultStyle(final String text){
+        Objects.requireNonNull(text, "text must not be null");
         if(text.isBlank()) throw new IllegalArgumentException("text must not be empty or whitespace only");
 
         return new AnsiBuilder(text).setFont(AnsiBuilder.Color.BLUE, true).create();
     }
 
     /**
-     * Print a provided text to the terminal letter by letter
+     * Print a provided text to the terminal letter by letter.
+     * Method stops if stopExecution is called!
      *
      * @param text  the text
      * @param delay the delay (FAST, SLOW)
      */
     public static void printLetterByLetter(final String text, Delay delay){
+        Objects.requireNonNull(text, "text must not be null");
         if(text.isBlank()) throw new IllegalArgumentException("text must not be empty or whitespace only");
         Objects.requireNonNull(delay, "delay must not be null");
 
@@ -48,6 +54,9 @@ public class UserInterfaceUtils {
             try {
                 System.out.print(letter);
                 Thread.sleep(delay.getDuration());
+
+                if(stop) return;
+
             } catch(InterruptedException iEx){
                 Thread.currentThread().interrupt();
             }
@@ -63,6 +72,7 @@ public class UserInterfaceUtils {
      * @return the formatted string
      */
     public static String splitPhraseAtSpace(final String phrase, final int maxLineLength){
+        Objects.requireNonNull(phrase, "phrase must not be null");
         if(phrase.isBlank()) throw new IllegalArgumentException("phrase must not be empty or whitespace only");
         if(maxLineLength <= 0) throw new IllegalArgumentException("maxLineLength must be greater than zero");
 

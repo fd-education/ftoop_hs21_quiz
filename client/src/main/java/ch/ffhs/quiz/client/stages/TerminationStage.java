@@ -28,21 +28,12 @@ public class TerminationStage extends Stage {
         this.ui = Objects.requireNonNull(ui, "ui must not be null");
     }
 
-    // Nothing to set up in the termination stage
-    @Override
-    protected void setupStage() {
-    }
-
     // Thank the player for his/ her participation
     @Override
     protected void createInitialUserInterface() {
         ui.printEnd();
         logger.info("Said goodbye to the player.");
     }
-
-    // No conversation in this stage
-    @Override
-    protected void handleConversation() {}
 
     // Close the client socket as well as the connection to the server
     @Override
@@ -54,8 +45,7 @@ public class TerminationStage extends Stage {
             logger.info("All connections closed...\n\n");
         } catch(IOException ioEx){
             logger.warning("IOException: Closing of connections failed. \n" + ioEx.getMessage() + "\n\n");
-            ui.printErrorScreen();
-            System.exit(-1);
+            printErrorAndQuit();
         }
     }
 }

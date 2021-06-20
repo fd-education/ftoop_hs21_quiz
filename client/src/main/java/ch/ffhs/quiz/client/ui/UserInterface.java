@@ -4,19 +4,21 @@ import ch.ffhs.quiz.client.ui.components.Scoreboard;
 import ch.ffhs.quiz.client.ui.components.ascii.AsciiArtDecorations;
 import ch.ffhs.quiz.client.ui.components.ascii.AsciiArtNumbers;
 import ch.ffhs.quiz.client.ui.components.ascii.AsciiArtTitles;
+import ch.ffhs.quiz.client.ui.components.interfaces.InterruptableUIComponent;
 import ch.ffhs.quiz.client.ui.components.interfaces.StaticUIComponent;
 import ch.ffhs.quiz.client.ui.components.text.DynamicTextComponent;
 import ch.ffhs.quiz.client.ui.components.text.StaticTextComponent;
 import ch.ffhs.quiz.messages.ScoreboardEntry;
 
 import java.util.List;
+import java.util.Objects;
 
 import static ch.ffhs.quiz.client.ui.AnsiBuilder.Color.*;
 
 /**
  * Class to create all the different user interface surfaces.
  */
-public class UserInterface {
+public class UserInterface extends InterruptableUIComponent {
 
     private boolean proceed = true;
     private Thread waitingThread;
@@ -72,6 +74,7 @@ public class UserInterface {
      * @param name the name that is reserved
      */
     public void alertNameReserved(final String name){
+        Objects.requireNonNull(name, "name must not be null");
         if(name.isBlank()) throw new IllegalArgumentException("name must not be empty or consist of only whitespace");
 
         alertInvalidInput(DynamicTextComponent.NAME_RESERVED, name);
@@ -83,6 +86,7 @@ public class UserInterface {
      * @param name the players name
      */
     public void welcomePlayerPersonally(String name){
+        Objects.requireNonNull(name, "name must not be null");
         if(name.isBlank()) throw new IllegalArgumentException("name must not be empty or consist of only whitespace");
 
         AnsiTerminal.positionCursor(22, 0);
@@ -101,6 +105,7 @@ public class UserInterface {
                 frameContent(null);
                 AnsiTerminal.moveCursorDown(9);
                 UserInterfaceUtils.printWithDefaultStyle(AsciiArtNumbers.getText(i));
+                if(stop) return;
                 Thread.sleep(1000);
             }
         } catch(InterruptedException ignored){}
@@ -113,6 +118,10 @@ public class UserInterface {
      * @param answers  the answers List
      */
     public void printQuestion(final String question, final List<String> answers){
+        Objects.requireNonNull(question, "question must not be null");
+        Objects.requireNonNull(answers, "answers must not be null");
+        if(question.isBlank()) throw new IllegalArgumentException("question must not be empty or consist of only whitespace");
+
         printQuestion(question, answers, -1, -1);
     }
 
@@ -128,6 +137,7 @@ public class UserInterface {
      *
      * @param answer the answer that was invalid
      */
+    // no validity check here, as the method is supposed to print invalid answers
     public void alertInvalidAnswer(final String answer){
         alertInvalidInput(DynamicTextComponent.ANSWER_INVALID, answer);
     }
@@ -140,6 +150,9 @@ public class UserInterface {
      * @param chosenAnswer the chosen answer
      */
     public void markChosenAnswer(final String question, List<String> answers, int chosenAnswer){
+        Objects.requireNonNull(question, "question must not be null");
+        Objects.requireNonNull(answers, "answers must not be null");
+        if(question.isBlank()) throw new IllegalArgumentException("question must not be empty or consist of only whitespace");
         if(!List.of(0, 1, 2).contains(chosenAnswer)) throw new IllegalArgumentException("chosenAnswer must be 0, 1 or 2");
 
         printQuestion(question, answers, chosenAnswer, -1);
@@ -153,6 +166,9 @@ public class UserInterface {
      * @param correctAnswer the correct answer
      */
     public void markCorrectAndChosenAnswer(final String question, List<String> answers, int chosenAnswer, int correctAnswer){
+        Objects.requireNonNull(question, "question must not be null");
+        Objects.requireNonNull(answers, "answers must not be null");
+        if(question.isBlank()) throw new IllegalArgumentException("question must not be empty or consist of only whitespace");
         if(!List.of(-1, 0, 1, 2).contains(chosenAnswer)) throw new IllegalArgumentException("chosenAnswer must be 0, 1 or 2");
         if(!List.of(0, 1, 2).contains(correctAnswer)) throw new IllegalArgumentException("correctAnswer must be 0, 1 or 2");
 
@@ -165,6 +181,7 @@ public class UserInterface {
      * @param millis the milliseconds to wait for
      */
     public void sleepSave(final int millis){
+        if(millis<0) throw new IllegalArgumentException("millis must be greater than zero");
         try{
             Thread.sleep(millis);
         } catch(InterruptedException ignored){}
@@ -179,6 +196,9 @@ public class UserInterface {
      * @param reason the reason that will be used for the graphical output
      */
     public void waiting(String reason){
+        Objects.requireNonNull(reason, "reason must not be null");
+        if(reason.isBlank()) throw new IllegalArgumentException("reason must not be empty or consist of only whitespace");
+
         if(waitingThread != null && waitingThread.isAlive()) return;
         if(proceed) proceed = false;
 
@@ -191,10 +211,12 @@ public class UserInterface {
                 UserInterfaceUtils.printLetterByLetter(UserInterfaceUtils.createWithDefaultStyle(" . . ."), UserInterfaceUtils.Delay.FAST);
                 AnsiTerminal.moveCursorLeft(6);
                 AnsiTerminal.clearRemainingOfLine();
+                if(stop) break;
             }
 
             AnsiTerminal.clearLine();
             AnsiTerminal.restoreCursorPos();
+            Thread.currentThread().interrupt();
         });
 
         waitingThread.start();
@@ -214,6 +236,9 @@ public class UserInterface {
      * @param winningPlayer the winning player
      */
     public void printPlayerOnlyWasCorrect(final String winningPlayer){
+        Objects.requireNonNull(winningPlayer, "winningPlayer must not be null");
+        if(winningPlayer.isBlank()) throw new IllegalArgumentException("winningPlayer must not be empty or consist of only whitespace");
+
         AnsiTerminal.moveCursorDown(2);
         new AnsiBuilder(DynamicTextComponent.CORRECT_ANSWER_TOO_SLOW.getComponent(winningPlayer)).setFont(YELLOW, false).print();
     }
@@ -224,6 +249,9 @@ public class UserInterface {
      * @param winningPlayer the winning player
      */
     public void printPlayerWasWrong(final String winningPlayer){
+        Objects.requireNonNull(winningPlayer, "winningPlayer must not be null");
+        if(winningPlayer.isBlank()) throw new IllegalArgumentException("winningPlayer must not be empty or consist of only whitespace");
+
         AnsiTerminal.moveCursorDown(2);
         new AnsiBuilder(DynamicTextComponent.WRONG_ANSWER.getComponent(winningPlayer)).setFont(RED, false).print();
     }
@@ -243,6 +271,10 @@ public class UserInterface {
      * @param name              the name of the player whose scoreboard to print
      */
     public void printScoreboard(List<ScoreboardEntry> scoreboardEntries, String name){
+        Objects.requireNonNull(name, "name must not be null");
+        Objects.requireNonNull(scoreboardEntries, "scoreboardEntries must not be null");
+        if(name.isBlank()) throw new IllegalArgumentException("name must not be empty or consist of only whitespace");
+
         frameContent(AsciiArtTitles.SCORE);
 
         AnsiTerminal.moveCursorDown(1);
@@ -309,6 +341,15 @@ public class UserInterface {
         }
 
         return this;
+    }
+
+    /**
+     * Stops all UserInterface activities.
+     * Also interrupts UserInterfaceUtils via abstract super class
+     * InterruptableUIComponent
+     */
+    public void stopExecution(){
+        super.stopExecution();
     }
 
     /**

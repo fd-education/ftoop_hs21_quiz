@@ -116,7 +116,6 @@ public class InputHandler {
 
     // Map an entered letter to the corresponding index
     private int mapStringAnswerToInteger(final String answer){
-        if(answer.isBlank()) throw new IllegalArgumentException("answer must contain a letter");
 
         return switch (answer.toUpperCase()) {
             case "A" -> 0;

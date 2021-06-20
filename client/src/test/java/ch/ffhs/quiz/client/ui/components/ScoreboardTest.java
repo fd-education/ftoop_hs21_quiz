@@ -134,6 +134,19 @@ class ScoreboardTest {
     }
 
     @Test
+    void getScoreboardForPlayer_NAME_NULL() {
+        String EXCEPTION_MESSAGE_NULL = "name must not be null";
+
+        assertThrows(NullPointerException.class, () -> scoreboardLong.getScoreboardForPlayer(null));
+
+        try{
+            scoreboardLong.getScoreboardForPlayer(null);
+        } catch(NullPointerException iAEx){
+            assertEquals(EXCEPTION_MESSAGE_NULL, iAEx.getMessage());
+        }
+    }
+
+    @Test
     void getScoreboardForPlayer_PLAYER_NOTPARTICIPANT() {
         String EXCEPTION_MESSAGE = "Player100 does not seem to be a player in this game";
 
