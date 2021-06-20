@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * Helper class that generates players.
  */
 public class PlayerFactory {
-    private static final Logger logger = LoggerUtils.getLogger();
+    private static final Logger logger = LoggerUtils.getConsoleLogger();
 
     // To prevent an instantiation of this helper class
     private PlayerFactory() {}

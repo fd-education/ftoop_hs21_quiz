@@ -6,6 +6,7 @@ import ch.ffhs.quiz.client.ui.AnsiTerminal;
 import ch.ffhs.quiz.client.ui.UserInterface;
 import ch.ffhs.quiz.client.ui.components.text.StaticTextComponent;
 import ch.ffhs.quiz.connectivity.Connection;
+import ch.ffhs.quiz.logger.LoggerUtils;
 import ch.ffhs.quiz.messages.AnswerMessage;
 import ch.ffhs.quiz.messages.FeedbackMessage;
 import ch.ffhs.quiz.messages.QuestionMessage;
@@ -28,8 +29,6 @@ public class GameStage extends Stage{
     private List<String> answers;
     private boolean wasLastRound;
 
-    private static final String RUNTIME_EX = "This exception must not occur, because inputs get checked.";
-
     /**
      * Instantiates a new Game stage.
      *
@@ -48,12 +47,21 @@ public class GameStage extends Stage{
     // Receive the question and answers from the server, save them into variables for accessibility
     @Override
     protected void setupStage(){
+        try{
+            logger = LoggerUtils.getUnnamedFileLogger();
+        } catch(IOException ioException){
+            throw new RuntimeException("Could not instantiate the file logger. " + ioException.getMessage());
+        }
+
         try {
             QuestionMessage questionMessage = serverConnection.receive(QuestionMessage.class);
             question = questionMessage.getQuestion();
             answers = questionMessage.getAnswers();
+            logger.info("Received question and answers from server.");
         } catch(IOException ioEx){
-            throw new RuntimeException(RUNTIME_EX, ioEx);
+            logger.warning("IOException: Receiving questions and answers from server failed: " + ioEx.getMessage());
+            ui.printErrorScreen();
+            System.exit(-1);
         }
     }
 
@@ -66,6 +74,7 @@ public class GameStage extends Stage{
         ui.countdown();
         ui.printQuestion(question, answers);
         ui.askForAnswer();
+        logger.info("Print question and answers, ask for user to answer.");
     }
 
     // Await the users answer, clip the time, hand the answer on to the server
@@ -73,23 +82,28 @@ public class GameStage extends Stage{
     @Override
     protected void handleConversation() {
         try{
+
             LocalDateTime before = LocalDateTime.now(ZoneId.systemDefault());
+            logger.info("Awaiting user answer...");
             int chosenAnswer = inputHandler.awaitUserAnswer();
+
             LocalDateTime after = LocalDateTime.now(ZoneId.systemDefault());
             Duration answerTime = Duration.between(before, after);
 
-            if(chosenAnswer != -1){
-                AnsiTerminal.clearTerminal();
-                ui.markChosenAnswer(question, answers, chosenAnswer);
-                ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getComponent());
-            }
+            logger.info("Answer received, highlighting: " + chosenAnswer);
+            AnsiTerminal.clearTerminal();
+            if(chosenAnswer != -1) ui.markChosenAnswer(question, answers, chosenAnswer);
+            ui.waiting(StaticTextComponent.WAITING_FOR_PLAYERS.getComponent());
 
             serverConnection.send(new AnswerMessage(chosenAnswer, answerTime));
-
+            logger.info("Sent answer message. Waiting for feedback ... ");
             FeedbackMessage feedback = serverConnection.receive(FeedbackMessage.class);
+
             processFeedbackMessage(feedback, chosenAnswer);
         } catch(IOException ioEx){
-            throw new RuntimeException(RUNTIME_EX, ioEx);
+            logger.warning("IOException: Receiving feedback from server failed. \n" + ioEx.getMessage());
+            ui.printErrorScreen();
+            System.exit(-1);
         }
     }
 
@@ -97,11 +111,15 @@ public class GameStage extends Stage{
     @Override
     protected void terminateStage() {
         try{
+            logger.info("Waiting for round summary ... ");
             RoundSummaryMessage roundSummary = serverConnection.receive(RoundSummaryMessage.class);
             processRoundSummaryMessage(roundSummary);
+
+            logger.info("Waiting for next round to start/ game to end ...");
         } catch(IOException ioEx){
-            ioEx.printStackTrace();
-            throw new RuntimeException(RUNTIME_EX, ioEx);
+            logger.warning("IOException: Receiving round summary from server failed. \n" + ioEx.getMessage());
+            ui.printErrorScreen();
+            System.exit(-1);
         }
     }
 
@@ -117,6 +135,8 @@ public class GameStage extends Stage{
     private void processFeedbackMessage(final FeedbackMessage feedback, final int chosenAnswer){
         Objects.requireNonNull(feedback, "feedback must not be null");
 
+        logger.info("Feedback received. Now processing...");
+
         ui.proceed();
         ui.markCorrectAndChosenAnswer(question, answers, chosenAnswer, feedback.getCorrectAnswerNumber());
 
@@ -126,6 +146,7 @@ public class GameStage extends Stage{
             handleWinningInformation(feedback);
         }
 
+        logger.info("Gave feedback to the user.");
         ui.sleepSave(3000);
     }
 
@@ -147,6 +168,7 @@ public class GameStage extends Stage{
 
         AnsiTerminal.clearTerminal();
         ui.printScoreboard(roundSummary.getRankedPlayersList(), client.getPlayerName());
+        logger.info("Printed Scoreboard of round summary.");
 
         this.wasLastRound = roundSummary.isLastRound();
         ui.sleepSave(7500);

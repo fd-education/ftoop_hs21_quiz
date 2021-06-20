@@ -4,6 +4,7 @@ import ch.ffhs.quiz.client.Client;
 import ch.ffhs.quiz.client.InputHandler;
 import ch.ffhs.quiz.client.ui.UserInterface;
 import ch.ffhs.quiz.connectivity.Connection;
+import ch.ffhs.quiz.logger.LoggerUtils;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -31,12 +32,19 @@ public class TerminationStage extends Stage {
 
     // Nothing to set up in the termination stage
     @Override
-    protected void setupStage() {}
+    protected void setupStage() {
+        try{
+            logger = LoggerUtils.getUnnamedFileLogger();
+        } catch(IOException ioException){
+            throw new RuntimeException("Could not instantiate the file logger. " + ioException.getMessage());
+        }
+    }
 
     // Thank the player for his/ her participation
     @Override
     protected void createInitialUserInterface() {
         ui.printEnd();
+        logger.info("Said goodbye to the player.");
     }
 
     // No conversation in this stage
@@ -49,9 +57,12 @@ public class TerminationStage extends Stage {
         try {
             client.closeConnection();
             serverConnection.close();
+
+            logger.info("All connections closed...\n\n");
         } catch(IOException ioEx){
-            // TODO: handle differently
-            throw new RuntimeException("May not be thrown.");
+            logger.warning("IOException: Closing of connections failed. \n" + ioEx.getMessage() + "\n\n");
+            ui.printErrorScreen();
+            System.exit(-1);
         }
     }
 }

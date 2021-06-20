@@ -3,7 +3,7 @@ package ch.ffhs.quiz.client.ui.components.ascii;
 import ch.ffhs.quiz.client.ui.components.interfaces.StaticUIComponent;
 
 /**
- * Enum for Ascii Art titles for different UI stages
+ * Enum for Ascii Art titles for different UI screens
  */
 public enum AsciiArtTitles implements StaticUIComponent {
     /**
@@ -49,6 +49,17 @@ public enum AsciiArtTitles implements StaticUIComponent {
                                                ██╔══╝  ██║╚██╗██║██║  ██║██╔══╝
                                                ███████╗██║ ╚████║██████╔╝███████╗
                                                ╚══════╝╚═╝  ╚═══╝╚═════╝ ╚══════╝
+            """),
+    /**
+     * ERROR title
+     */
+    ERROR("""
+                                            ███████╗██████╗ ██████╗  ██████╗ ██████╗
+                                            ██╔════╝██╔══██╗██╔══██╗██╔═══██╗██╔══██╗
+                                            █████╗  ██████╔╝██████╔╝██║   ██║██████╔╝
+                                            ██╔══╝  ██╔══██╗██╔══██╗██║   ██║██╔══██╗
+                                            ███████╗██║  ██║██║  ██║╚██████╔╝██║  ██║
+                                            ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝
             """);
 
     private final String ascii;
