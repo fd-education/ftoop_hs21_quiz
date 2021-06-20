@@ -1,5 +1,6 @@
 package ch.ffhs.quiz.client;
 
+import ch.ffhs.quiz.client.ui.InputHandler;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
