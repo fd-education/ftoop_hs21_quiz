@@ -11,5 +11,5 @@ public interface DynamicUIComponent {
      * @param complement the String to complement the desired output
      * @return a complemented String text component
      */
-    String getComponent(final String complement);
+     String getComponent(final String complement);
 }

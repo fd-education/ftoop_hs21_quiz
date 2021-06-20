@@ -15,6 +15,6 @@ public class NotifyGameStartsStep extends GameStep {
 
     @Override
     protected void handlePlayer(Player player) {
-        player.send(new ReadyMessage());
+        player.send(new ReadyMessage(true));
     }
 }

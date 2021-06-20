@@ -12,8 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static com.github.stefanbirkner.systemlambda.SystemLambda.restoreSystemProperties;
 import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemErr;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
 @Timeout(1)

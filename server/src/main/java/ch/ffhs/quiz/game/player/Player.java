@@ -81,7 +81,7 @@ public class Player {
      * @throws IOException if an I/O Error occurs
      */
     public void disconnect() throws IOException {
-        connection.close();
+        if(!connection.isClosed()) connection.close();
     }
 
     /**

@@ -29,7 +29,8 @@ class InitializationStageTest {
     static Logger mockLogger;
 
 
-    static InitializationStage initializationStage, mockinitializationStage, initializationStageMockedArguments;
+    static InitializationStage mockinitializationStage;
+    static InitializationStage initializationStageMockedArguments;
 
     @BeforeAll
     static void setup() throws Exception{
@@ -39,8 +40,6 @@ class InitializationStageTest {
         serverConnection = new ConnectionImpl(client.getOutputStream(), client.getInputStream());
         inputHandler = new InputHandler();
         ui = new UserInterface();
-
-        initializationStage = new InitializationStage(client, serverConnection, inputHandler, ui);
 
         mockClient = mock(Client.class);
         mockConnection = mock(ConnectionImpl.class);

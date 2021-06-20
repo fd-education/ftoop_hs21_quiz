@@ -4,7 +4,6 @@ import ch.ffhs.quiz.client.Client;
 import ch.ffhs.quiz.client.InputHandler;
 import ch.ffhs.quiz.client.ui.AnsiTerminal;
 import ch.ffhs.quiz.client.ui.UserInterface;
-import ch.ffhs.quiz.client.ui.UserInterfaceUtils;
 import ch.ffhs.quiz.client.ui.components.text.StaticTextComponent;
 import ch.ffhs.quiz.connectivity.Connection;
 import ch.ffhs.quiz.messages.AnswerMessage;

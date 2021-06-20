@@ -34,7 +34,7 @@ Example files with questions are provided in the fragenkataloge directory, but c
 - One answer is exactly one line, where the letter of the question (A, B or C) is at the start of the line and separated from the actual answer with a whitespace.
 - The letter (A, B or C) of exactly one answer is followed by an asterisk (*). This marks the correct answer.
 
-## Configuration
+## Configuration of the server
 Per default, the server uses the following configuration:
 - 2 players
 - 5 questions
@@ -47,7 +47,7 @@ For example, to play with 4 players, use:
 
 Use playerCount to configure the amount of players, questionCount for the amount of questions and thus rounds and port to change the port the server uses. 
 
-## Configuration of the Client
+## Configuration of the client
 Per default, the client uses the following configuration:
 - Host "localhost"
 - Port 3141

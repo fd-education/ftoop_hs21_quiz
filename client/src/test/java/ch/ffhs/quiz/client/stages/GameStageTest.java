@@ -20,8 +20,6 @@ import java.util.logging.Logger;
 
 import static com.github.stefanbirkner.systemlambda.SystemLambda.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.*;
 
 class GameStageTest {
@@ -34,7 +32,8 @@ class GameStageTest {
     static Logger mockLogger;
 
 
-    static GameStage gameStage, gameStageMockedArguments, mockGameStage;
+    static GameStage gameStageMockedArguments;
+    static GameStage mockGameStage;
 
     @BeforeAll
     static void setup() throws Exception{
@@ -44,9 +43,6 @@ class GameStageTest {
         serverConnection = new ConnectionImpl(client.getOutputStream(), client.getInputStream());
         inputHandler = new InputHandler();
         ui = new UserInterface();
-
-        gameStage = new GameStage(client, serverConnection, inputHandler, ui);
-
 
         mockClient = mock(Client.class);
         mockConnection = mock(ConnectionImpl.class);
