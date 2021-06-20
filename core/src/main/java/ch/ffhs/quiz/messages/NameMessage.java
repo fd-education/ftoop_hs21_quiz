@@ -25,6 +25,8 @@ public class NameMessage extends Message {
      *
      * @return true if the name is confirmed to be unique, false otherwise.
      */
+    // warning suppressed because confirmed describes functionality
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isConfirmed() {
         return confirmed;
     }
