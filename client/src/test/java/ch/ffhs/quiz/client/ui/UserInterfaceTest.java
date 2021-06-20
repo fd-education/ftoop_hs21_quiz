@@ -81,7 +81,7 @@ class UserInterfaceTest {
     void alertInvalidNameTest() throws Exception{
         String EXPECTED = """
                 [1E[1;91m     ___ kann nicht verarbeitet werden.\s
-                     Dein Name muss mehr als 3 Buchstaben enthalten.[0m[u[3D[K[1C""";
+                     Dein Name muss mehr als 3 Buchstaben enthalten.[0m[u[K""";
 
         String output = tapSystemOutNormalized(()->ui.alertInvalidName("___"));
         assertEquals(EXPECTED, output);
@@ -99,7 +99,7 @@ class UserInterfaceTest {
     @Test
     void alertNameReservedTest() throws Exception {
         String EXPECTED = """
-                [1E[1;91m     Player1 ist bereits vergeben.[0m[u[7D[K[1C""";
+                [1E[1;91m     Player1 ist bereits vergeben.[0m[u[K""";
 
         String output = tapSystemOutNormalized(()->ui.alertNameReserved("Player1"));
         assertEquals(EXPECTED, output);
@@ -250,7 +250,7 @@ class UserInterfaceTest {
     void alertInvalidAnswerTest() throws Exception {
         String EXPECTED = """
                 [1E[1;91m     x kann keine Antwort sein.\s
-                     Deine Antwort muss A, B oder C lauten.[0m[u[1D[K[1C""";
+                     Deine Antwort muss A, B oder C lauten.[0m[u[K""";
 
         String terminalOutput = tapSystemOutNormalized(()->ui.alertInvalidAnswer("x"));
         assertEquals(EXPECTED, terminalOutput);

@@ -69,7 +69,7 @@ public class InputHandlerTest {
         String input2 = "A";
         String EXPECTED = """
                 [1E[1;91m     ab kann keine Antwort sein.\s
-                     Deine Antwort muss A, B oder C lauten.[0m[u[2D[K[1C""";
+                     Deine Antwort muss A, B oder C lauten.[0m[u[K""";
 
         withTextFromSystemIn(input1, input2)
                 .execute(() -> {
