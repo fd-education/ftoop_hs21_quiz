@@ -32,11 +32,6 @@ public class InitializationStage extends Stage{
         this.ui = Objects.requireNonNull(ui, "ui must not be null");
     }
 
-    // There's nothing to set up in the initial phase
-    @Override
-    protected void setupStage(){
-    }
-
     // Create the Welcome screen along with an explanation of the quiz
     @Override
     protected void createInitialUserInterface(){
