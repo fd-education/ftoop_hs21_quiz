@@ -15,8 +15,6 @@ public class ReadyMessage extends Message{
      *
      * @return true
      */
-
-    @SuppressWarnings("SameReturnValue")
     public boolean isReady(){
         return ready;
     }

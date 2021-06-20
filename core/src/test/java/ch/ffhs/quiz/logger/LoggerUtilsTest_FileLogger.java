@@ -1,6 +1,5 @@
 package ch.ffhs.quiz.logger;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +17,7 @@ class LoggerUtilsTest_FileLogger {
     static Path testLogFile;
 
     @BeforeEach
-    void setup() throws IOException {
+    void setup() {
         LoggerUtils.setGlobalLogLevel(Level.ALL);
         namedFileLogger = LoggerUtils.getNamedFileLogger("Test");
     }
