@@ -1,7 +1,7 @@
 package ch.ffhs.quiz;
 
 import ch.ffhs.quiz.client.Client;
-import ch.ffhs.quiz.client.ui.InputHandler;
+import ch.ffhs.quiz.client.InputHandler;
 import ch.ffhs.quiz.client.stages.GameStage;
 import ch.ffhs.quiz.client.stages.InitializationStage;
 import ch.ffhs.quiz.client.stages.TerminationStage;

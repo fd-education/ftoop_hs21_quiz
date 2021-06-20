@@ -4,7 +4,6 @@ import ch.ffhs.quiz.client.stages.GameStage;
 import ch.ffhs.quiz.client.stages.InitializationStage;
 import ch.ffhs.quiz.client.stages.TerminationStage;
 import ch.ffhs.quiz.client.ui.AnsiTerminal;
-import ch.ffhs.quiz.client.ui.InputHandler;
 import ch.ffhs.quiz.client.ui.UserInterface;
 import ch.ffhs.quiz.connectivity.Connection;
 import ch.ffhs.quiz.connectivity.impl.ConnectionImpl;

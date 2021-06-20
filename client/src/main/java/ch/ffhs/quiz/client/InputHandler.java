@@ -1,4 +1,4 @@
-package ch.ffhs.quiz.client.ui;
+package ch.ffhs.quiz.client;
 
 import ch.ffhs.quiz.client.ui.UserInterface;
 import ch.ffhs.quiz.client.ui.components.TimeAlertRunnable;
