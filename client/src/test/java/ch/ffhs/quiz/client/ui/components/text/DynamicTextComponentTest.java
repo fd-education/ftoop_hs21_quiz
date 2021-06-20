@@ -73,4 +73,16 @@ class DynamicTextComponentTest {
             assertEquals(EXCEPTION_MESSAGE, iAEx.getMessage());
         }
     }
+
+    @Test
+    void getComponent_NULL_STRING() {
+        assertThrows(NullPointerException.class, () -> DynamicTextComponent.WRONG_ANSWER.getComponent(null));
+        String EXCEPTION_MESSAGE_NULL_STRING = "complement must not be null";
+
+        try{
+            DynamicTextComponent.ANSWER_INVALID.getComponent(null);
+        } catch(NullPointerException npe){
+            assertEquals(EXCEPTION_MESSAGE_NULL_STRING, npe.getMessage());
+        }
+    }
 }

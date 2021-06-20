@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import org.mockito.*;
+
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
@@ -107,21 +109,29 @@ class UserInterfaceTest {
 
     @Test
     void alertNameReserved_Negative_Name() {
-        String EXPECTED = "name must not be empty or consist of only whitespace";
+        String EXPECTED_EMPTY = "name must not be empty or consist of only whitespace";
+        String EXPECTED_NULL = "name must not be null";
 
         assertThrows(IllegalArgumentException.class, () -> ui.alertNameReserved("  "));
         assertThrows(IllegalArgumentException.class, () -> ui.alertNameReserved(""));
+        assertThrows(NullPointerException.class, () -> ui.alertNameReserved(null));
 
         try{
             ui.alertNameReserved("  ");
         }catch(IllegalArgumentException iAEx){
-            assertEquals(EXPECTED, iAEx.getMessage());
+            assertEquals(EXPECTED_EMPTY, iAEx.getMessage());
         }
 
         try{
             ui.alertNameReserved("");
         }catch(IllegalArgumentException iAEx){
-            assertEquals(EXPECTED, iAEx.getMessage());
+            assertEquals(EXPECTED_EMPTY, iAEx.getMessage());
+        }
+
+        try{
+            ui.alertNameReserved(null);
+        }catch(NullPointerException npe){
+            assertEquals(EXPECTED_NULL, npe.getMessage());
         }
     }
 
@@ -136,21 +146,29 @@ class UserInterfaceTest {
 
     @Test
     void welcomePlayerPersonallyTest_Negative_Name(){
-        String EXPECTED = "name must not be empty or consist of only whitespace";
+        String EXPECTED_EMPTY = "name must not be empty or consist of only whitespace";
+        String EXPECTED_NULL = "name must not be null";
 
         assertThrows(IllegalArgumentException.class, () -> ui.welcomePlayerPersonally("  "));
         assertThrows(IllegalArgumentException.class, () -> ui.welcomePlayerPersonally(""));
+        assertThrows(NullPointerException.class, () -> ui.alertNameReserved(null));
 
         try{
             ui.welcomePlayerPersonally("  ");
         }catch(IllegalArgumentException iAEx){
-            assertEquals(EXPECTED, iAEx.getMessage());
+            assertEquals(EXPECTED_EMPTY, iAEx.getMessage());
         }
 
         try{
             ui.welcomePlayerPersonally("");
         }catch(IllegalArgumentException iAEx){
-            assertEquals(EXPECTED, iAEx.getMessage());
+            assertEquals(EXPECTED_EMPTY, iAEx.getMessage());
+        }
+
+        try{
+            ui.welcomePlayerPersonally(null);
+        }catch(NullPointerException npe){
+            assertEquals(EXPECTED_NULL, npe.getMessage());
         }
     }
 
@@ -247,6 +265,42 @@ class UserInterfaceTest {
     }
 
     @Test
+    void printQuestion_QUESTION_NULL(){
+        String EXPECTED_MESSAGE = "question must not be null";
+        assertThrows(NullPointerException.class, () -> ui.printQuestion(null, answers));
+
+        try{
+            ui.printQuestion(null, answers);
+        }catch(NullPointerException npe){
+            assertEquals(EXPECTED_MESSAGE, npe.getMessage());
+        }
+    }
+
+    @Test
+    void printQuestion_QUESTION_EMPTY(){
+        String EXPECTED_MESSAGE = "question must not be empty or consist of only whitespace";
+        assertThrows(IllegalArgumentException.class, () -> ui.printQuestion(" ", answers));
+
+        try{
+            ui.printQuestion(" ", answers);
+        }catch(IllegalArgumentException npe){
+            assertEquals(EXPECTED_MESSAGE, npe.getMessage());
+        }
+    }
+
+    @Test
+    void printQuestion_ANSWERS_NULL(){
+        String EXPECTED_MESSAGE = "answers must not be null";
+        assertThrows(NullPointerException.class, () -> ui.printQuestion(question, null));
+
+        try{
+            ui.printQuestion(question, null);
+        }catch(NullPointerException npe){
+            assertEquals(EXPECTED_MESSAGE, npe.getMessage());
+        }
+    }
+
+    @Test
     void alertInvalidAnswerTest() throws Exception {
         String EXPECTED = """
                 [1E[1;91m     x kann keine Antwort sein.\s
@@ -277,6 +331,42 @@ class UserInterfaceTest {
 
         String terminalOutput = tapSystemOutNormalized(()->ui.markChosenAnswer(question, answers, 1));
         assertEquals(EXPECTED, terminalOutput);
+    }
+
+    @Test
+    void markChosenAnswerTest_NEGATIVE_QUESTION_NULL(){
+        String EXPECTED_MESSAGE = "question must not be null";
+        assertThrows(NullPointerException.class, () -> ui.markChosenAnswer(null, answers, 1));
+
+        try{
+            ui.markChosenAnswer(null, answers, 1);
+        }catch(NullPointerException npe){
+            assertEquals(EXPECTED_MESSAGE, npe.getMessage());
+        }
+    }
+
+    @Test
+    void markChosenAnswerTest_NEGATIVE_QUESTION_EMPTY(){
+        String EXPECTED_MESSAGE = "question must not be empty or consist of only whitespace";
+        assertThrows(IllegalArgumentException.class, () -> ui.markChosenAnswer(" ", answers, 1));
+
+        try{
+            ui.markChosenAnswer(" ", answers, 1);
+        }catch(IllegalArgumentException npe){
+            assertEquals(EXPECTED_MESSAGE, npe.getMessage());
+        }
+    }
+
+    @Test
+    void markChosenAnswerTest_NEGATIVE_ANSWERS_NULL(){
+        String EXPECTED_MESSAGE = "answers must not be null";
+        assertThrows(NullPointerException.class, () -> ui.markChosenAnswer(question, null, 1));
+
+        try{
+            ui.markChosenAnswer(question, null, 1);
+        }catch(NullPointerException npe){
+            assertEquals(EXPECTED_MESSAGE, npe.getMessage());
+        }
     }
 
     @Test
@@ -346,6 +436,42 @@ class UserInterfaceTest {
     }
 
     @Test
+    void markCorrectAndChosenAnswerTest_NEGATIVE_QUESTION_NULL(){
+        String EXPECTED_MESSAGE = "question must not be null";
+        assertThrows(NullPointerException.class, () -> ui.markCorrectAndChosenAnswer(null, answers, 1, 2));
+
+        try{
+            ui.markCorrectAndChosenAnswer(null, answers, 1,2);
+        }catch(NullPointerException npe){
+            assertEquals(EXPECTED_MESSAGE, npe.getMessage());
+        }
+    }
+
+    @Test
+    void markCorrectAndChosenAnswerTest_NEGATIVE_QUESTION_EMPTY(){
+        String EXPECTED_MESSAGE = "question must not be empty or consist of only whitespace";
+        assertThrows(IllegalArgumentException.class, () -> ui.markCorrectAndChosenAnswer(" ", answers, 1,2));
+
+        try{
+            ui.markCorrectAndChosenAnswer(" ", answers, 1,2);
+        }catch(IllegalArgumentException npe){
+            assertEquals(EXPECTED_MESSAGE, npe.getMessage());
+        }
+    }
+
+    @Test
+    void markCorrectAndChosenAnswerTest_NEGATIVE_ANSWERS_NULL(){
+        String EXPECTED_MESSAGE = "answers must not be null";
+        assertThrows(NullPointerException.class, () -> ui.markCorrectAndChosenAnswer(question, null, 1,2));
+
+        try{
+            ui.markCorrectAndChosenAnswer(question, null, 1,2);
+        }catch(NullPointerException npe){
+            assertEquals(EXPECTED_MESSAGE, npe.getMessage());
+        }
+    }
+
+    @Test
     void markCorrectAndChosenAnswerTest_Negative_ChosenAnswer(){
         String EXPECTED = "correctAnswer must be 0, 1 or 2";
 
@@ -375,7 +501,7 @@ class UserInterfaceTest {
     }
 
     @Test
-    void printPlayerHasWon() throws Exception {
+    void printPlayerHasWonTest() throws Exception {
         String EXPECTED = """
                 [2E[1;92m     Super! Du hast diese Runde gewonnen![0m""";
 
@@ -393,12 +519,60 @@ class UserInterfaceTest {
     }
 
     @Test
+    void printPlayerOnlyWasCorrectTest_NEGATIVE_PLAYERNULL(){
+        assertThrows(NullPointerException.class, () -> ui.printPlayerOnlyWasCorrect(null));
+        String EXPECTED_MESSAGE = "winningPlayer must not be null";
+
+        try{
+            ui.printPlayerOnlyWasCorrect(null);
+        } catch(NullPointerException npe){
+            assertEquals(EXPECTED_MESSAGE, npe.getMessage());
+        }
+    }
+
+    @Test
+    void printPlayerOnlyWasCorrectTest_NEGATIVE_PLAYEREMPTY(){
+        assertThrows(IllegalArgumentException.class, () -> ui.printPlayerOnlyWasCorrect(" "));
+        String EXPECTED_MESSAGE = "winningPlayer must not be empty or consist of only whitespace";
+
+        try{
+            ui.printPlayerOnlyWasCorrect(" ");
+        } catch(IllegalArgumentException iAEx){
+            assertEquals(EXPECTED_MESSAGE, iAEx.getMessage());
+        }
+    }
+
+    @Test
     void printPlayerWasWrongTest() throws Exception {
         String EXPECTED = """
                 [2E[1;31m     Deine Antwort war falsch. Player1 hat gewonnen.[0m""";
 
         String terminalOutput = tapSystemOutNormalized(()->ui.printPlayerWasWrong("Player1"));
         assertEquals(EXPECTED, terminalOutput);
+    }
+
+    @Test
+    void printPlayerWasWrongTest_NEGATIVE_PLAYERNULL(){
+        assertThrows(NullPointerException.class, () -> ui.printPlayerWasWrong(null));
+        String EXPECTED_MESSAGE = "winningPlayer must not be null";
+
+        try{
+            ui.printPlayerWasWrong(null);
+        } catch(NullPointerException npe){
+            assertEquals(EXPECTED_MESSAGE, npe.getMessage());
+        }
+    }
+
+    @Test
+    void printPlayerWasWrongTest_NEGATIVE_PLAYEREMPTY(){
+        assertThrows(IllegalArgumentException.class, () -> ui.printPlayerWasWrong(" "));
+        String EXPECTED_MESSAGE = "winningPlayer must not be empty or consist of only whitespace";
+
+        try{
+            ui.printPlayerWasWrong(" ");
+        } catch(IllegalArgumentException iAEx){
+            assertEquals(EXPECTED_MESSAGE, iAEx.getMessage());
+        }
     }
 
     @Test
@@ -443,6 +617,42 @@ class UserInterfaceTest {
     }
 
     @Test
+    void printScoreboardTest_NEGATIVE_NAMENULL(){
+        assertThrows(NullPointerException.class, () -> ui.printScoreboard(scoresLong, null));
+        String EXPECTED_MESSAGE = "name must not be null";
+
+        try{
+            ui.printScoreboard(scoresLong, null);
+        } catch(NullPointerException npe){
+            assertEquals(EXPECTED_MESSAGE, npe.getMessage());
+        }
+    }
+
+    @Test
+    void printScoreboardTest_NEGATIVE_SCOREBOARDENTRIESNULL(){
+        assertThrows(NullPointerException.class, () -> ui.printScoreboard(null, "Player"));
+        String EXPECTED_MESSAGE = "scoreboardEntries must not be null";
+
+        try{
+            ui.printScoreboard(null, "Player");
+        } catch(NullPointerException npe){
+            assertEquals(EXPECTED_MESSAGE, npe.getMessage());
+        }
+    }
+
+    @Test
+    void printScoreboardTest_NEGATIVE_NAMEEMPTY(){
+        assertThrows(IllegalArgumentException.class, () -> ui.printScoreboard(scoresLong, " "));
+        String EXPECTED_MESSAGE = "name must not be empty or consist of only whitespace";
+
+        try{
+            ui.printScoreboard(scoresLong, " ");
+        } catch(IllegalArgumentException iAEx){
+            assertEquals(EXPECTED_MESSAGE, iAEx.getMessage());
+        }
+    }
+
+    @Test
     void printEndTest() throws Exception {
         String EXPECTED = """
                 [H[2J[1;34m╔═══════════════════════════════════════════════════════════════════════════════════════════════════════╗
@@ -483,6 +693,42 @@ class UserInterfaceTest {
 
         String terminalOutput = tapSystemOutNormalized(()->ui.printErrorScreen());
         assertEquals(EXPECTED, terminalOutput);
+    }
+
+    @Test
+    void waitingTest_REASON_NULL(){
+        assertThrows(NullPointerException.class, () -> ui.waiting(null));
+        String EXPECTED_MESSAGE = "reason must not be null";
+
+        try{
+            ui.waiting(null);
+        } catch(NullPointerException npe){
+            assertEquals(EXPECTED_MESSAGE, npe.getMessage());
+        }
+    }
+
+    @Test
+    void waitingTest_REASON_EMPTY(){
+        assertThrows(IllegalArgumentException.class, () -> ui.waiting(" "));
+        String EXPECTED_MESSAGE = "reason must not be empty or consist of only whitespace";
+
+        try{
+            ui.waiting(" ");
+        } catch(IllegalArgumentException iAEx){
+            assertEquals(EXPECTED_MESSAGE, iAEx.getMessage());
+        }
+    }
+
+    @Test
+    void sleepSaveTest_NEGATIVE_MILLIS(){
+        assertThrows(IllegalArgumentException.class, () -> ui.sleepSave(-1));
+        String EXPECTED_MESSAGE = "millis must be greater than zero";
+
+        try{
+            ui.sleepSave(-1);
+        } catch(IllegalArgumentException iAEx){
+            assertEquals(EXPECTED_MESSAGE, iAEx.getMessage());
+        }
     }
 
     @Test

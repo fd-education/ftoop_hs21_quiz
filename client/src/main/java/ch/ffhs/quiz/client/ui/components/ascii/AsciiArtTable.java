@@ -3,6 +3,7 @@ package ch.ffhs.quiz.client.ui.components.ascii;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Utility class to provide methods to create a table.
@@ -42,6 +43,7 @@ public class AsciiArtTable {
      * @return the string containing the table element
      */
     public static String getCellBordersWithContent(final int length, final int rank, final String name, final int score){
+        Objects.requireNonNull(name, "name must not be null");
         checkParams(new HashMap<>(Map.of("length", length, "rank", rank, "name", name, "score", score)));
 
         String cellTemplate = "     ║ %s║%s║ %s ║\n";

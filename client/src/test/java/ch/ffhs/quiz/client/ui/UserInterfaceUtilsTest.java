@@ -18,7 +18,19 @@ class UserInterfaceUtilsTest {
     }
 
     @Test
-    void printWithDefaultStyleTest_Negative(){
+    void printWithDefaultStyleTest_Negative_TextNull(){
+        String EXPECTED = "text must not be null";
+        assertThrows(NullPointerException.class, () -> printWithDefaultStyle(null));
+
+        try{
+            printWithDefaultStyle(null);
+        } catch(NullPointerException npe){
+            assertEquals(EXPECTED, npe.getMessage());
+        }
+    }
+
+    @Test
+    void printWithDefaultStyleTest_Negative_TextEmpty(){
         String EXPECTED = "text must not be empty or whitespace only";
         assertThrows(IllegalArgumentException.class, () -> printWithDefaultStyle(" "));
 
@@ -38,7 +50,19 @@ class UserInterfaceUtilsTest {
     }
 
     @Test
-    void createWithDefaultStyleTest_Negative(){
+    void createWithDefaultStyleTest_Negative_TextNull(){
+        String EXPECTED = "text must not be null";
+        assertThrows(NullPointerException.class, () -> createWithDefaultStyle(null));
+
+        try{
+            createWithDefaultStyle(null);
+        } catch(NullPointerException npe){
+            assertEquals(EXPECTED, npe.getMessage());
+        }
+    }
+
+    @Test
+    void createWithDefaultStyleTest_Negative_TextEmpty(){
         String EXPECTED = "text must not be empty or whitespace only";
         assertThrows(IllegalArgumentException.class, () -> createWithDefaultStyle("  "));
 
@@ -58,7 +82,19 @@ class UserInterfaceUtilsTest {
     }
 
     @Test
-    void printLetterByLetterTest_Negative_Text(){
+    void printLetterByLetterTest_Negative_TextNull(){
+        String EXPECTED = "text must not be null";
+        assertThrows(NullPointerException.class, () -> printLetterByLetter(null, Delay.FAST));
+
+        try{
+            printLetterByLetter(null, Delay.FAST);
+        } catch(NullPointerException npe){
+            assertEquals(EXPECTED, npe.getMessage());
+        }
+    }
+
+    @Test
+    void printLetterByLetterTest_Negative_TextEmpty(){
         String EXPECTED = "text must not be empty or whitespace only";
         assertThrows(IllegalArgumentException.class, () -> printLetterByLetter("  ", Delay.FAST));
         assertThrows(IllegalArgumentException.class, () -> printLetterByLetter("", Delay.FAST));
@@ -103,7 +139,19 @@ class UserInterfaceUtilsTest {
     }
 
     @Test
-    void splitPhraseTest_Negative_Phrase(){
+    void splitPhraseTest_Negative_PhraseNull(){
+        String EXPECTED = "phrase must not be null";
+        assertThrows(NullPointerException.class, () -> splitPhraseAtSpace(null, 1));
+
+        try{
+            splitPhraseAtSpace(null, 1);
+        } catch(NullPointerException npe){
+            assertEquals(EXPECTED, npe.getMessage());
+        }
+    }
+
+    @Test
+    void splitPhraseTest_Negative_PhraseEmpty(){
         String EXPECTED = "phrase must not be empty or whitespace only";
         assertThrows(IllegalArgumentException.class, () -> splitPhraseAtSpace("  ", 50));
         assertThrows(IllegalArgumentException.class, () -> splitPhraseAtSpace("", 50));

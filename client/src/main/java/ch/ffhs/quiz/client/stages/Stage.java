@@ -30,26 +30,31 @@ public abstract class Stage {
      */
     protected UserInterface ui;
     /**
+     * The logger (logs messages into a file)
+     */
+    protected static final Logger logger = LoggerUtils.getUnnamedFileLogger();
+
+
+    /**
      * Phase for general logic that must be executed before the stage can be processed
      */
-    protected abstract void setupStage();
+    protected void setupStage(){}
 
     /**
      * Print the initial user interface for the respective stage
      */
-    protected abstract void createInitialUserInterface();
+    protected void createInitialUserInterface(){}
 
     /**
      * Process user input, handle server requests and responses
      */
-    protected abstract void handleConversation();
+    protected void handleConversation(){}
 
     /**
      * Phase for general logic that must be executed after the stage was processed
      */
-    protected abstract void terminateStage();
+    protected void terminateStage(){}
 
-    protected static final Logger logger = LoggerUtils.getUnnamedFileLogger();
 
     /**
      * Execute all the four phases of a stage in a predefined order

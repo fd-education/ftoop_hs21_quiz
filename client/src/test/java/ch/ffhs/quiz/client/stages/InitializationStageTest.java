@@ -5,25 +5,31 @@ import ch.ffhs.quiz.client.InputHandler;
 import ch.ffhs.quiz.client.ui.UserInterface;
 import ch.ffhs.quiz.connectivity.Connection;
 import ch.ffhs.quiz.connectivity.impl.ConnectionImpl;
+import ch.ffhs.quiz.logger.LoggerUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class InitializationStageTest {
     static ServerSocket server;
 
-    static Client client;
-    static Connection serverConnection;
-    static InputHandler inputHandler;
-    static UserInterface ui;
+    static Client client, mockClient;
+    static Connection serverConnection, mockConnection;
+    static InputHandler inputHandler, mockInputHandler;
+    static UserInterface ui, mockUi;
+    static Logger mockLogger;
 
 
-    static InitializationStage initializationStage;
+    static InitializationStage initializationStage, mockinitializationStage, initializationStageMockedArguments;
 
     @BeforeAll
     static void setup() throws Exception{
@@ -35,6 +41,27 @@ class InitializationStageTest {
         ui = new UserInterface();
 
         initializationStage = new InitializationStage(client, serverConnection, inputHandler, ui);
+
+        mockClient = mock(Client.class);
+        mockConnection = mock(ConnectionImpl.class);
+        mockInputHandler = mock(InputHandler.class);
+        mockUi = mock(UserInterface.class);
+
+        initializationStageMockedArguments = new InitializationStage(mockClient, mockConnection, mockInputHandler, mockUi);
+        mockinitializationStage = mock(InitializationStage.class);
+
+        mockLogger = mock(Logger.class);
+        LoggerUtils.setGlobalLogLevel(Level.OFF);
+    }
+
+    @BeforeEach()
+    void resetMocks(){
+        reset(mockClient, mockConnection, mockInputHandler, mockUi, mockLogger, mockinitializationStage);
+    }
+
+    @AfterAll
+    static void teardown() throws IOException {
+        server.close();
     }
 
     @Test
@@ -81,8 +108,13 @@ class InitializationStageTest {
         }
     }
 
-    @AfterAll
-    static void teardown() throws IOException {
-        server.close();
+    @Test
+    void createInitialUserInterfaceTest(){
+        doNothing().when(mockUi).welcomeAndExplain();
+        doNothing().when(mockLogger).info(anyString());
+
+        initializationStageMockedArguments.createInitialUserInterface();
+
+        verify(mockUi, times(1)).welcomeAndExplain();
     }
 }
