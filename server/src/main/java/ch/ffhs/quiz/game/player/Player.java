@@ -2,7 +2,6 @@ package ch.ffhs.quiz.game.player;
 
 import ch.ffhs.quiz.connectivity.Connection;
 import ch.ffhs.quiz.messages.Message;
-import ch.ffhs.quiz.game.player.*;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -37,6 +36,7 @@ public class Player {
      * @throws IOException if an I/O Error occurs
      */
     public <T extends Message> T receive(Class<T> messageClass) throws IOException {
+        Objects.requireNonNull(messageClass);
         return connection.receive(messageClass);
     }
 
@@ -46,6 +46,7 @@ public class Player {
      * @param message the message
      */
     public void send(Message message) {
+        Objects.requireNonNull(message);
         connection.send(message);
     }
 
@@ -84,21 +85,22 @@ public class Player {
     }
 
     /**
-     * Sets the name of the player.
-     *
-     * @param name the name of the player
-     */
-    public void setName(String name) {
-        data.setName(name);
-    }
-
-    /**
      * Gets the name of the player.
      *
      * @return the name of the player
      */
     public String getName() {
         return data.getName();
+    }
+
+    /**
+     * Sets the name of the player.
+     *
+     * @param name the name of the player
+     */
+    public void setName(String name) {
+        Objects.requireNonNull(name);
+        data.setName(name);
     }
 
     /**
