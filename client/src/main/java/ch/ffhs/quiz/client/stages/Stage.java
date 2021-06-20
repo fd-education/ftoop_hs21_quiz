@@ -2,6 +2,7 @@ package ch.ffhs.quiz.client.stages;
 
 import ch.ffhs.quiz.client.Client;
 import ch.ffhs.quiz.client.InputHandler;
+import ch.ffhs.quiz.client.ui.AnsiTerminal;
 import ch.ffhs.quiz.client.ui.UserInterface;
 import ch.ffhs.quiz.connectivity.Connection;
 import ch.ffhs.quiz.logger.LoggerUtils;
@@ -70,5 +71,15 @@ public abstract class Stage {
             ui.printErrorScreen();
             System.exit(-1);
         }
+    }
+
+    protected final void printErrorAndQuit(){
+        try{
+           Thread.sleep(200);
+        }catch(InterruptedException ignored){}
+
+        AnsiTerminal.clearTerminal();
+        ui.printErrorScreen();
+        System.exit(-1);
     }
 }

@@ -45,8 +45,7 @@ public class TerminationStage extends Stage {
             logger.info("All connections closed...\n\n");
         } catch(IOException ioEx){
             logger.warning("IOException: Closing of connections failed. \n" + ioEx.getMessage() + "\n\n");
-            ui.printErrorScreen();
-            System.exit(-1);
+            printErrorAndQuit();
         }
     }
 }

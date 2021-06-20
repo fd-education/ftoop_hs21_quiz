@@ -76,8 +76,7 @@ public class InitializationStage extends Stage{
             }
         } catch(IOException ioEx) {
             logger.warning("IOException: Receiving ready message from server failed. \n" + ioEx.getMessage());
-            ui.printErrorScreen();
-            System.exit(-1);
+            printErrorAndQuit();
         }
     }
 
@@ -106,8 +105,7 @@ public class InitializationStage extends Stage{
 
         } catch(IOException ioEx){
             logger.warning("IOException: Receiving name confirmation failed. \n" + ioEx.getMessage());
-            ui.printErrorScreen();
-            System.exit(-1);
+            printErrorAndQuit();
         }
 
         return "";

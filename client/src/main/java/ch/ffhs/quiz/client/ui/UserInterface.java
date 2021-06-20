@@ -208,14 +208,15 @@ public class UserInterface extends InterruptableUIComponent {
             UserInterfaceUtils.printWithDefaultStyle(reason);
 
             while (!proceed) {
-                if(stop) return;
                 UserInterfaceUtils.printLetterByLetter(UserInterfaceUtils.createWithDefaultStyle(" . . ."), UserInterfaceUtils.Delay.FAST);
                 AnsiTerminal.moveCursorLeft(6);
                 AnsiTerminal.clearRemainingOfLine();
+                if(stop) break;
             }
 
             AnsiTerminal.clearLine();
             AnsiTerminal.restoreCursorPos();
+            Thread.currentThread().interrupt();
         });
 
         waitingThread.start();
