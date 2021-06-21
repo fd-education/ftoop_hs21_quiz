@@ -45,7 +45,8 @@ For example, to play with 4 players, use:
 
 `java -jar -DplayerCount=4 server/target/server-1.0.jar fragenkataloge/fragenkatalog_2019.txt`
 
-Use playerCount to configure the amount of players, questionCount for the amount of questions and thus rounds and port to change the port the server uses. 
+Use playerCount to configure the amount of players, questionCount for the amount of questions and thus rounds and port to change the port the server uses.
+Note that currently, the amount of players and questions are each restricted to a maximum value of 999.
 
 ## Configuration of the client
 Per default, the client uses the following configuration:
@@ -66,4 +67,4 @@ Fabian Diemand
 
 Nicola Bühler
 
-during the advanced programming course taught by Mr. Senften at Fernfachhochschule Schweiz.
+during the advanced object-oriented programming course taught by Mr. Senften at Fernfachhochschule Schweiz.
