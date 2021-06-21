@@ -66,4 +66,4 @@ Fabian Diemand
 
 Nicola Bühler
 
-during the advanced programming course taught by Mr. Senften at Fernfachhochschule Schweiz.
+during the advanced object-oriented programming course taught by Mr. Senften at Fernfachhochschule Schweiz.
